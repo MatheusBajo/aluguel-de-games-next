@@ -162,7 +162,7 @@ export function CarouselModal({
 
                                         {/* Conteúdo inferior */}
                                         <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                                            <div className="space-y-4">
+                                            <div className="space-y-2">
                                                 {/* Badges */}
                                                 <div className="flex flex-wrap gap-2">
                                                     <Badge className="bg-green-500/20 backdrop-blur-sm text-green-100 border-green-500/30">
@@ -215,13 +215,6 @@ export function CarouselModal({
                                                         <FaWhatsapp className="text-xl" />
                                                         <span>Fazer Orçamento</span>
                                                     </Button>
-                                                    <Button
-                                                        size="lg"
-                                                        variant="outline"
-                                                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20"
-                                                    >
-                                                        <FaShoppingCart className="text-xl" />
-                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,7 +239,7 @@ export function CarouselModal({
                     </Carousel>
 
                     {/* Indicadores de página */}
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
+                    <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
                         {items.map((_, idx) => (
                             <div
                                 key={idx}

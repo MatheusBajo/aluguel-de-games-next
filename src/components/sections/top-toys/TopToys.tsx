@@ -304,14 +304,14 @@ export default function TopToys() {
 
                                                                         {/* Lado direito – pôster + overlay + texto */}
                                                                         <div
-                                                                            className="boxart-image-in-padded-container relative w-full group transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:rotate-1 group-hover:shadow-2xl group-hover:z-10">
+                                                                            className="boxart-image-in-padded-container relative w-full group transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:rotate-1  group-hover:z-10">
                                                                             {/* pôster */}
                                                                             <img
                                                                                 src={item.imgSrc}
                                                                                 alt={item.title}
                                                                                 className="w-full h-full object-cover
 
-                                                                                group-hover:saturate-125 group rounded-tr-sm rounded-br-sm"
+                                                                                group group-hover:saturate-125 rounded-tr-sm rounded-br-sm"
                                                                             />
 
                                                                             {/* overlay de gradiente */}
