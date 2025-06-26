@@ -1,35 +1,8 @@
 /* Server Component: gera HTML durante o build */
-import fs from "node:fs/promises";
-import path from "node:path";
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
-
-interface Metadata {
-    titulo: string;
-    descricao?: string;
-    imagens?: string[];
-}
-
-async function getCatalog(): Promise<(Metadata & { key: string })[]> {
-    const root = path.join(process.cwd(), "Organizado");
-    const out: (Metadata & { key: string })[] = [];
-
-    async function walk(dir: string) {
-        const list = await fs.readdir(dir, { withFileTypes: true });
-        for (const itm of list) {
-            const abs = path.join(dir, itm.name);
-            if (itm.isDirectory()) await walk(abs);
-            if (itm.name === "metadata.json") {
-                const raw = await fs.readFile(abs, "utf8");
-                const data = JSON.parse(raw) as Metadata;
-                out.push({ ...data, key: path.relative(root, dir) });
-            }
-        }
-    }
-    await walk(root);
-    return out;
-}
+import { getCatalog } from "@/lib/catalog";
 
 export default async function Catalogo() {
     const itens = await getCatalog();
@@ -41,13 +14,13 @@ export default async function Catalogo() {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {itens.map((it) => (
                     <Link
-                        href={`/itens/${encodeURIComponent(it.key)}`}
+                        href={`/catalogo/${encodeURIComponent(it.key)}`}
                         key={it.key}
                         className="group flex flex-col overflow-hidden rounded-lg border"
                     >
                         {it.imagens?.[0] ? (
                             <Image
-                                src={it.imagens[0]}
+                                src={`/Organizado/${it.key}/${it.imagens[0]}`}
                                 alt={it.titulo}
                                 width={640}
                                 height={480}
