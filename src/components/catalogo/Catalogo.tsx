@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
-import { getCatalog } from "@/lib/catalog";
+import { getCatalog } from '@/lib/catalog.server'
 
 export default async function Catalogo() {
     const itens = await getCatalog();
@@ -14,7 +14,11 @@ export default async function Catalogo() {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {itens.map((it) => (
                     <Link
-                        href={`/catalogo/${encodeURIComponent(it.key)}`}
+                        href={`/catalogo/${it.key
+                            .split('/')                     // ['Air Games', 'Air Game Infantil']
+                            .map(encodeURIComponent)        // ['Air%20Games', 'Air%20Game%20Infantil']
+                            .join('/')                      // 'Air%20Games/Air%20Game%20Infantil'
+                        }`}
                         key={it.key}
                         className="group flex flex-col overflow-hidden rounded-lg border"
                     >

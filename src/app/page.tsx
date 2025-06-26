@@ -1,18 +1,10 @@
-import dynamic from "next/dynamic";
-import CatalogPreview from "@/components/catalogo/CatalogPreview";
-
-const StartCarousel = dynamic(() => import("@/components/StartCarousel"), {
-    ssr: false,
-});
-const Main = dynamic(() => import("@/components/Main"), { ssr: false });
+import CatalogPreview from '@/components/catalogo/CatalogPreview'
+import HomeShell from '@/components/HomeShell'
 
 export default function Home() {
-
     return (
         <>
-            <StartCarousel />
-            <CatalogPreview limit={6} />
-            <Main />
+            <HomeShell/> {/* parte interativa no cliente */}
             <a
                 href="https://wa.me/+551142377766"
                 target="_blank"
@@ -25,7 +17,6 @@ export default function Home() {
                     className="lg:size-25 size-16 object-contain"
                 />
             </a>
-
         </>
-    );
+    )
 }

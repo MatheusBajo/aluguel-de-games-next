@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
-import { getCatalog } from "@/lib/catalog";
+import { getCatalog } from '@/lib/catalog.server'
 import { Button } from "@/components/ui/button";
 
 export default async function CatalogPreview({ limit = 6 }: { limit?: number }) {

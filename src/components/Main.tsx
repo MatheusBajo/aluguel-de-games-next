@@ -8,6 +8,7 @@ import {DynamicGradient} from "@/components/hooks/DynamicGradient";
 
 /*  ↓ importe as seções pesadas via dynamic para evitar SSR de GSAP etc. */
 import dynamic from "next/dynamic";
+import CatalogList from "@/app/catalogo/CatalogList.server";
 
 const TopToys      = dynamic(() => import("@/components/sections/top-toys/TopToys"),      { ssr: false });
 const ComoFunciona = dynamic(() => import("@/components/sections/como-funciona/ComoFunciona"), { ssr: false });
@@ -69,6 +70,8 @@ export default function Main() {
                     </Button>
                 </div>
             </section>
+
+            <CatalogList order={['Fliperamas', 'Air Games']} limitPerCat={6} />
 
             {/* =============== SECTION 4 — CALL TO ACTION =============== */}
             <section className="rounded-md bg-secondary py-10 px-5 text-secondary-foreground">

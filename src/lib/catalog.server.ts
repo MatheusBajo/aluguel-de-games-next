@@ -1,5 +1,6 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import 'server-only'          // garante erro claro se cair no client
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 export interface CatalogItem {
     key: string;
