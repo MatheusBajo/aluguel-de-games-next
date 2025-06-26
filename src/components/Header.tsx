@@ -61,26 +61,29 @@ export default function Header() {
                             {/* 1) Dropdown "Sobre Nós" */}
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>Sobre Nós</NavigationMenuTrigger>
-                                <NavigationMenuContent>
+                                <NavigationMenuContent >
                                     <ul className="grid p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] gap-4">
                                         {/* Cartão grande do lado esquerdo */}
                                         <li className="row-span-3">
                                             <NavigationMenuLink asChild>
                                                 <Link
                                                     href="/"
-                                                    className="relative z-0 text-white flex h-full w-full select-none flex-col justify-end rounded-md bg-cover bg-center p-6 no-underline outline-none focus:shadow-md transition-all duration-300 ease-out transform-gpu hover:scale-105 hover:rotate-1 hover:shadow-2xl overflow-hidden"
+                                                    className="relative group z-0 text-white flex h-full w-full select-none flex-col justify-end rounded-md bg-cover bg-center p-6 no-underline outline-none focus:shadow-md transition-all duration-300 ease-out transform-gpu hover:scale-105 hover:rotate-1 hover:shadow-2xl "
                                                 >
+                                                    <DynamicGradient
+                                                        imageUrl="/maquinadeboxing.jpg"
+                                                        typeOfGradient="radial"
+                                                        blur="10px"
+                                                        spinOnHover
+                                                        className="!opacity-0 !scale-105 group-hover:!opacity-100 !duration-200"
+                                                    />
+
                                                     {/* Container pai para as camadas de fundo */}
                                                     <div className="absolute inset-0 z-[-2]">
-                                                        {/* Gradiente dinâmico com z-index menor */}
-                                                        <DynamicGradient
-                                                            imageUrl="/maquinadeboxing.jpg"
-                                                            // z-0 já basta
-                                                            style={{ zIndex: 2 }}
-                                                        />
+                                                        {/* Gradiente dinâmico - SEM o style zIndex */}
 
-                                                        <picture
-                                                            className="absolute inset-0 h-full w-full rounded-md z-[-1]">
+
+                                                        <picture>
                                                             <source
                                                                 media="(min-width: 1024px)"
                                                                 srcSet="/maquinadeboxing.jpg"
@@ -88,19 +91,20 @@ export default function Header() {
                                                             <img
                                                                 src="/equipamentos/fliperamas/Fliperamas.jpg"
                                                                 alt="Máquina de Boxing"
-                                                                className="absolute inset-0 h-full w-full object-cover rounded-md z-[-1]"
+                                                                className="absolute inset-0 h-full w-full object-cover rounded-md z-[1]"
+                                                                loading="lazy"
                                                             />
                                                         </picture>
                                                     </div>
 
                                                     {/* Overlay escuro (pseudo-elemento) */}
                                                     <div
-                                                        className="after:absolute after:inset-0 after:rounded-md after:bg-gradient-to-t after:from-black/80 after:to-transparent after:z-0"/>
+                                                        className="absolute inset-0 rounded-md bg-gradient-to-t from-black/80 to-transparent z-0"/>
 
-                                                    <div className="mb-2 mt-4 text-lg font-medium relative">
+                                                    <div className="mb-2 mt-4 text-lg font-medium relative z-10">
                                                         Aluguel de Games
                                                     </div>
-                                                    <p className="text-sm leading-tight text-white/70 relative">
+                                                    <p className="text-sm leading-tight text-white/70 relative z-10">
                                                         Brinquedos e jogos para festas e eventos.
                                                     </p>
                                                 </Link>

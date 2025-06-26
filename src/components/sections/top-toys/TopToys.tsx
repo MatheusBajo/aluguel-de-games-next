@@ -288,12 +288,8 @@ export default function TopToys() {
                                                                     tabIndex={0}
                                                                     aria-hidden="false"
                                                                     className="slider-refocus"
-                                                                    onClick={e => {          // ① impede navegação
-                                                                        e.preventDefault()
-                                                                        handleOpenModal(index) // ② abre o Dialog
-                                                                    }}
+                                                                    onClick={() => handleOpenModal(index)}
                                                                 >
-
 
                                                                     <div
                                                                         className="boxart-container boxart-rounded boxart-size-7x10 group transition-all duration-300 ease-out transform-gpu hover:scale-105 hover:rotate-1 hover:z-10 flex">
