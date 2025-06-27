@@ -6,7 +6,7 @@ export default function Home() {
     return (
         <>
             <HomeShell/> {/* parte interativa no cliente */}
-            <CatalogList order={['Fliperamas', 'Air Games']} limitPerCat={6} />
+            <CatalogList order={['Máquinas','Fliperamas', 'Air Games']} limitPerCat={6} />
             <a
                 href="https://wa.me/+551142377766"
                 target="_blank"

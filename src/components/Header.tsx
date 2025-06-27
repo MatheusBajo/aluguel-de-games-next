@@ -139,37 +139,37 @@ export default function Header() {
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                                         <ListItem
-                                            href="/jogos/fliperamas"
+                                            href="/catalogo#Fliperamas"
                                             title="Fliperamas"
                                         >
                                             Clássicos, retrô e multijogos para o seu evento.
                                         </ListItem>
                                         <ListItem
-                                            href="/jogos/sinuca"
+                                            href="/catalogo#Mesas%20de%20Jogo"
                                             title="Mesas de Sinuca"
                                         >
                                             Bilhar, sinuca e outros jogos de mesa.
                                         </ListItem>
                                         <ListItem
-                                            href="/jogos/videokes"
+                                            href="/catalogo#Videok%C3%AAs"
                                             title="Videokês"
                                         >
                                             Karaokê completo para animar a festa.
                                         </ListItem>
                                         <ListItem
-                                            href="/jogos/simuladores"
+                                            href="/catalogo#Simuladores"
                                             title="Simuladores"
                                         >
                                             Corrida, Realidade Virtual e muito mais.
                                         </ListItem>
                                         <ListItem
-                                            href="/jogos/brinquedos"
+                                            href="/catalogo#Brinquedos%20Infl%C3%A1veis"
                                             title="Brinquedos Diversos"
                                         >
                                             Air Game, Basquete, Martelo de Força, etc.
                                         </ListItem>
                                         <ListItem
-                                            href="/jogos/arcades"
+                                            href="/catalogo#Consoles"
                                             title="Outros Arcades"
                                         >
                                             Pinball, Guitar Hero, Boxing Machine...

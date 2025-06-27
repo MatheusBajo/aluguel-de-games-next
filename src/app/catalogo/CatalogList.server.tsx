@@ -28,7 +28,7 @@ export default async function CatalogList({ order, limitPerCat }: Props) {
                 const arr = grupos[cat]?.slice(0, limitPerCat)
                 if (!arr?.length) return null
                 return (
-                    <section key={cat}>
+                    <section key={cat} id={encodeURIComponent(cat)}>
                         <h2 className="mb-4 text-2xl font-bold">{cat}</h2>
 
                         {/* trilho horizontal */}
