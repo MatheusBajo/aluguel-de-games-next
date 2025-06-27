@@ -62,20 +62,35 @@ export default async function ProdutoPage(
 
             <h1 className="mb-6 text-3xl font-bold">{item.titulo}</h1>
 
-            {item.imagens?.[0] && (
-                <Image
-                    src={`/Organizado/${item.key}/${item.imagens[0]}`}
-                    alt={item.titulo}
-                    width={800}
-                    height={600}
-                    priority
-                    className="mb-6 w-full rounded-md object-cover"
-                />
+            {item.imagens?.length && (
+                <div className="grid gap-4 md:grid-cols-2">
+                    {item.imagens.map((img, idx) => (
+                        <Image
+                            key={img + idx}
+                            src={`/Organizado/${item.key}/${img}`}
+                            alt={item.titulo}
+                            width={800}
+                            height={600}
+                            className="w-full rounded-md object-cover"
+                            priority={idx === 0}
+                        />
+                    ))}
+                </div>
             )}
 
             {item.descricao && (
-                <p className="text-lg leading-relaxed">{item.descricao}</p>
+                <p className="text-lg leading-relaxed my-6">{item.descricao}</p>
             )}
+
+            <div className="mt-4">
+                <a
+                    href="https://wa.me/+551142377766"
+                    target="_blank"
+                    className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-primary-foreground hover:bg-primary/90"
+                >
+                    Pedir Orçamento no WhatsApp
+                </a>
+            </div>
         </main>
     )
 }
