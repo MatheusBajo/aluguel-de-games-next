@@ -1,10 +1,12 @@
 import CatalogPreview from '@/components/catalogo/CatalogPreview'
 import HomeShell from '@/components/HomeShell'
+import CatalogList from './catalogo/CatalogList.server'
 
 export default function Home() {
     return (
         <>
             <HomeShell/> {/* parte interativa no cliente */}
+            <CatalogList order={['Fliperamas', 'Air Games']} limitPerCat={6} />
             <a
                 href="https://wa.me/+551142377766"
                 target="_blank"
