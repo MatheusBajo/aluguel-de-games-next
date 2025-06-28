@@ -14,6 +14,7 @@ export const metadata = {
         locale: "pt_BR",
         url: "https://www.alugueldegames.com/",
         siteName: "Aluguel de Games",
+
     },
 };
 

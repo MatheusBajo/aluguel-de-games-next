@@ -211,6 +211,7 @@ export function CarouselModal({
                                                     <Button
                                                         size="lg"
                                                         className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white border-0 shadow-lg shadow-green-500/30 flex items-center gap-2"
+                                                        onClick={() => window.open("https://wa.me/+551142377766", "_blank")}
                                                     >
                                                         <FaWhatsapp className="text-xl" />
                                                         <span>Fazer Orçamento</span>

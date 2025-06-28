@@ -1,0 +1,17 @@
+`User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Allow: /_next/image
+Allow: /_next/static
+
+# Sitemap
+Sitemap: https://www.alugueldegames.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0`

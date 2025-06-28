@@ -182,7 +182,9 @@ export default function Header() {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild>
                                     <Link
-                                        href="/orcamento"
+                                        href="https://wa.me/+551142377766"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className={`${navigationMenuTriggerStyle()} flex items-center gap-1 group`}
                                     >
                                         Fazer um Orçamento
@@ -228,6 +230,5 @@ export default function Header() {
 
             </nav>
         </header>
-    )
-        ;
+    );
 }
