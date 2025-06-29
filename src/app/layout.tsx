@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import SchemaMarkup from "@/components/seo/SchemaMarkup";
 
 export const metadata = {
     title: {
@@ -24,7 +25,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html className={"dark"} lang="pt-br" suppressHydrationWarning>
+        <html className={""} lang="pt-br"  suppressHydrationWarning>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <meta charSet="UTF-8"/>
+        </head>
         <body>
         <ThemeProvider
             attribute="class"
@@ -48,6 +53,7 @@ export default function RootLayout({
             </a>
             <Footer/>
         </ThemeProvider>
+        <SchemaMarkup />
         </body>
         </html>
     );

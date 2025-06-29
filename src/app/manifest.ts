@@ -1,4 +1,4 @@
-// src/app/manifest.ts - PWA manifest para melhor indexação mobile
+// src/app/manifest.ts
 import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {

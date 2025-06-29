@@ -4,8 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 
+
 main > section {
-  max-width: 1400px;
+  /*max-width: 1400px;*/
   margin: auto;
   width: 100%;
 }

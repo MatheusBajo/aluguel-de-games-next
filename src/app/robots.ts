@@ -1,4 +1,4 @@
-// src/app/robots.ts - Geração dinâmica de robots.txt (alternativa)
+// src/app/robots.ts
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
@@ -7,13 +7,19 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/api/', '/_next/'],
+                disallow: [
+                    '/api/',
+                    '/admin/',
+                    '/_next/',
+                    '/static/',
+                ],
             },
             {
                 userAgent: 'Googlebot',
                 allow: '/',
             },
         ],
-        sitemap: 'https://www.alugueldegames.com/sitemap.xml',
+        sitemap: 'https://alugueldegames.com/sitemap.xml',
+        host: 'https://alugueldegames.com',
     };
 }

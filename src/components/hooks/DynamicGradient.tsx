@@ -11,9 +11,9 @@ interface Props {
     opacity?: number
     blur?: string
     typeOfGradient?: GradType
-    className?: string         // classes do wrapper
-    spinOnHover?: boolean      // <-- novo
-    // spinDuration?: string      // ex: "6s"
+    className?: string
+    spinOnHover?: boolean
+    invertColors?: boolean   // novo
 }
 
 export function DynamicGradient({
@@ -23,7 +23,7 @@ export function DynamicGradient({
                                     typeOfGradient = "radial",
                                     className = "",
                                     spinOnHover = false,
-                                    // spinDuration = "8s",
+                                    invertColors = false,
                                 }: Props) {
 
     const [colors, setColors] = useState<string[] | null>(null)
