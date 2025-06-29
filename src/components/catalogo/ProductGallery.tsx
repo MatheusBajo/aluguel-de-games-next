@@ -1,11 +1,11 @@
 // src/components/catalogo/ProductGallery.tsx
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronLeft, FiChevronRight, FiMaximize2, FiX } from "react-icons/fi";
-import { cn } from "@/lib/utils";
+import {AnimatePresence, motion} from "framer-motion";
+import {FiChevronLeft, FiChevronRight, FiMaximize2, FiX} from "react-icons/fi";
+import {cn} from "@/lib/utils";
 
 interface ProductGalleryProps {
     images: string[];

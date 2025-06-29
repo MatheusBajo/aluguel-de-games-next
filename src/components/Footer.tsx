@@ -1,12 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
-import {
-    FaWhatsapp,
-    FaInstagram,
-    FaFacebookF,
-    FaMapMarkerAlt,
-} from "react-icons/fa";
-import {Envelope, GpsFix, Mailbox, MapPinArea, MapPinLine, MapTrifold, Phone} from "@phosphor-icons/react/ssr";
+import {FaFacebookF, FaInstagram, FaWhatsapp,} from "react-icons/fa";
+import {Envelope, GpsFix, Phone} from "@phosphor-icons/react/ssr";
 
 export default function Footer() {
     return (

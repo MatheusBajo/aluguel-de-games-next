@@ -1,27 +1,16 @@
 /* -----------------------------------------------------------
  * components/CarouselModal.tsx
  * ----------------------------------------------------------- */
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogDescription,
-} from "@/components/ui/dialog";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
-import { FaHeart, FaShare, FaWhatsapp, FaShoppingCart } from "react-icons/fa";
-import { HiSparkles } from "react-icons/hi";
+import {Dialog, DialogContent, DialogDescription, DialogTitle,} from "@/components/ui/dialog";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,} from "@/components/ui/carousel";
+import {FaHeart, FaShare, FaWhatsapp} from "react-icons/fa";
+import {HiSparkles} from "react-icons/hi";
 import FlyingEmojis from "@/components/hooks/FlyingEmojis";
-import { Badge } from "@/components/ui/badge";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { StarRating } from "@/components/util/StarRating.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { useState } from "react";
+import {Badge} from "@/components/ui/badge";
+import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
+import {StarRating} from "@/components/util/StarRating.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {useState} from "react";
 import {ArrowLeft, ArrowRight} from "lucide-react";
 import {EmblaCarouselType} from "embla-carousel";
 

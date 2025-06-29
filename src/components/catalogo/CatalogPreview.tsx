@@ -1,9 +1,9 @@
 /* Server Component: mostra alguns itens do catálogo */
 import Image from "next/image";
 import Link from "next/link";
-import { FiImage } from "react-icons/fi";
-import { getCatalog } from '@/lib/catalog.server'
-import { Button } from "@/components/ui/button";
+import {FiImage} from "react-icons/fi";
+import {getCatalog} from '@/lib/catalog.server'
+import {Button} from "@/components/ui/button";
 
 export default async function CatalogPreview({ limit = 6 }: { limit?: number }) {
     const itens = await getCatalog(limit);

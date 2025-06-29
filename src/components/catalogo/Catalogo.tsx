@@ -1,6 +1,5 @@
 // src/components/catalogo/Catalogo.tsx
 import CatalogList from "@/app/catalogo/CatalogList.server";
-import { motion } from "framer-motion";
 
 export default async function Catalogo() {
     return (

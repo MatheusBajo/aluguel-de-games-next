@@ -1,7 +1,7 @@
 /* src/components/hooks/DynamicGradient.tsx */
 "use client"
 
-import { useEffect, useState } from "react"
+import {useEffect, useState} from "react"
 
 
 type GradType = "radial" | "linear" | "conic"

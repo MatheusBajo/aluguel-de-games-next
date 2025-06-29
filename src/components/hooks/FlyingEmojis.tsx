@@ -1,8 +1,8 @@
 /* src/components/hooks/FlyingEmojis.tsx */
 "use client";
 
-import React, { useEffect, useRef, useCallback } from "react";
-import { cn } from "@/lib/utils";
+import React, {useCallback, useEffect, useRef} from "react";
+import {cn} from "@/lib/utils";
 
 interface FlyingEmojisProps {
     className?: string

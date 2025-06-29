@@ -3,11 +3,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FiImage, FiArrowRight, FiStar } from "react-icons/fi";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import {FiArrowRight, FiImage, FiStar} from "react-icons/fi";
+import {Badge} from "@/components/ui/badge";
+import {motion} from "framer-motion";
+import {useState} from "react";
 
 interface CatalogCardProps {
     item: {

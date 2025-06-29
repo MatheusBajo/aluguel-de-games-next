@@ -5,8 +5,8 @@ import {useRef} from "react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {DynamicGradient} from "@/components/hooks/DynamicGradient";
-import { motion } from "framer-motion";
-import {FaGamepad, FaHeart, FaTrophy, FaShieldAlt, FaWhatsapp} from "react-icons/fa";
+import {motion} from "framer-motion";
+import {FaGamepad, FaHeart, FaShieldAlt, FaTrophy, FaWhatsapp} from "react-icons/fa";
 
 /*  ↓ importe as seções pesadas via dynamic para evitar SSR de GSAP etc. */
 import dynamic from "next/dynamic";

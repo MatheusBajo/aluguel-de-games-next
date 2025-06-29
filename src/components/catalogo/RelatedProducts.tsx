@@ -1,6 +1,6 @@
 // src/components/catalogo/RelatedProducts.tsx
-import { getCatalog } from "@/lib/catalog.server";
-import { CatalogCard } from "./CatalogCard";
+import {getCatalog} from "@/lib/catalog.server";
+import {CatalogCard} from "./CatalogCard";
 
 interface RelatedProductsProps {
     categoria: string;

@@ -1,10 +1,10 @@
 /* src/components/ui/CarouselOverlayGradient.tsx */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useCarousel } from "./carousel-landing";      // OK: mesmo diretório
-import { useTheme }   from "@/components/theme-provider";
-import ColorThief     from "colorthief";
+import {useEffect, useRef, useState} from "react";
+import {useCarousel} from "./carousel-landing"; // OK: mesmo diretório
+import {useTheme} from "@/components/theme-provider";
+import ColorThief from "colorthief";
 
 /* ▸ AJUSTES RÁPIDOS — edite só aqui ↓↓↓ -------------------------------- */
 const BLUR_LIGHT   = 60;   // px
