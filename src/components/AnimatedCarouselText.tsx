@@ -17,18 +17,10 @@ export default function AnimatedCarouselText({ texts }: { texts: string[] }) {
     const splitRef = useRef<SplitText | null>(null);
     const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-    /** Função que cancela tudo que estiver rolando */
-    const reset = () => {
-        if (tlRef.current) tlRef.current.kill();
-        if (splitRef.current) {
-            splitRef.current.revert();
-            splitRef.current = null;
-        }
-    };
 
     /** Faz a transição completa (sai e entra) */
     /** Faz a transição (interrompe, anima saída, troca texto) */
-    const transitionTo = (newIndex: number) => {
+    const transitionTo = useCallback((newIndex: number) => {
         if (newIndex === currentIndex) return;
         const el = containerRef.current;
         if (!el) return;
@@ -61,7 +53,7 @@ export default function AnimatedCarouselText({ texts }: { texts: string[] }) {
                 tlRef.current = null;
             },
         });
-    };
+    }, [currentIndex]);
 
 
     /** Ouve o carrossel */
@@ -73,7 +65,7 @@ export default function AnimatedCarouselText({ texts }: { texts: string[] }) {
         const onSelect = () => transitionTo(api.selectedScrollSnap());
         api.on("select", onSelect);
         return () => api.off("select", onSelect);
-    }, [api, currentIndex]);
+    }, [api, currentIndex, transitionTo]);
 
     useLayoutEffect(() => {
         const el = containerRef.current;

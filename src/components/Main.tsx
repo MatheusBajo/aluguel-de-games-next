@@ -1,7 +1,6 @@
 /* components/Main.tsx  */
 "use client";
 
-import {useRef} from "react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {DynamicGradient} from "@/components/hooks/DynamicGradient";
@@ -13,11 +12,8 @@ import dynamic from "next/dynamic";
 
 const TopToys      = dynamic(() => import("@/components/sections/top-toys/TopToys"),      { ssr: false });
 const ComoFunciona = dynamic(() => import("@/components/sections/como-funciona/ComoFunciona"), { ssr: false });
-const FlyingEmojis = dynamic(() => import("@/components/hooks/FlyingEmojis"), { ssr: false });
 
 export default function Main() {
-    /* FlyingEmojis (se usar) precisa de um contêiner que exista no cliente */
-    const emojisRef = useRef<HTMLDivElement | null>(null);
 
     const fadeInUp = {
         initial: { opacity: 0, y: 20 },

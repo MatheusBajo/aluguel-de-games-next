@@ -23,7 +23,7 @@ export function ProductInfo({ titulo, descricao, categoria }: ProductInfoProps) 
                     text: descricao.slice(0, 100),
                     url: window.location.href,
                 });
-            } catch (err) {
+            } catch {
                 console.log("Erro ao compartilhar");
             }
         }

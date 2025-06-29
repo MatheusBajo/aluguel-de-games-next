@@ -45,7 +45,7 @@ const CarouselLanding = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
         const [canScrollPrev, setCanScrollPrev] = React.useState(false)
         const [canScrollNext, setCanScrollNext] = React.useState(false)
         const [selectedIndex, setSelectedIndex] = React.useState(0)
-        const [autoplay, setAutoplay] = useState<ReturnType<typeof Autoplay> | null>(null);
+        const [autoplay] = useState<ReturnType<typeof Autoplay> | null>(null);
 
         const totalSlides = slidesCount;
 
@@ -114,7 +114,7 @@ const CarouselLanding = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
                     slidesCount,
                 }}
             >
-                <div ref={ref} className="relative">
+                <div ref={ref} className={cn("relative", className)} {...props}>
                     {children}
                     {/* Aqui é onde inserimos as áreas de clique */}
                     <CarouselAreaNavigation/>

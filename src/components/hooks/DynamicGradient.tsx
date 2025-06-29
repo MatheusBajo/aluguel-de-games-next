@@ -1,7 +1,7 @@
 /* src/components/hooks/DynamicGradient.tsx */
 "use client"
 
-import {useEffect, useState} from "react"
+import {useEffect, useState, type CSSProperties} from "react"
 
 
 type GradType = "radial" | "linear" | "conic"
@@ -13,7 +13,6 @@ interface Props {
     typeOfGradient?: GradType
     className?: string
     spinOnHover?: boolean
-    invertColors?: boolean   // novo
 }
 
 export function DynamicGradient({
@@ -23,7 +22,6 @@ export function DynamicGradient({
                                     typeOfGradient = "radial",
                                     className = "",
                                     spinOnHover = false,
-                                    invertColors = false,
                                 }: Props) {
 
     const [colors, setColors] = useState<string[] | null>(null)
@@ -80,6 +78,15 @@ export function DynamicGradient({
                 ? `radial-gradient(circle at 50% 100%, ${stops})`
                 : `linear-gradient(135deg, ${stops})`;
 
+    const style: React.CSSProperties & { "--g-angle": string } = {
+        position: "absolute",
+        inset: 0,
+        opacity,
+        filter: `blur(${blur})`,
+        background: gradient,
+        "--g-angle": "0deg",
+    };
+
     return (
         <div
             className={className}
@@ -91,16 +98,8 @@ export function DynamicGradient({
             }}
         >
     <span
-        className="group-hover:[animation:gradient-spin_6s_linear_infinite]"
-        style={{
-            position: "absolute",
-            inset: 0,
-            opacity,
-            filter: `blur(${blur})`,
-            background: gradient,
-            /* garante ponto inicial */
-            ["--g-angle" as any]: "0deg",
-        }}
+        className={spinOnHover ? "group-hover:[animation:gradient-spin_6s_linear_infinite]" : undefined}
+        style={style}
     />
         </div>
     );
