@@ -1,12 +1,12 @@
 // src/components/catalogo/ProductInfo.tsx
 "use client";
 
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import {FiHeart, FiMessageCircle, FiShare2} from "react-icons/fi";
-import {FaWhatsapp} from "react-icons/fa";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FiShare2, FiHeart, FiMessageCircle } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 interface ProductInfoProps {
     titulo: string;

@@ -1,14 +1,15 @@
 /* src/components/sections/como-funciona/ComoFunciona.tsx */
 "use client";
 
-import {useLayoutEffect, useRef} from "react";
-import {gsap} from "gsap";
-import {ScrollTrigger} from "gsap/ScrollTrigger";
-import {SplitText} from "gsap/SplitText";
-import {Button} from "@/components/ui/button";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {motion} from "framer-motion";
-import {FaWhatsapp} from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FiCheckCircle } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 

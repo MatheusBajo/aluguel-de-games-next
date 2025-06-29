@@ -1,11 +1,11 @@
 // src/components/catalogo/CatalogSection.tsx
 "use client";
 
-import {useEffect, useState} from "react";
-import {AnimatePresence, motion} from "framer-motion";
-import {CatalogCard} from "./CatalogCard";
-import {Button} from "@/components/ui/button";
-import {FiArrowRight, FiChevronDown, FiChevronUp} from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CatalogCard } from "./CatalogCard";
+import { Button } from "@/components/ui/button";
+import { FiChevronDown, FiChevronUp, FiArrowRight } from "react-icons/fi";
 import Link from "next/link";
 
 interface CatalogSectionProps {
