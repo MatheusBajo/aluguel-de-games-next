@@ -10,9 +10,6 @@ const nextConfig: NextConfig = {
     // Se for hospedar no GitHub Pages
     // basePath: '/aluguel-de-games-proj',
     trailingSlash: true,
-    experimental: {
-        outputFileTracing: false,
-    },
     eslint: {
         ignoreDuringBuilds: true,
     },

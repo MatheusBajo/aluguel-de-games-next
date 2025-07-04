@@ -41,7 +41,7 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
     return (
         <>
             {/* Container com controle rigoroso de width */}
-            <div className="mt-20 min-w-0 max-w-full">
+            <div className="mt-20 min-w-0 max-w-full select-none">
                 {/* Main Image */}
                 <motion.div
                     className="group relative aspect-square w-full overflow-hidden rounded-3xl border bg-muted/20"
@@ -53,7 +53,7 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
                             initial={{opacity: 0, scale: 0.95}}
                             animate={{opacity: 1, scale: 1}}
                             exit={{opacity: 0, scale: 0.95}}
-                            transition={{duration: 0.3}}
+                            transition={{duration: 0.15}}
                             className="relative h-full w-full"
                         >
                             <Image
@@ -118,7 +118,7 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
                                     <button
                                         onClick={() => setSelectedIndex(idx)}
                                         className={cn(
-                                            "relative block h-12 w-12 overflow-hidden rounded-lg border-2 transition-all duration-300 md:h-20 md:w-20",
+                                            "relative block h-12 w-12 overflow-hidden rounded-lg border-2 transition-all duration-300 md:h-20 md:w-20 cursor-pointer",
                                             selectedIndex === idx
                                                 ? "border-primary ring-1 ring-primary/30"
                                                 : "border-transparent hover:border-muted-foreground/50"
@@ -128,7 +128,7 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
                                             src={`/Organizado/${itemKey}/${img}`}
                                             alt={`${title} - Miniatura ${idx + 1}`}
                                             fill
-                                            className="object-cover"
+                                            className="object-cover pointer-events-none"
                                             sizes="(max-width: 768px) 48px, 80px"
                                         />
                                     </button>
