@@ -12,7 +12,7 @@ export function useModalHistory(isOpen: boolean, setOpen: (o: boolean) => void) 
         }
     }, []);
     const entryAdded   = useRef(false);
-    const listenerRef  = useRef<(e: PopStateEvent) => void>();
+    const listenerRef  = useRef<((e: PopStateEvent) => void) | undefined>(undefined);
 
     /* ------------------------------------------------------------------
      * Só roda quando o modal está ABERTO
