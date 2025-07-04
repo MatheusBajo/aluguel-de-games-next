@@ -7,8 +7,8 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-interface PageProps {
-    params: { slug: string[] }
+interface PageProps<P = { slug: string[] }> {
+    params: P
 }
 
 export async function generateStaticParams() {
