@@ -12,10 +12,10 @@ export function middleware(request: NextRequest) {
     // }
 
     // Remover trailing slashes (exceto para root)
-    if (url.pathname !== '/' && url.pathname.endsWith('/')) {
-        url.pathname = url.pathname.slice(0, -1);
-        return NextResponse.redirect(url, 301);
-    }
+    // if (url.pathname !== '/' && url.pathname.endsWith('/')) {
+    //     url.pathname = url.pathname.slice(0, -1);
+    //     return NextResponse.redirect(url, 301);
+    // }
 
     // Forçar lowercase nas URLs para evitar duplicação
     if (url.pathname !== url.pathname.toLowerCase()) {

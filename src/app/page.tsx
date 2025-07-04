@@ -40,7 +40,7 @@ export const metadata: Metadata = {
         siteName: 'Aluguel de Games',
         images: [
             {
-                url: '/og-image.jpg',
+                url: '/Logo-Aluguel-de-games.png',
                 width: 1200,
                 height: 630,
                 alt: 'Aluguel de Games - Equipamentos de Entretenimento para Festas'
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Aluguel de Games - Locação de Jogos e Entretenimento',
         description: 'Transforme seu evento com nossos equipamentos de entretenimento. Orçamento grátis!',
-        images: ['/og-image.jpg'],
+        images: ['/Logo-Aluguel-de-games.png'],
         creator: '@alugueldegames',
     },
     alternates: {

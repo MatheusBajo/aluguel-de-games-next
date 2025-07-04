@@ -10,6 +10,10 @@ export const metadata = {
         template: "%s | Aluguel de Games",
         default: "Aluguel de Games",
     },
+    icons: {
+        icon: "/Logo-Aluguel-de-games.ico",
+        apple: "/Logo-Aluguel-de-games.ico",
+    },
     description: "Aluguel de fliperamas, karaokês e entretenimento para eventos",
     openGraph: {
         type: "website",
@@ -40,11 +44,11 @@ export default function RootLayout({
                     })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
                 `}
             </Script>
-
+            <link rel="icon" href="/Logo-Aluguel-de-games.ico"/>
         </head>
         <body>
         <noscript>
-            <iframe
+        <iframe
                 src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
                 height="0"
                 width="0"
