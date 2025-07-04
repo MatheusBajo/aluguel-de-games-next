@@ -21,7 +21,8 @@ export default function AnimatedCarouselText({ texts }: { texts: string[] }) {
 
     // refs para controlar animações
     const splitRef = useRef<SplitText | null>(null);
-    const tlRef = useRef<gsap.core.Timeline | null>(null);
+    // armazena o tween atual para permitir o cancelamento
+    const tlRef = useRef<gsap.core.Tween | null>(null);
 
 
     /** Faz a transição completa (sai e entra) */
