@@ -1,4 +1,7 @@
 // src/app/manifest.ts
+export const dynamic    = "force-static";
+export const revalidate = false;
+
 import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
