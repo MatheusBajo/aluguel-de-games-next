@@ -3,11 +3,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FiImage, FiArrowRight, FiStar } from "react-icons/fi";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import {FiArrowRight, FiImage, FiStar} from "react-icons/fi";
+import {Badge} from "@/components/ui/badge";
+import {motion} from "framer-motion";
+import {useState} from "react";
+import {getImagePath} from "@/lib/image-utils";
 
 interface CatalogCardProps {
     item: {
@@ -52,7 +52,7 @@ export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
                 <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-muted/50 to-muted/30">
                     {item.imagens?.[0] && !imageError ? (
                         <Image
-                            src={`/Organizado/${item.key}/${item.imagens[0]}`}
+                            src={getImagePath(item.key, item.imagens[0])}
                             alt={item.titulo}
                             fill
                             className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:saturate-120"

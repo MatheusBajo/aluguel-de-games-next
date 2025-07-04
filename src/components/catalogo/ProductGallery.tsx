@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronLeft, FiChevronRight, FiMaximize2, FiX } from "react-icons/fi";
 import { cn } from "@/lib/utils";
+import { getImagePath } from "@/lib/image-utils";
 
 interface ProductGalleryProps {
     images: string[];
@@ -16,6 +17,7 @@ interface ProductGalleryProps {
 export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
 
     const hasImages = images.length > 0;
     const currentImage = hasImages ? images[selectedIndex] : null;
@@ -26,6 +28,10 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
 
     const prevImage = () => {
         setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+    const handleImageError = (index: number) => {
+        setImageErrors((prev) => ({ ...prev, [index]: true }));
     };
 
     if (!hasImages) {
@@ -56,31 +62,42 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
                             transition={{duration: 0.15}}
                             className="relative h-full w-full"
                         >
-                            <Image
-                                src={`/Organizado/${itemKey}/${currentImage}`}
-                                alt={`${title} - Imagem ${selectedIndex + 1}`}
-                                fill
-                                className="object-contain"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                priority={selectedIndex === 0}
-                            />
+                            {!imageErrors[selectedIndex] ? (
+                                <Image
+                                    src={getImagePath(itemKey, currentImage!)}
+                                    alt={`${title} - Imagem ${selectedIndex + 1}`}
+                                    fill
+                                    className="object-contain"
+                                    draggable={false}
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority={selectedIndex === 0}
+                                    unoptimized
+                                    onError={() => handleImageError(selectedIndex)}
+                                />
+                            ) : (
+                                <div className="flex h-full w-full items-center justify-center">
+                                    <p className="text-muted-foreground">Erro ao carregar imagem</p>
+                                </div>
+                            )}
                         </motion.div>
                     </AnimatePresence>
 
-                    {/* Navigation Buttons */}
+                    {/* Navigation Arrows */}
                     {images.length > 1 && (
                         <>
                             <button
                                 onClick={prevImage}
-                                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/80 p-1.5 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 md:left-4 md:p-2"
+                                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-background/80 p-2 opacity-0 transition-all hover:bg-background group-hover:opacity-100"
+                                aria-label="Imagem anterior"
                             >
-                                <FiChevronLeft className="h-4 w-4 md:h-5 md:w-5"/>
+                                <FiChevronLeft className="h-6 w-6" />
                             </button>
                             <button
                                 onClick={nextImage}
-                                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/80 p-1.5 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 md:right-4 md:p-2"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-background/80 p-2 opacity-0 transition-all hover:bg-background group-hover:opacity-100"
+                                aria-label="Próxima imagem"
                             >
-                                <FiChevronRight className="h-4 w-4 md:h-5 md:w-5"/>
+                                <FiChevronRight className="h-6 w-6" />
                             </button>
                         </>
                     )}
@@ -88,52 +105,51 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
                     {/* Fullscreen Button */}
                     <button
                         onClick={() => setIsFullscreen(true)}
-                        className="absolute right-2 top-2 z-10 rounded-full bg-background/80 p-1.5 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 md:right-4 md:top-4 md:p-2"
+                        className="absolute right-4 top-4 rounded-full bg-background/80 p-2 opacity-0 transition-all hover:bg-background group-hover:opacity-100"
+                        aria-label="Tela cheia"
                     >
-                        <FiMaximize2 className="h-4 w-4 md:h-5 md:w-5"/>
+                        <FiMaximize2 className="h-5 w-5" />
                     </button>
 
                     {/* Image Counter */}
-                    <div className="absolute bottom-2 left-2 rounded-full bg-background/80 px-2 py-1 text-xs backdrop-blur-sm md:bottom-4 md:left-4 md:px-3 md:text-sm">
-                        {selectedIndex + 1} / {images.length}
-                    </div>
+                    {images.length > 1 && (
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-background/80 px-3 py-1 text-sm">
+                            {selectedIndex + 1} / {images.length}
+                        </div>
+                    )}
                 </motion.div>
 
-                {/* Thumbnails - Container com controle rígido */}
+                {/* Thumbnails */}
                 {images.length > 1 && (
-                    <div className="mt-4 w-full min-w-0">
-                        <div
-                            className="flex space-x-1.5 overflow-x-auto md:space-x-2 scrollbar-hide"
-                            style={{
-                                scrollbarWidth: 'none',
-                                msOverflowStyle: 'none',
-                            }}
-                        >
-                            {images.map((img, idx) => (
-                                <div
-                                    key={idx}
-                                    className="flex-shrink-0"
-                                >
-                                    <button
-                                        onClick={() => setSelectedIndex(idx)}
-                                        className={cn(
-                                            "relative block h-12 w-12 overflow-hidden rounded-lg border-2 transition-all duration-300 md:h-20 md:w-20 cursor-pointer",
-                                            selectedIndex === idx
-                                                ? "border-primary ring-1 ring-primary/30"
-                                                : "border-transparent hover:border-muted-foreground/50"
-                                        )}
-                                    >
-                                        <Image
-                                            src={`/Organizado/${itemKey}/${img}`}
-                                            alt={`${title} - Miniatura ${idx + 1}`}
-                                            fill
-                                            className="object-cover pointer-events-none"
-                                            sizes="(max-width: 768px) 48px, 80px"
-                                        />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+                        {images.map((img, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedIndex(index)}
+                                className={cn(
+                                    "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all",
+                                    selectedIndex === index
+                                        ? "border-primary ring-2 ring-primary/30"
+                                        : "border-transparent hover:border-muted-foreground/50"
+                                )}
+                            >
+                                {!imageErrors[index] ? (
+                                    <Image
+                                        src={getImagePath(itemKey, img)}
+                                        alt={`${title} - Miniatura ${index + 1}`}
+                                        fill
+                                        className="object-cover"
+                                        sizes="80px"
+                                        unoptimized
+                                        onError={() => handleImageError(index)}
+                                    />
+                                ) : (
+                                    <div className="flex h-full w-full items-center justify-center bg-muted">
+                                        <FiX className="text-muted-foreground" />
+                                    </div>
+                                )}
+                            </button>
+                        ))}
                     </div>
                 )}
             </div>
@@ -142,42 +158,66 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
             <AnimatePresence>
                 {isFullscreen && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4"
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur"
                         onClick={() => setIsFullscreen(false)}
                     >
                         <button
-                            className="absolute right-4 top-4 z-10 rounded-full bg-background/80 p-2 backdrop-blur-sm"
                             onClick={() => setIsFullscreen(false)}
+                            className="absolute right-4 top-4 rounded-full bg-background p-2 shadow-lg"
+                            aria-label="Fechar tela cheia"
                         >
                             <FiX className="h-6 w-6" />
                         </button>
 
-                        <motion.div
-                            layoutId="gallery-main"
-                            className="relative flex h-full w-full items-center justify-center"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <Image
-                                src={`/Organizado/${itemKey}/${currentImage}`}
-                                alt={`${title} - Imagem ${selectedIndex + 1}`}
-                                width={1200}
-                                height={1200}
-                                className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] object-contain"
-                            />
-                        </motion.div>
+                        <div className="relative h-[90vh] w-[90vw]">
+                            {!imageErrors[selectedIndex] ? (
+                                <Image
+                                    src={getImagePath(itemKey, currentImage!)}
+                                    alt={`${title} - Imagem ${selectedIndex + 1}`}
+                                    fill
+                                    className="object-contain"
+                                    sizes="90vw"
+                                    unoptimized
+                                    onError={() => handleImageError(selectedIndex)}
+                                />
+                            ) : (
+                                <div className="flex h-full w-full items-center justify-center">
+                                    <p className="text-muted-foreground">Erro ao carregar imagem</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Fullscreen Navigation */}
+                        {images.length > 1 && (
+                            <>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        prevImage();
+                                    }}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-background p-3 shadow-lg"
+                                    aria-label="Imagem anterior"
+                                >
+                                    <FiChevronLeft className="h-8 w-8" />
+                                </button>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        nextImage();
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-background p-3 shadow-lg"
+                                    aria-label="Próxima imagem"
+                                >
+                                    <FiChevronRight className="h-8 w-8" />
+                                </button>
+                            </>
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            {/* CSS para esconder scrollbar completamente */}
-            <style jsx>{`
-                .overflow-x-auto::-webkit-scrollbar {
-                    display: none;
-                }
-            `}</style>
         </>
     );
 }

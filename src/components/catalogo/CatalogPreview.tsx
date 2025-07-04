@@ -1,9 +1,11 @@
+// src/components/catalogo/CatalogPreview.tsx
 /* Server Component: mostra alguns itens do catálogo */
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
 import { getCatalog } from '@/lib/catalog.server'
 import { Button } from "@/components/ui/button";
+import { getImagePath } from "@/lib/image-utils";
 
 export default async function CatalogPreview({ limit = 6 }: { limit?: number }) {
     const itens = await getCatalog(limit);
@@ -14,21 +16,22 @@ export default async function CatalogPreview({ limit = 6 }: { limit?: number }) 
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
                 {itens.map((it) => (
                     <Link
-                        href={`/catalogo/${encodeURIComponent(it.key)}`}
+                        href={`/catalogo/${it.key.split('/').map(segment => encodeURIComponent(segment)).join('/')}`}
                         key={it.key}
                         className="group flex flex-col overflow-hidden rounded-lg border"
                     >
                         {it.imagens?.[0] ? (
                             <Image
-                                src={`/Organizado/${it.key}/${it.imagens[0]}`}
+                                src={getImagePath(it.key, it.imagens[0])}
                                 alt={it.titulo}
                                 width={320}
                                 height={240}
                                 className="h-32 w-full object-cover transition duration-300 group-hover:scale-105"
+                                unoptimized
                             />
                         ) : (
                             <div className="flex h-32 w-full items-center justify-center bg-muted">
-                                <FiImage className="text-2xl text-muted-foreground" />
+                                <FiImage className="text-2xl text-muted-foreground"/>
                             </div>
                         )}
                         <div className="p-2">
