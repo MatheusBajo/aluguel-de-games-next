@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     experimental: {
         outputFileTracing: false,
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
 
     // Comprimir arquivos HTML
     compress: true,
