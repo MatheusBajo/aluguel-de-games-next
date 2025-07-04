@@ -1,6 +1,12 @@
 /* components/AnimatedCarouselText.tsx */
 "use client";
-import { useLayoutEffect, useRef, useState, useEffect } from "react";
+import {
+    useLayoutEffect,
+    useRef,
+    useState,
+    useEffect,
+    useCallback,   // <- adicione aqui
+} from "react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useCarousel } from "@/components/ui/carousel-landing";
