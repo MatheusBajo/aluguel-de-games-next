@@ -54,6 +54,7 @@ const CarouselLanding = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
 
             // Lê o índice do Embla e faz o módulo com o total de slides
             const handleSelect = () => {
+                if (typeof totalSlides !== 'number' || totalSlides <= 0) return;
                 const emblaIndex = api.selectedScrollSnap();
                 const newIndex = emblaIndex % totalSlides;
                 setRealIndex(newIndex);
