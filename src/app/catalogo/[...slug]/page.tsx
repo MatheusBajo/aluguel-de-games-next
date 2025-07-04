@@ -6,28 +6,24 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-/**
- * Tipos locais — não usamos PageProps do Next porque ele tem outras
- * expectativas internas. Mantemos só o que precisamos aqui.
- */
-export type Params = { slug: string[] };
+/** Tipos locais */
+type Params = { slug: string[] };
 
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
     return catalogo.map((item) => ({
-        // cada segmento sem caracteres proibidos
         slug: item.key.split("/").map(encodeURIComponent),
     }));
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
-    const slugArr = params.slug;
+export async function generateMetadata({ params }: { params: Promise<Params> }) {
+    const { slug } = await params;
 
-    const item = await getItem(slugArr.map(decodeURIComponent));
+    const item = await getItem(slug.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
 
-    const url = `https://alugueldegames.com/catalogo/${slugArr
+    const url = `https://alugueldegames.com/catalogo/${slug
         .map(encodeURIComponent)
         .join("/")}`;
 
@@ -46,10 +42,10 @@ export async function generateMetadata({ params }: { params: Params }) {
     };
 }
 
-export default async function ProdutoPage({ params }: { params: Params }) {
-    const slugArr = params.slug;
+export default async function ProdutoPage({ params }: { params: Promise<Params> }) {
+    const { slug } = await params;
 
-    const item = await getItem(slugArr.map(decodeURIComponent));
+    const item = await getItem(slug.map(decodeURIComponent));
     if (!item) notFound();
 
     const categoria = item.key.split("/")[0];
