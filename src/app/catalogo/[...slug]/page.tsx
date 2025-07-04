@@ -12,8 +12,10 @@ type Params = { slug: string[] };
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
+    // Retornamos os segmentos brutos da chave, sem realizar encoding.
+    // O Next.js faz o encoding automaticamente ao gerar as rotas estáticas.
     return catalogo.map((item) => ({
-        slug: item.key.split("/").map(encodeURIComponent),
+        slug: item.key.split("/"),
     }));
 }
 
