@@ -1,4 +1,3 @@
-// src/app/catalogo/[...slug]/page.tsx
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { getCatalog, getItem } from "@/lib/catalog.server";
@@ -7,24 +6,21 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-interface PageProps<P = { slug: string[] }> {
-    params: P
-}
+// usadas em vez do PageProps interno do Next
+type Params = { slug: string[] }
+export type CatalogPageProps = { params: Params }
 
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
     return catalogo.map((item) => ({
         // cada segmento sem caracteres proibidos
-        slug: item.key.split('/').map(encodeURIComponent),
+        slug: item.key.split("/").map(encodeURIComponent),
     }));
 }
 
-export async function generateMetadata(
-    props: PageProps<{ slug: string[] }>
-) {
-    const params = await props.params          // ← resolve a Promise
-    const slugArr = params.slug                // agora é sincrono
+export async function generateMetadata({ params }: CatalogPageProps) {
+    const slugArr = params.slug;
 
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
@@ -48,10 +44,7 @@ export async function generateMetadata(
     };
 }
 
-export default async function ProdutoPage(
-    props: PageProps<{ slug: string[] }>
-) {
-    const params = await props.params          // ← mesma coisa aqui
+export default async function ProdutoPage({ params }: CatalogPageProps) {
     const slugArr = params.slug;
 
     const item = await getItem(slugArr.map(decodeURIComponent));
@@ -72,25 +65,23 @@ export default async function ProdutoPage(
                         name: item.titulo,
                         description: item.descricao,
                         image: item.imagens?.map(
-                            (img) => `https://alugueldegames.com/Organizado/${item.key}/${img}`
+                            (img) =>
+                                `https://alugueldegames.com/Organizado/${item.key}/${img}`
                         ),
                     }),
                 }}
             />
 
             <main className="relative mx-auto max-w-screen-2xl">
-                {/* Background decoration */}
-                {/*<div className="absolute inset-0 -z-10">*/}
-                {/*    <div className="absolute -left-20 top-20 size-200 rounded-full bg-blue-500/15 blur-3xl" />*/}
-                {/*    <div className="absolute -right-20 bottom-20 size-150 rounded-full bg-purple-500/15 blur-3xl" />*/}
-                {/*</div>*/}
-
                 {/* Breadcrumb */}
                 <nav className="px-4 py-4 text-sm">
                     <ol className="flex items-center gap-2 text-muted-foreground">
                         <li>
                             <Link
-                                href={`/catalogo/${item.key.split('/').map(encodeURIComponent).join('/')}`}
+                                href={`/catalogo/${item.key
+                                    .split("/")
+                                    .map(encodeURIComponent)
+                                    .join("/")}`}
                             >
                                 Catálogo
                             </Link>
@@ -98,7 +89,10 @@ export default async function ProdutoPage(
                         <li>/</li>
                         <li>
                             <Link
-                                href={`/catalogo/${item.key.split('/').map(encodeURIComponent).join('/')}`}
+                                href={`/catalogo/${item.key
+                                    .split("/")
+                                    .map(encodeURIComponent)
+                                    .join("/")}`}
                             >
                                 {categoria}
                             </Link>
