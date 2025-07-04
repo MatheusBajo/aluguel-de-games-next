@@ -58,7 +58,7 @@ export default function Main() {
                     <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
                 </div>
 
-                <div className="relative z-10 mx-auto max-w-6xl px-4">
+                <div className="relative z-10 mx-auto max-w-6xl px-5">
                     <motion.div
                         className="text-center mb-12 md:mb-16"
                         {...fadeInUp}
@@ -248,14 +248,14 @@ export default function Main() {
                     transition={{ duration: 0.8 }}
                 >
                     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-[2px]">
-                        <div className="relative rounded-3xl bg-background/95 backdrop-blur-xl p-8 md:p-12 lg:p-16">
+                        <div className="relative rounded-3xl bg-background/[85%] backdrop-blur-xl p-8 md:p-12 lg:p-16">
                             {/* Padrão decorativo */}
-                            <div className="absolute top-0 right-0 w-64 h-64 opacity-10">
-                                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <div className="absolute top-0 right-0 w-full h-full opacity-5">
+                                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                    <pattern id="grid" width="5" height="5" patternUnits="userSpaceOnUse">
                                         <circle cx="2" cy="2" r="1" fill="currentColor" />
                                     </pattern>
-                                    <rect width="200" height="200" fill="url(#grid)" />
+                                    <rect width="400" height="400" fill="url(#grid)" />
                                 </svg>
                             </div>
 

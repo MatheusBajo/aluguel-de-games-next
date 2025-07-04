@@ -1,11 +1,10 @@
-/* components/AnimatedCarouselText.tsx */
 "use client";
 import {
     useLayoutEffect,
     useRef,
     useState,
     useEffect,
-    useCallback,   // <- adicione aqui
+    useCallback,
 } from "react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
@@ -13,79 +12,86 @@ import { useCarousel } from "@/components/ui/carousel-landing";
 
 gsap.registerPlugin(SplitText);
 
-export default function AnimatedCarouselText({ texts }: { texts: string[] }) {
+interface Props {
+    texts: string[];
+}
+
+/**
+ * Cabeçalho animado que sincroniza com o carrossel externo
+ */
+export default function AnimatedCarouselText({ texts }: Props) {
     const { api } = useCarousel();
     const containerRef = useRef<HTMLHeadingElement>(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // refs para controlar animações
+    // guardamos instâncias para poder cancelar/limpar
     const splitRef = useRef<SplitText | null>(null);
-    // armazena o tween atual para permitir o cancelamento
     const tlRef = useRef<gsap.core.Tween | null>(null);
 
+    /** Troca de texto com animação de saída + entrada */
+    const transitionTo = useCallback(
+        (newIndex: number) => {
+            if (newIndex === currentIndex) return;
+            const el = containerRef.current;
+            if (!el) return;
 
-    /** Faz a transição completa (sai e entra) */
-    /** Faz a transição (interrompe, anima saída, troca texto) */
-    const transitionTo = useCallback((newIndex: number) => {
-        if (newIndex === currentIndex) return;
-        const el = containerRef.current;
-        if (!el) return;
+            // mata animação em andamento
+            tlRef.current?.kill();
 
-        // mata qualquer animação em andamento
-        tlRef.current?.kill();
+            // garante que temos SplitText pronto para animar a saída
+            if (!splitRef.current) {
+                splitRef.current = new SplitText(el, { type: "chars" });
+            }
 
-        // garante SplitText para animar a saída
-        if (!splitRef.current) {
-            splitRef.current = new SplitText(el, { type: "chars" });
-        }
+            // saída
+            tlRef.current = gsap.to(splitRef.current.chars, {
+                y: -30,
+                opacity: 0,
+                ease: "power1.in",
+                duration: 0.3,
+                stagger: { each: 0.01, from: "end" },
+                onComplete: () => {
+                    // reverte DOM e prepara entrada
+                    splitRef.current?.revert();
+                    splitRef.current = null;
+                    gsap.set(el, { opacity: 0 });
+                    setCurrentIndex(newIndex);
+                    tlRef.current = null;
+                },
+            });
+        },
+        [currentIndex]
+    );
 
-        // saída
-        tlRef.current = gsap.to(splitRef.current.chars, {
-            y: -30,
-            opacity: 0,
-            ease: "power1.in",
-            duration: 0.3,
-            stagger: { each: 0.01, from: "end" },
-            onComplete: () => {
-                /* 1. Reverte o DOM */
-                splitRef.current?.revert();
-                splitRef.current = null;
-
-                /* 2. Mantém o contêiner invisível até a entrada começar */
-                gsap.set(el, { opacity: 0 });
-
-                /* 3. Libera para o próximo índice */
-                setCurrentIndex(newIndex);
-                tlRef.current = null;
-            },
-        });
-    }, [currentIndex]);
-
-
-    /** Ouve o carrossel */
+    /** Escuta as mudanças do carrossel */
     useEffect(() => {
-        if (!api) return;
+        if (!api) return undefined; // satisfaz tipo EffectCallback
 
         setCurrentIndex(api.selectedScrollSnap());
 
         const onSelect = () => transitionTo(api.selectedScrollSnap());
         api.on("select", onSelect);
-        return () => api.off("select", onSelect);
-    }, [api, currentIndex, transitionTo]);
 
+        // cleanup — não retornar valor de api.off!
+        return () => {
+            api.off("select", onSelect);
+        };
+    }, [api, transitionTo]);
+
+    /** Anima o texto sempre que currentIndex muda */
     useLayoutEffect(() => {
         const el = containerRef.current;
         if (!el) return;
 
-        /* ← ADICIONE ISTO */
+        // garante visibilidade
         gsap.set(el, { opacity: 1 });
 
         // monta o novo texto
         el.textContent = texts[currentIndex] ?? texts[0];
         splitRef.current = new SplitText(el, { type: "chars" });
 
-        // anima entrada
+        // entrada
         tlRef.current = gsap.from(splitRef.current.chars, {
             y: 30,
             opacity: 0,
@@ -95,14 +101,12 @@ export default function AnimatedCarouselText({ texts }: { texts: string[] }) {
         });
 
         return () => {
-            // limpeza
             tlRef.current?.kill();
             splitRef.current?.revert();
             tlRef.current = null;
             splitRef.current = null;
         };
     }, [currentIndex, texts]);
-
 
     return (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">

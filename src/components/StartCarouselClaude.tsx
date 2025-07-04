@@ -87,7 +87,7 @@ export default function StartCarouselClaude() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative w-full overflow-hidden">
+        <section ref={sectionRef} className="relative w-full dark:bg-violet-950/50 bg-violet-100 overflow-hidden">
             {/* Background gradiente animado com fade no bottom */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
                 <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
@@ -96,13 +96,13 @@ export default function StartCarouselClaude() {
             </div>
 
             {/* Elementos decorativos flutuantes - menores em mobile */}
-            <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden max-w-screen-3xl px-5 mx-auto">
                 <div className="floating-element absolute top-10 -left-20 w-40 h-40 md:top-20 md:left-10 md:w-72 md:h-72 bg-blue-500/10 rounded-full blur-3xl" />
                 <div className="floating-element absolute bottom-10 -right-20 w-40 h-40 md:bottom-20 md:right-10 md:w-96 md:h-96 bg-purple-500/10 rounded-full blur-3xl" />
                 <div className="floating-element absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] md:w-[500px] md:h-[500px] bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-full blur-3xl" />
             </div>
 
-            <div className="hero-content relative z-10 container mx-auto px-4 py-8 md:py-20">
+            <div className="hero-content relative z-10 container mx-auto max-w-screen-3xl px-5 py-8 md:py-20">
                 {/* Layout Mobile-First */}
                 <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
