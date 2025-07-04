@@ -6,9 +6,11 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-// usadas em vez do PageProps interno do Next
-type Params = { slug: string[] }
-export type CatalogPageProps = { params: Params }
+/**
+ * Tipos locais — não usamos PageProps do Next porque ele tem outras
+ * expectativas internas. Mantemos só o que precisamos aqui.
+ */
+export type Params = { slug: string[] };
 
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
@@ -19,7 +21,7 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: CatalogPageProps) {
+export async function generateMetadata({ params }: { params: Params }) {
     const slugArr = params.slug;
 
     const item = await getItem(slugArr.map(decodeURIComponent));
@@ -44,7 +46,7 @@ export async function generateMetadata({ params }: CatalogPageProps) {
     };
 }
 
-export default async function ProdutoPage({ params }: CatalogPageProps) {
+export default async function ProdutoPage({ params }: { params: Params }) {
     const slugArr = params.slug;
 
     const item = await getItem(slugArr.map(decodeURIComponent));
