@@ -44,7 +44,7 @@ export default function RootLayout({
                     })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
                 `}
             </Script>
-            <link rel="icon" href="/Logo-Aluguel-de-games.ico"/>
+                <link rel="icon" href="/Logo-Aluguel-de-games.ico"/>
         </head>
         <body>
         <noscript>

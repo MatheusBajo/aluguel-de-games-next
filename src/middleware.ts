@@ -18,7 +18,9 @@ export function middleware(request: NextRequest) {
     // }
 
     // Forçar lowercase nas URLs para evitar duplicação
-    if (url.pathname !== url.pathname.toLowerCase()) {
+    // Forçar lowercase nas URLs para evitar duplicação, ignorando arquivos estáticos
+    const hasExtension = url.pathname.includes('.')
+    if (!hasExtension && url.pathname !== url.pathname.toLowerCase()) {
         url.pathname = url.pathname.toLowerCase();
         return NextResponse.redirect(url, 301);
     }

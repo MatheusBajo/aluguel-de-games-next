@@ -15,18 +15,18 @@ export default function manifest(): MetadataRoute.Manifest {
         theme_color: '#000000',
         icons: [
             {
-                src: '/favicon.ico',
+                src: '/Logo-Aluguel-de-games.ico',
                 sizes: 'any',
                 type: 'image/x-icon',
             },
             {
-                src: '/icon-192.png',
-                sizes: '192x192',
+                src: '/Logo-Aluguel-de-games.png',
+                sizes: '1000x1000',
                 type: 'image/png',
             },
             {
-                src: '/icon-512.png',
-                sizes: '512x512',
+                src: '/Logo-Aluguel-de-games.png',
+                sizes: '1000x1000',
                 type: 'image/png',
             },
         ],
