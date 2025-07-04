@@ -1,4 +1,7 @@
 // src/app/sitemap.ts
+export const dynamic    = "force-static";
+export const revalidate = false;
+
 import { MetadataRoute } from 'next';
 import { getCatalog } from '@/lib/catalog.server';
 
