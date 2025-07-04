@@ -17,13 +17,11 @@ export function middleware(request: NextRequest) {
     //     return NextResponse.redirect(url, 301);
     // }
 
-    // Forçar lowercase nas URLs para evitar duplicação
-    // Forçar lowercase nas URLs para evitar duplicação, ignorando arquivos estáticos
-    const hasExtension = url.pathname.includes('.')
-    if (!hasExtension && url.pathname !== url.pathname.toLowerCase()) {
-        url.pathname = url.pathname.toLowerCase();
-        return NextResponse.redirect(url, 301);
-    }
+    // Anteriormente forçávamos todas as URLs para lowercase a fim de evitar
+    // duplicação. Contudo, isso causava erro 404 quando as pastas possuíam
+    // letras maiúsculas ou caracteres especiais (ex.: /catalogo/Air%20Games).
+    // Por isso, removemos essa conversão e mantemos o case original da URL,
+    // permitindo o acesso correto a pastas com espaços ou acentuação.
 
     // Headers de segurança e SEO
     const response = NextResponse.next();
