@@ -5,7 +5,6 @@ import { getCatalog, getItem } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
-import type { PageProps } from "next";
 import Link from "next/link";
 
 export async function generateStaticParams() {
@@ -18,7 +17,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-    props: PageProps<{ slug: string[] }>
+    props: { params: { slug: string[] } }
 ) {
     const params = await props.params          // ← resolve a Promise
     const slugArr = params.slug                // agora é sincrono
@@ -46,7 +45,7 @@ export async function generateMetadata(
 }
 
 export default async function ProdutoPage(
-    props: PageProps<{ slug: string[] }>
+    props: { params: { slug: string[] } }
 ) {
     const params = await props.params          // ← mesma coisa aqui
     const slugArr = params.slug;
