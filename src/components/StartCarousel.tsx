@@ -1,8 +1,8 @@
 /* src/components/StartCarousel.tsx */
 "use client";
-import {CarouselContent, CarouselItem, CarouselLanding} from "@/components/ui/carousel-landing.tsx";
-import {CarouselOverlayGradient} from "@/components/ui/CarouselOverlayGradient.tsx";
-import {Card, CardContent} from "@/components/ui/card.tsx";
+import { CarouselContent, CarouselItem, CarouselLanding } from "@/components/ui/carousel-landing";
+import { CarouselOverlayGradient } from "@/components/ui/CarouselOverlayGradient";
+import { Card, CardContent } from "@/components/ui/card";
 import {useLayoutEffect, useRef} from "react";
 import Autoplay from "embla-carousel-autoplay";
 import {gsap} from "gsap";
