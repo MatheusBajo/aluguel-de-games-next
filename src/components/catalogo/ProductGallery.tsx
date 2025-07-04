@@ -103,11 +103,10 @@ export function ProductGallery({ images, title, itemKey }: ProductGalleryProps) 
                 {images.length > 1 && (
                     <div className="mt-4 w-full min-w-0">
                         <div
-                            className="flex space-x-1.5 overflow-x-auto md:space-x-2"
+                            className="flex space-x-1.5 overflow-x-auto md:space-x-2 scrollbar-hide"
                             style={{
                                 scrollbarWidth: 'none',
                                 msOverflowStyle: 'none',
-                                WebkitScrollbar: { display: 'none' }
                             }}
                         >
                             {images.map((img, idx) => (
