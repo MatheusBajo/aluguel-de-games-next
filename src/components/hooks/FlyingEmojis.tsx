@@ -1,18 +1,16 @@
-/* src/components/hooks/FlyingEmojis.tsx */
 "use client";
 
 import React, { useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 interface FlyingEmojisProps {
-    className?: string
-    maxDistancePercent?: number
-    offsetX?: number | string   // aceita “20”, “2rem”, etc.
-    offsetY?: number | string
+    className?: string;
+    maxDistancePercent?: number;
+    offsetX?: number | string;
+    offsetY?: number | string;
 }
 
-
-const EMOJIS = ["❤️", "🔥", "🤩", "🎉", "👏"]
+const EMOJIS = ["❤️", "🔥", "🤩", "🎉", "👏"];
 
 export default function FlyingEmojis({
                                          className = "",
@@ -23,9 +21,11 @@ export default function FlyingEmojis({
     const overlayRef = useRef<HTMLDivElement>(null);
     const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const handleRemoveFlyingEmoji = useCallback((node: Node) => {
+    // Agora recebe o Event, não um Node
+    const handleRemoveFlyingEmoji = useCallback((e: Event) => {
+        const target = e.currentTarget as Node;
         if (!overlayRef.current) return;
-        overlayRef.current.removeChild(node);
+        overlayRef.current.removeChild(target);
     }, []);
 
     const handleDisplayFlyingEmoji = useCallback(() => {
@@ -35,30 +35,30 @@ export default function FlyingEmojis({
         const emoji = EMOJIS[randomEmojiIndex];
         const containerHeight = overlayRef.current.getBoundingClientRect().height;
         const minDistance = 50;
-        const maxDistance = containerHeight * maxDistancePercent; // usa a prop aqui
+        const maxDistance = containerHeight * maxDistancePercent;
         const randomDistance =
             Math.floor(Math.random() * (maxDistance - minDistance)) + minDistance;
 
-        const node = document.createElement('div');
+        const node = document.createElement("div");
         node.appendChild(document.createTextNode(emoji));
-        node.className = 'emoji';
-        node.style.setProperty('--fly-distance', `-${randomDistance}px`);
+        node.className = "emoji";
+        node.style.setProperty("--fly-distance", `-${randomDistance}px`);
 
         overlayRef.current.appendChild(node);
 
-        node.addEventListener('animationend', (e) => {
-            handleRemoveFlyingEmoji(e.target as Node);
-        });
+        // passa a mesma função de listener, cuja assinatura agora é (e: Event)
+        node.addEventListener("animationend", handleRemoveFlyingEmoji);
     }, [maxDistancePercent, handleRemoveFlyingEmoji]);
 
     const startEmojiTrigger = useCallback(() => {
         const triggerEmoji = () => {
-            if (document.visibilityState === 'visible') {
+            if (document.visibilityState === "visible") {
                 handleDisplayFlyingEmoji();
             }
             const maxDelay = 1400;
             const minDelay = 400;
-            const nextDelay = Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay;
+            const nextDelay =
+                Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay;
             timeoutIdRef.current = setTimeout(triggerEmoji, nextDelay);
         };
         triggerEmoji();
@@ -73,20 +73,23 @@ export default function FlyingEmojis({
 
     useEffect(() => {
         const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
+            if (document.visibilityState === "visible") {
                 startEmojiTrigger();
             } else {
                 stopEmojiTrigger();
             }
         };
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        if (document.visibilityState === 'visible') {
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        if (document.visibilityState === "visible") {
             startEmojiTrigger();
         }
 
         return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
             stopEmojiTrigger();
         };
     }, [startEmojiTrigger, stopEmojiTrigger]);
@@ -95,7 +98,7 @@ export default function FlyingEmojis({
         return () => {
             if (overlayRef.current) {
                 overlayRef.current.childNodes.forEach((n) => {
-                    n.removeEventListener('animationend', handleRemoveFlyingEmoji);
+                    n.removeEventListener("animationend", handleRemoveFlyingEmoji);
                 });
             }
         };
@@ -107,8 +110,10 @@ export default function FlyingEmojis({
             className={cn("flying-emojis", className)}
             style={
                 {
-                    "--off-x": typeof offsetX === "number" ? `${offsetX}px` : offsetX,
-                    "--off-y": typeof offsetY === "number" ? `${offsetY}px` : offsetY,
+                    "--off-x":
+                        typeof offsetX === "number" ? `${offsetX}px` : offsetX,
+                    "--off-y":
+                        typeof offsetY === "number" ? `${offsetY}px` : offsetY,
                 } as React.CSSProperties
             }
         >
@@ -134,4 +139,4 @@ export default function FlyingEmojis({
       `}</style>
         </div>
     );
-};
+}
