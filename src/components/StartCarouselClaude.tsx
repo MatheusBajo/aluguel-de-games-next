@@ -87,7 +87,7 @@ export default function StartCarouselClaude() {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative w-full dark:bg-violet-950/50 bg-violet-100 overflow-hidden">
+        <section ref={sectionRef} className="relative w-full dark:bg-violet-950/50 bg-violet-100 overflow-hidden pb-10">
             {/* Background gradiente animado com fade no bottom */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
                 <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
@@ -178,7 +178,7 @@ export default function StartCarouselClaude() {
                         <div className="grid grid-cols-3 gap-2 md:gap-4 py-4 md:py-6">
                             <div className="text-center lg:text-left">
                                 <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">500+</div>
-                                <div className="text-xs md:text-sm text-muted-foreground">Eventos</div>
+                                <div className="text-xs md:text-sm text-muted-foreground">Eventos desde 1997</div>
                             </div>
                             <div className="text-center lg:text-left">
                                 <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">98%</div>
@@ -192,13 +192,13 @@ export default function StartCarouselClaude() {
 
                         {/* CTAs - Stack em mobile */}
                         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
-                            <Button asChild size="default" className="group w-full sm:w-auto">
+                            <Button asChild size="default" variant="cta" className="group w-full sm:w-auto">
                                 <Link href="https://wa.me/+551142377766" target="_blank">
-                                    <FaWhatsapp className="mr-2 h-4 w-4 md:h-5 md:w-5 group-hover:scale-110 transition-transform" />
+                                    <FaWhatsapp className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                                     Orçamento Grátis
                                 </Link>
                             </Button>
-                            <Button asChild variant="outline" size="default" className="w-full sm:w-auto">
+                            <Button asChild variant="ctaOutline" size="default" className="w-full sm:w-auto !px-5">
                                 <Link href="/catalogo">
                                     <FaGamepad className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                                     Ver Catálogo
@@ -206,22 +206,22 @@ export default function StartCarouselClaude() {
                             </Button>
                         </div>
 
-                        {/* Social Proof - Simplificado em mobile */}
-                        <div className="flex items-center gap-3 md:gap-4 justify-center lg:justify-start pt-2 md:pt-4">
-                            <div className="flex -space-x-2">
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-muted border-2 border-background" />
-                                ))}
-                            </div>
-                            <div className="text-xs md:text-sm">
-                                <div className="flex items-center gap-0.5 md:gap-1">
-                                    {[...Array(5)].map((_, i) => (
-                                        <FaStar key={i} className="w-3 h-3 md:w-4 md:h-4 text-yellow-500 fill-current" />
-                                    ))}
-                                </div>
-                                <p className="text-muted-foreground">+120 avaliações</p>
-                            </div>
-                        </div>
+                        {/* Social Proof - Simplificado em mobile*/}
+                        {/*<div className="flex items-center gap-3 md:gap-4 justify-center lg:justify-start pt-2 md:pt-4">*/}
+                        {/*    <div className="flex -space-x-2">*/}
+                        {/*        {[1, 2, 3, 4].map((i) => (*/}
+                        {/*            <div key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-muted border-2 border-background" />*/}
+                        {/*        ))}*/}
+                        {/*    </div>*/}
+                        {/*    <div className="text-xs md:text-sm">*/}
+                        {/*        <div className="flex items-center gap-0.5 md:gap-1">*/}
+                        {/*            {[...Array(5)].map((_, i) => (*/}
+                        {/*                <FaStar key={i} className="w-3 h-3 md:w-4 md:h-4 text-yellow-500 fill-current" />*/}
+                        {/*            ))}*/}
+                        {/*        </div>*/}
+                        {/*        <p className="text-muted-foreground">+120 avaliações</p>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
 
                     {/* Carousel Desktop (hidden em mobile) */}
@@ -229,15 +229,15 @@ export default function StartCarouselClaude() {
                         <CarouselLanding
                             slidesCount={carouselData.length}
                             plugins={[autoplayRef.current]}
-                            className="w-full max-w-xl mx-auto"
+                            className="w-full mx-auto"
                             opts={{ align: "start", loop: true }}
                         >
                             <CarouselContent>
                                 {carouselData.map((item, index) => (
                                     <CarouselItem key={index}>
                                         <Card className="border-0 !p-0 overflow-hidden group bg-transparent">
-                                            <CardContent className="relative p-0 rounded-2xl overflow-hidden ">
-                                                <div className="relative aspect-[16/9]  !p-0 overflow-hidden">
+                                            <CardContent className="relative p-0 rounded-2xl overflow-hidden select-none">
+                                                <div className="relative aspect-[16/9] !p-0 overflow-hidden">
                                                     <img
                                                         src={item.image}
                                                         alt={item.title}

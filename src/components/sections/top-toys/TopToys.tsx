@@ -227,7 +227,7 @@ export default function TopToys() {
 
 
     return (
-        <section ref={sectionRef} className="max-w-full max-w-screen-2xl mx-auto">
+        <section ref={sectionRef} className="max-w-full !p-0 mx-auto">
             <div
                 className="lolomoRow lolomoRow_title_card ltr-0 select-none"
                 data-list-context="mostWatched"

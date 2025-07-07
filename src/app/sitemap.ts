@@ -1,5 +1,5 @@
 // src/app/sitemap.ts
-export const dynamic    = "force-static";
+export const dynamic = "force-static";
 export const revalidate = false;
 
 import { MetadataRoute } from 'next';
@@ -36,10 +36,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     ];
 
-    // Páginas dinâmicas do catálogo
+    // Páginas dinâmicas do catálogo - usando keys normalizadas
     const catalogo = await getCatalog();
     const catalogPages = catalogo.map((item) => ({
-        url: `${baseUrl}/catalogo/${item.key.split('/').map(encodeURIComponent).join('/')}`,
+        url: `${baseUrl}/catalogo/${item.key}`,
         lastModified: new Date(),
         changeFrequency: 'weekly' as const,
         priority: 0.8,

@@ -263,21 +263,19 @@ export default function ComoFunciona() {
 
                 {/* Benefícios adicionais - Design melhorado */}
                 <motion.div
-                    className="mt-12 md:mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+                    className="mt-12 md:mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
                 >
                     {[
                         { text: "Orçamento sem compromisso", icon: "💰" },
-                        { text: "Entrega grátis em SP", icon: "🚚" },
-                        { text: "Equipamentos higienizados", icon: "✨" },
+                        { text: "Entrega pra toda Grande SP", icon: "🚚" },
                         { text: "Garantia de funcionamento", icon: "✅" }
                     ].map((benefit, i) => (
                         <motion.div
                             key={i}
-                            className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-muted/30 to-muted/50 backdrop-blur-sm p-4 border border-border/50 transition-all duration-300 hover:border-primary/30 hover:shadow-md"
-                            whileHover={{ scale: 1.02 }}
+                            className="group flex items-center gap-3 rounded-2xl bg-gradient-to-r from-muted/30 to-muted/50 p-4 border border-border/50 transition-all duration-300"
                         >
                             <div className="flex-shrink-0 text-2xl">{benefit.icon}</div>
                             <span className="text-sm md:text-base font-medium">{benefit.text}</span>

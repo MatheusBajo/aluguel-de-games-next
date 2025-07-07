@@ -41,6 +41,129 @@ main > section {
   pointer-events: none; /* Se quiser que clique "passe" através */
 }
 
+/* Classe Shimmer Base */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shimmer:hover::before {
+  transform: translateX(100%);
+}
+
+/* Variações do Shimmer */
+
+/* Shimmer mais sutil */
+.shimmer-subtle::before {
+  background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.15),
+          transparent
+  );
+}
+
+/* Shimmer mais intenso */
+.shimmer-intense::before {
+  background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.5),
+          transparent
+  );
+}
+
+/* Shimmer colorido */
+.shimmer-blue::before {
+  background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(59, 130, 246, 0.5),
+          transparent
+  );
+}
+
+.shimmer-green::before {
+  background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(34, 197, 94, 0.5),
+          transparent
+  );
+}
+
+.shimmer-purple::before {
+  background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(168, 85, 247, 0.5),
+          transparent
+  );
+}
+
+/* Shimmer com velocidades diferentes */
+.shimmer-slow::before {
+  transition: transform 1.2s ease;
+}
+
+.shimmer-fast::before {
+  transition: transform 0.4s ease;
+}
+
+/* Shimmer contínuo (sem necessidade de hover) */
+.shimmer-loop::before {
+  animation: shimmer-animation 2s ease-in-out infinite;
+}
+
+@keyframes shimmer-animation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Shimmer diagonal */
+.shimmer-diagonal::before {
+  background: linear-gradient(
+          135deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.3) 50%,
+          transparent 70%
+  );
+  transform: translateX(-100%) translateY(-100%);
+}
+
+.shimmer-diagonal:hover::before {
+  transform: translateX(100%) translateY(100%);
+}
+
+/* Garantir que o conteúdo fique acima do shimmer */
+.shimmer > * {
+  position: relative;
+  z-index: 2;
+}
+
 @theme {
   /* Breakpoints */
   --breakpoint-sm: 640px;

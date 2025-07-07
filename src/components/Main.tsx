@@ -70,7 +70,7 @@ export default function Main() {
                 </span>
                         </h2>
                         <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
-                            Há mais de 10 anos transformando eventos em experiências inesquecíveis
+                            Desde de 1993 transformando eventos em experiências inesquecíveis
                         </p>
                     </motion.div>
 
@@ -112,7 +112,7 @@ export default function Main() {
                         >
                             <h3 className="text-2xl md:text-3xl font-bold">Nossa História</h3>
                             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                                Há mais de 10 anos transformamos eventos em experiências marcantes.
+                                Desde 1993 estamos transformando eventos em experiências marcantes.
                                 Nossa missão é tornar o entretenimento de qualidade
                                 <strong className="text-primary"> acessível</strong> em todo o Brasil, levando desde
                                 Fliperamas retrô até Realidade Virtual de última geração.
@@ -289,7 +289,7 @@ export default function Main() {
 
                                 {/* Benefícios rápidos */}
                                 <div className="flex flex-wrap justify-center gap-4 my-4">
-                                    {["✓ Resposta em minutos", "✓ Entrega grátis", "✓ Suporte 24h"].map((item, i) => (
+                                    {["✓ Resposta em minutos", "✓ Suporte 24h"].map((item, i) => (
                                         <motion.span
                                             key={i}
                                             className="text-sm text-muted-foreground"
@@ -311,7 +311,8 @@ export default function Main() {
                                 >
                                     <Button
                                         size="lg"
-                                        className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
+                                        className=""
+                                        variant="ctaZap"
                                         asChild
                                     >
                                         <Link href="https://wa.me/+551142377766" target="_blank">
@@ -330,14 +331,15 @@ export default function Main() {
                                     </Button>
 
                                     <Button
-                                        variant="outline"
+                                        variant="ctaOutline"
                                         size="lg"
-                                        className="group"
-                                        asChild
+                                        className="shimmer"
                                     >
                                         <Link href="/catalogo">
-                                            <FaGamepad className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                                            <span className="relative z-10 flex items-center gap-2">
+                                            <FaGamepad className="mr-2 h-5 w-5 group-hover:rotate-10 duration-300 transition"/>
                                             Ver Catálogo Completo
+                                            </span>
                                         </Link>
                                     </Button>
                                 </motion.div>

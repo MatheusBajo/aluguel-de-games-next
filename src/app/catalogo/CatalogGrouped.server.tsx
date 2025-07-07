@@ -1,8 +1,6 @@
-// ============================================
-// src/app/catalogo/CatalogGrouped.server.tsx
+// src/components/catalogo/CatalogGrouped.server.tsx
 import Image from 'next/image'
 import Link from 'next/link'
-import { getImagePath } from "@/lib/image-utils";
 import { FiImage } from 'react-icons/fi'
 import { getCatalog } from '@/lib/catalog.server'
 
@@ -24,18 +22,17 @@ export default async function CatalogGrouped() {
                     <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2">
                         {arr.map((it) => (
                             <Link
-                                href={`/catalogo/${it.key.split('/').map(segment => encodeURIComponent(segment)).join('/')}`}
+                                href={`/catalogo/${encodeURIComponent(it.key)}`}
                                 key={it.key}
                                 className="group flex min-w-[220px] max-w-[220px] flex-col overflow-hidden rounded-lg border snap-start"
                             >
                                 {it.imagens?.[0] ? (
                                     <Image
-                                        src={getImagePath(it.key, it.imagens[0])}
+                                        src={`/Organizado/${it.key}/${it.imagens[0]}`}
                                         alt={it.titulo}
                                         width={320}
                                         height={240}
                                         className="h-36 w-full object-cover transition group-hover:scale-105"
-                                        unoptimized
                                     />
                                 ) : (
                                     <div className="flex h-36 w-full items-center justify-center bg-muted">

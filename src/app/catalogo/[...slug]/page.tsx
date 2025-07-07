@@ -6,24 +6,26 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-/** Tipos locais */
-type Params = { slug: string[] };
+// usadas em vez do PageProps interno do Next
+type Params = { slug: string[] }
+export type CatalogPageProps = { params: Params }
 
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
     return catalogo.map((item) => ({
+        // cada segmento sem caracteres proibidos
         slug: item.key.split("/").map(encodeURIComponent),
     }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<Params> }) {
-    const { slug } = await params;
+export async function generateMetadata({ params }: CatalogPageProps) {
+    const slugArr = params.slug;
 
-    const item = await getItem(slug.map(decodeURIComponent));
+    const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
 
-    const url = `https://alugueldegames.com/catalogo/${slug
+    const url = `https://alugueldegames.com/catalogo/${slugArr
         .map(encodeURIComponent)
         .join("/")}`;
 
@@ -42,10 +44,10 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
     };
 }
 
-export default async function ProdutoPage({ params }: { params: Promise<Params> }) {
-    const { slug } = await params;
+export default async function ProdutoPage({ params }: CatalogPageProps) {
+    const slugArr = params.slug;
 
-    const item = await getItem(slug.map(decodeURIComponent));
+    const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) notFound();
 
     const categoria = item.key.split("/")[0];
