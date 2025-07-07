@@ -6,21 +6,30 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-// usadas em vez do PageProps interno do Next
-type Params = { slug: string[] }
-export type CatalogPageProps = { params: Params }
+/* ------------------------------------------------------------------ */
+/*  TIPAGENS                                                          */
+/* ------------------------------------------------------------------ */
+type Params = { slug: string[] };          // segmentos da URL
+interface CatalogPageProps {               // Next 15 → params é Promise
+    params: Promise<Params>;
+}
 
+/* ------------------------------------------------------------------ */
+/*  STATIC PARAMS                                                     */
+/* ------------------------------------------------------------------ */
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
     return catalogo.map((item) => ({
-        // cada segmento sem caracteres proibidos
         slug: item.key.split("/").map(encodeURIComponent),
     }));
 }
 
+/* ------------------------------------------------------------------ */
+/*  METADADOS                                                         */
+/* ------------------------------------------------------------------ */
 export async function generateMetadata({ params }: CatalogPageProps) {
-    const slugArr = params.slug;
+    const { slug: slugArr } = await params;                // ← await aqui
 
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
@@ -44,8 +53,11 @@ export async function generateMetadata({ params }: CatalogPageProps) {
     };
 }
 
+/* ------------------------------------------------------------------ */
+/*  PÁGINA                                                            */
+/* ------------------------------------------------------------------ */
 export default async function ProdutoPage({ params }: CatalogPageProps) {
-    const slugArr = params.slug;
+    const { slug: slugArr } = await params;                // ← idem
 
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) notFound();
@@ -54,7 +66,6 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
     return (
         <>
-            {/* Structured Data */}
             <Script
                 id="ld-product"
                 type="application/ld+json"
@@ -104,14 +115,12 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
                 {/* Product Content */}
                 <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
-                    {/* Gallery */}
                     <ProductGallery
                         images={item.imagens || []}
                         title={item.titulo}
                         itemKey={item.key}
                     />
 
-                    {/* Info */}
                     <ProductInfo
                         titulo={item.titulo}
                         descricao={item.descricao || ""}
