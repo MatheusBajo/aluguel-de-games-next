@@ -1,6 +1,6 @@
 // src/app/contato/page.tsx
 import { Metadata } from "next";
-import ContactForm from "@/components/forms/ContactForm";
+// import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
     title: "Contato - Solicite seu Orçamento",
@@ -125,7 +125,7 @@ export default function ContatoPage() {
 
                         {/* Contact Form */}
                         <div className="lg:col-span-3">
-                            <ContactForm />
+                            {/*<ContactForm />*/}
                         </div>
                     </div>
                 </div>
