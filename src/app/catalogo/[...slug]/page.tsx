@@ -30,9 +30,9 @@ export async function generateStaticParams() {
 
 
 export async function generateMetadata(
-    { params }: { params: { slug: string[] } }
+    { params }: { params: Promise<Params> }
 ): Promise<Metadata> {
-    const { slug } = params;
+    const { slug } = await params;          // << precisa do await
     const item = await getItem(slug.map(decodeURIComponent));
 
     if (!item) {
@@ -46,7 +46,7 @@ export async function generateMetadata(
         };
     }
 
-    const url = `https://alugueldegames.com/catalogo/${slug.map(encodeURIComponent).join("/")}`;
+    const url   = `https://alugueldegames.com/catalogo/${slug.map(encodeURIComponent).join("/")}`;
     const image = `https://alugueldegames.com/Organizado/${item.key}/${item.imagens?.[0] ?? "default.jpg"}`;
 
     return {
@@ -54,7 +54,7 @@ export async function generateMetadata(
         description: item.descricao?.slice(0, 155) ?? "",
         alternates: { canonical: url },
         openGraph: {
-            type: "website",          // <- trocado
+            type: "website",
             url,
             title: item.titulo,
             description: item.descricao,
@@ -75,14 +75,14 @@ export async function generateMetadata(
     };
 }
 
-
 /* ------------------------------------------------------------------ */
 /*  PÁGINA                                                            */
 /* ------------------------------------------------------------------ */
-export default async function ProdutoPage({ params }: { params: Params }) {
-    const { slug: slugArr } = params;  // sem await
-
-    const item = await getItem(slugArr.map(decodeURIComponent));
+export default async function ProdutoPage(
+    { params }: { params: Promise<Params> }
+) {
+    const { slug } = await params;          // idem
+    const item = await getItem(slug.map(decodeURIComponent));
     if (!item) notFound();
 
     const categoria = item.key.split("/")[0];
@@ -99,8 +99,7 @@ export default async function ProdutoPage({ params }: { params: Params }) {
                         name: item.titulo,
                         description: item.descricao,
                         image: item.imagens?.map(
-                            (img) =>
-                                `https://alugueldegames.com/Organizado/${item.key}/${img}`
+                            (img) => `https://alugueldegames.com/Organizado/${item.key}/${img}`
                         ),
                     }),
                 }}
