@@ -7,6 +7,7 @@ import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getImagePath } from "@/lib/image-utils";
+import { getSiteUrl } from "@/lib/site.config";
 
 // Tipos atualizados para Next.js 15
 type Params = { slug: string[] }
@@ -31,15 +32,18 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
 
+    // Usa a função centralizada para pegar a URL base
+    const baseUrl = getSiteUrl();
+
     // URL do produto
-    const url = `https://alugueldegames.com/catalogo/${slugArr
+    const url = `${baseUrl}/catalogo/${slugArr
         .map(encodeURIComponent)
         .join("/")}`;
 
     // URL da imagem principal - sem duplo encoding
     const imageUrl = item.imagens?.length
-        ? `https://alugueldegames.com${getImagePath(item.key, item.imagens[0])}`
-        : 'https://alugueldegames.com/Logo-Aluguel-de-games.png';
+        ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
+        : `${baseUrl}/Logo-Aluguel-de-games.png`;
 
     // Descrição limpa (remove markdown)
     const cleanDescription = item.descricao
@@ -108,14 +112,17 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
     const categoria = item.key.split("/")[0];
 
+    // Usa a função centralizada para pegar a URL base
+    const baseUrl = getSiteUrl();
+
     // URL da imagem para o Schema
     const imageUrl = item.imagens?.length
-        ? `https://alugueldegames.com${getImagePath(item.key, item.imagens[0])}`
+        ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
         : null;
 
     // Todas as imagens para o Schema
     const allImages = item.imagens?.map(
-        (img) => `https://alugueldegames.com${getImagePath(item.key, img)}`
+        (img) => `${baseUrl}${getImagePath(item.key, img)}`
     );
 
     // Structured Data melhorado
