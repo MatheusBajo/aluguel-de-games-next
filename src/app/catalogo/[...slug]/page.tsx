@@ -8,6 +8,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getImagePath } from "@/lib/image-utils";
 import { getSiteUrl } from "@/lib/site.config";
+import { trackProductView } from "@/lib/gtm-utils";
 
 // Tipos atualizados para Next.js 15
 type Params = { slug: string[] }
@@ -41,9 +42,8 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
         .join("/")}`;
 
     // URL da imagem - usa path relativo para funcionar em qualquer domínio
-    const imagePath = getImagePath(item.key, item.imagens[0]);
     const imageUrl = item.imagens?.length
-        ? `${baseUrl}${imagePath}`
+        ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
         : `${baseUrl}/Logo-Aluguel-de-games.png`;
 
     // Descrição limpa (remove markdown)
