@@ -68,10 +68,10 @@ export async function generateMetadata(
             description: item.descricao,
             images: [image],
         },
-        other: {
-            "product:price:amount": item.preco?.toString() ?? "",
-            "product:price:currency": "BRL",
-        },
+        // other: {
+        //     "product:price:amount": item.preco?.toString() ?? "",
+        //     "product:price:currency": "BRL",
+        // },
     };
 }
 
