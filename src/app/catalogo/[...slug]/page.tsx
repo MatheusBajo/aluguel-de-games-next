@@ -19,8 +19,9 @@ type Params = { slug: string[] };
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
+    // devolve segmentos puros ─ sem encode
     return catalogo.map((item) => ({
-        slug: item.key.split("/").map(encodeURIComponent),
+        slug: item.key.split("/"),   // aqui já vem "air games"
     }));
 }
 
