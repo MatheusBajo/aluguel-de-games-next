@@ -8,7 +8,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getImagePath } from "@/lib/image-utils";
 import { getSiteUrl } from "@/lib/site.config";
-import { trackProductView } from "@/lib/gtm-utils";
 
 // Tipos atualizados para Next.js 15
 type Params = { slug: string[] }
