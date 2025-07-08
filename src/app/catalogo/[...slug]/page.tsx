@@ -5,91 +5,59 @@ import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
-import type { Metadata } from "next";
 
-/* ------------------------------------------------------------------ */
-/*  TIPAGENS                                                          */
-/* ------------------------------------------------------------------ */
+// usadas em vez do PageProps interno do Next
+type Params = { slug: string[] };          // segmentos da URL
+interface CatalogPageProps {               // Next 15 → params é Promise
+    params: Promise<Params>;
+}
+export type CatalogPageProps = { params: Params }
 
-type Params = { slug: string[] };
-
-/* ------------------------------------------------------------------ */
-/*  STATIC PARAMS                                                     */
-/* ------------------------------------------------------------------ */
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
 
-    // devolve segmentos puros ─ sem encode
     return catalogo.map((item) => ({
-        slug: item.key.split("/"),   // aqui já vem "air games"
+        // cada segmento sem caracteres proibidos
+        slug: item.key.split("/").map(encodeURIComponent),
     }));
 }
 
-/* ------------------------------------------------------------------ */
-/*  METADADOS                                                         */
-/* ------------------------------------------------------------------ */
+export async function generateMetadata({ params }: CatalogPageProps) {
+    const slugArr = params.slug;
 
+    const item = await getItem(slugArr.map(decodeURIComponent));
+    if (!item) return { title: "Produto não encontrado" };
 
-export async function generateMetadata(
-    { params }: { params: Promise<Params> }
-): Promise<Metadata> {
-    const { slug } = await params;          // << precisa do await
-    const item = await getItem(slug.map(decodeURIComponent));
-
-    if (!item) {
-        return {
-            title: "Produto não encontrado",
-            openGraph: {
-                title: "Produto não encontrado",
-                url: "https://alugueldegames.com/catalogo",
-                type: "website",
-            },
-        };
-    }
-
-    const url   = `https://alugueldegames.com/catalogo/${slug.map(encodeURIComponent).join("/")}`;
-    const image = `https://alugueldegames.com/Organizado/${item.key}/${item.imagens?.[0] ?? "default.jpg"}`;
+    const url = `https://alugueldegames.com/catalogo/${slugArr
+        .map(encodeURIComponent)
+        .join("/")}`;
 
     return {
         title: item.titulo,
-        description: item.descricao?.slice(0, 155) ?? "",
+        description: item.descricao?.slice(0, 155) || "",
         alternates: { canonical: url },
         openGraph: {
-            type: "website",
+            title: item.titulo,
+            description: item.descricao,
             url,
-            title: item.titulo,
-            description: item.descricao,
-            siteName: "Aluguel de Games",
-            locale: "pt_BR",
-            images: [{ url: image, width: 1200, height: 630 }],
+            images: item.imagens?.length
+                ? [`https://alugueldegames.com/Organizado/${item.key}/${item.imagens[0]}`]
+                : [],
         },
-        twitter: {
-            card: "summary_large_image",
-            title: item.titulo,
-            description: item.descricao,
-            images: [image],
-        },
-        // other: {
-        //     "product:price:amount": item.preco?.toString() ?? "",
-        //     "product:price:currency": "BRL",
-        // },
     };
 }
 
-/* ------------------------------------------------------------------ */
-/*  PÁGINA                                                            */
-/* ------------------------------------------------------------------ */
-export default async function ProdutoPage(
-    { params }: { params: Promise<Params> }
-) {
-    const { slug } = await params;          // idem
-    const item = await getItem(slug.map(decodeURIComponent));
+export default async function ProdutoPage({ params }: CatalogPageProps) {
+    const slugArr = params.slug;
+
+    const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) notFound();
 
     const categoria = item.key.split("/")[0];
 
     return (
         <>
+            {/* Structured Data */}
             <Script
                 id="ld-product"
                 type="application/ld+json"
@@ -100,7 +68,8 @@ export default async function ProdutoPage(
                         name: item.titulo,
                         description: item.descricao,
                         image: item.imagens?.map(
-                            (img) => `https://alugueldegames.com/Organizado/${item.key}/${img}`
+                            (img) =>
+                                `https://alugueldegames.com/Organizado/${item.key}/${img}`
                         ),
                     }),
                 }}
@@ -113,7 +82,9 @@ export default async function ProdutoPage(
                         <li>
                             <Link
                                 href={`/catalogo/${item.key
-                                    }`}
+                                    .split("/")
+                                    .map(encodeURIComponent)
+                                    .join("/")}`}
                             >
                                 Catálogo
                             </Link>
@@ -122,7 +93,9 @@ export default async function ProdutoPage(
                         <li>
                             <Link
                                 href={`/catalogo/${item.key
-                                    }`}
+                                    .split("/")
+                                    .map(encodeURIComponent)
+                                    .join("/")}`}
                             >
                                 {categoria}
                             </Link>
@@ -134,12 +107,14 @@ export default async function ProdutoPage(
 
                 {/* Product Content */}
                 <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
+                    {/* Gallery */}
                     <ProductGallery
                         images={item.imagens || []}
                         title={item.titulo}
                         itemKey={item.key}
                     />
 
+                    {/* Info */}
                     <ProductInfo
                         titulo={item.titulo}
                         descricao={item.descricao || ""}

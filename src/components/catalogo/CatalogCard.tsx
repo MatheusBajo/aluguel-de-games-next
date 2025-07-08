@@ -40,7 +40,7 @@ export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
             className="h-full"
         >
             <Link
-                href={`/catalogo/${item.key}`}
+                href={`/catalogo/${item.key.split('/').map(encodeURIComponent).join('/')}`}
                 className="group relative flex h-full flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-primary/20 bg-card/30 backdrop-blur-sm transition-all duration-300 hover:rotate-1 hover:scale-103 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 dark:bg-card/20"
             >
                 {/* Glow effect on hover */}
