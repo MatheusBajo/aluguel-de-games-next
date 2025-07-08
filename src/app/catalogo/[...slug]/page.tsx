@@ -6,9 +6,11 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
-// usadas em vez do PageProps interno do Next
+// Tipos atualizados para Next.js 15
 type Params = { slug: string[] }
-export type CatalogPageProps = { params: Params }
+export type CatalogPageProps = {
+    params: Promise<Params>
+}
 
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
@@ -20,7 +22,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CatalogPageProps) {
-    const slugArr = params.slug;
+    // Await params pois agora é uma Promise
+    const resolvedParams = await params;
+    const slugArr = resolvedParams.slug;
 
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
@@ -45,7 +49,9 @@ export async function generateMetadata({ params }: CatalogPageProps) {
 }
 
 export default async function ProdutoPage({ params }: CatalogPageProps) {
-    const slugArr = params.slug;
+    // Await params pois agora é uma Promise
+    const resolvedParams = await params;
+    const slugArr = resolvedParams.slug;
 
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) notFound();
