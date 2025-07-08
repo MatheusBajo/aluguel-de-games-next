@@ -1,153 +1,89 @@
-"use client";
-// app/catalogo/[...slug]/page.tsx – versão revisada com Open Graph absoluto e descrição limpa
+// app/catalogo/[...slug]/page.tsx – Server Component with OG metadata
+import fs from "fs/promises";
+import path from "path";
 import { notFound } from "next/navigation";
-import Script from "next/script";
-import Link from "next/link";
-import { getCatalog, getItem } from "@/lib/catalog.server";
-import { ProductGallery } from "@/components/catalogo/ProductGallery";
-import { ProductInfo } from "@/components/catalogo/ProductInfo";
-import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
+import { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-/* -------------------------------------------------------------
- * Constantes utilitárias
- * -----------------------------------------------------------*/
-const SITE = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? ""; // sem barra final
+// 👇 client‑side heavy gallery lazy‑loaded
+const ProductGallery = dynamic(() => import("@/components/catalogo/ProductGallery"), {
+    ssr: false,
+});
+const ProductInfo = dynamic(() => import("@/components/catalogo/ProductInfo"), {
+    ssr: false,
+});
 
-function stripMarkdown(md: string) {
-    return md
-        .replace(/\*\*|__/g, "")            // bold/italic
-        .replace(/`([^`]+)`/g, "$1")          // inline code
-        .replace(/\![^[\]]*\[[^\]]*\]\([^)]*\)/g, "") // imagens markdown
-        .replace(/\[[^\]]*\]\([^)]*\)/g, "")           // links
-        .replace(/[#>*_\-]/g, "")             // demais tokens
-        .replace(/\n+/g, " ")                // novas linhas → espaço
-        .trim();
+// ---------- helpers ----------
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+
+function readMeta(dir: string) {
+    const metaPath = path.join(dir, "metadata.json");
+    return JSON.parse(fs.readFileSync(metaPath, "utf-8")) as {
+        titulo: string;
+        descricao: string;
+        imagens: string[];
+    };
 }
 
-/* -------------------------------------------------------------
- * Tipagem Next 14+ app router
- * -----------------------------------------------------------*/
-type Params = { slug: string[] };
-interface CatalogPageProps {
-    params: Promise<Params>;
-}
-
-/* -------------------------------------------------------------
- * SSG params
- * -----------------------------------------------------------*/
+// ---------- params / metadata ----------
 export async function generateStaticParams() {
-    const catalogo = await getCatalog();
-    return catalogo.map((item) => ({
-        slug: item.key.split("/").map(encodeURIComponent),
-    }));
+    // percorre Organizado/**/metadata.json e devolve slugs
+    const root = path.join(process.cwd(), "Organizado");
+    const params: { slug: string[] }[] = [];
+    const walk = async (dir: string, parts: string[] = []) => {
+        const list = await fs.readdir(dir, { withFileTypes: true });
+        for (const d of list) {
+            if (d.isDirectory()) await walk(path.join(dir, d.name), [...parts, d.name]);
+            if (d.name === "metadata.json") params.push({ slug: parts });
+        }
+    };
+    await walk(root);
+    return params;
 }
 
-/* -------------------------------------------------------------
- * Meta dinâmico (OpenGraph + Twitter + canonical)
- * -----------------------------------------------------------*/
-export async function generateMetadata({ params }: CatalogPageProps) {
-    const { slug: slugArr } = await params;
-    const item = await getItem(slugArr.map(decodeURIComponent));
-    if (!item) return { title: "Produto não encontrado" };
-
-    const url = `${SITE}/catalogo/${slugArr.map(encodeURIComponent).join("/")}`;
-    const descricaoPlain = stripMarkdown(item.descricao || "").slice(0, 155);
-    const firstImg = item.imagens?.[0]
-        ? `${SITE}/Organizado/${item.key}/${item.imagens[0]}`
+export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
+    const dir = path.join(process.cwd(), "Organizado", ...params.slug);
+    let meta;
+    try {
+        meta = readMeta(dir);
+    } catch {
+        return {};
+    }
+    const imgAbs = meta.imagens?.[0]
+        ? `${SITE}/${path.join("Organizado", ...params.slug, meta.imagens[0])}`
         : `${SITE}/og-default.jpg`;
-
+    const plain = meta.descricao.replace(/\*\*|\n|\r/g, " ").slice(0, 150);
+    const url = `${SITE}/catalogo/${params.slug.join("/")}`;
     return {
-        title: item.titulo,
-        description: descricaoPlain,
-        alternates: { canonical: url },
+        title: meta.titulo,
+        description: plain,
         openGraph: {
-            title: item.titulo,
-            description: descricaoPlain,
-            type: "website",
+            title: meta.titulo,
+            description: plain,
             url,
-            images: [
-                {
-                    url: firstImg,
-                    width: 800,
-                    height: 600,
-                    alt: item.titulo,
-                },
-            ],
+            images: [{ url: imgAbs, width: 800, height: 600 }],
+            type: "website",
         },
-        twitter: {
-            card: "summary_large_image",
-            title: item.titulo,
-            description: descricaoPlain,
-            images: [firstImg],
-        },
-    } as const;
+        twitter: { card: "summary_large_image", title: meta.titulo, description: plain, images: [imgAbs] },
+        alternates: { canonical: url },
+    };
 }
 
-/* -------------------------------------------------------------
- * Página do produto
- * -----------------------------------------------------------*/
-export default async function ProdutoPage({ params }: CatalogPageProps) {
-    const { slug: slugArr } = await params;
-    const item = await getItem(slugArr.map(decodeURIComponent));
-    if (!item) notFound();
-
-    const categoria = item.key.split("/")[0];
+// ---------- page component ----------
+export default async function ProdutoPage({ params }: { params: { slug: string[] } }) {
+    const dir = path.join(process.cwd(), "Organizado", ...params.slug);
+    let meta;
+    try {
+        meta = readMeta(dir);
+    } catch {
+        notFound();
+    }
+    const media = meta.imagens.map((img) => `/Organizado/${params.slug.join("/")}/${img}`);
 
     return (
-        <>
-            {/* LD-JSON para SEO */}
-            <Script
-                id="ld-product"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Product",
-                        name: item.titulo,
-                        description: stripMarkdown(item.descricao || ""),
-                        image: item.imagens?.map(
-                            (img) => `${SITE}/Organizado/${item.key}/${img}`
-                        ),
-                    }),
-                }}
-            />
-
-            <main className="relative mx-auto max-w-screen-2xl">
-                {/* Breadcrumb */}
-                <nav className="px-4 py-4 text-sm">
-                    <ol className="flex items-center gap-2 text-muted-foreground">
-                        <li>
-                            <Link href="/catalogo">Catálogo</Link>
-                        </li>
-                        <li>/</li>
-                        <li>
-                            <Link href={`/catalogo/${encodeURIComponent(categoria)}`}>{
-                                categoria
-                            }</Link>
-                        </li>
-                        <li>/</li>
-                        <li className="font-medium text-foreground">{item.titulo}</li>
-                    </ol>
-                </nav>
-
-                {/* Conteúdo do produto */}
-                <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
-                    <ProductGallery
-                        images={item.imagens || []}
-                        title={item.titulo}
-                        itemKey={item.key}
-                    />
-
-                    <ProductInfo
-                        titulo={item.titulo}
-                        descricao={item.descricao || ""}
-                        categoria={categoria}
-                    />
-                </div>
-
-                {/* Produtos Relacionados */}
-                <RelatedProducts categoria={categoria} currentKey={item.key} />
-            </main>
-        </>
+        <div className="mx-auto max-w-screen-lg px-4 py-8 space-y-8">
+            <ProductInfo titulo={meta.titulo} descricao={meta.descricao} />
+            <ProductGallery imagens={media} />
+        </div>
     );
 }
