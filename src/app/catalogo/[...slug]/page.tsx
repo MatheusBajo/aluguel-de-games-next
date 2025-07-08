@@ -113,9 +113,7 @@ export default async function ProdutoPage(
                         <li>
                             <Link
                                 href={`/catalogo/${item.key
-                                    .split("/")
-                                    .map(encodeURIComponent)
-                                    .join("/")}`}
+                                    }`}
                             >
                                 Catálogo
                             </Link>
@@ -124,9 +122,7 @@ export default async function ProdutoPage(
                         <li>
                             <Link
                                 href={`/catalogo/${item.key
-                                    .split("/")
-                                    .map(encodeURIComponent)
-                                    .join("/")}`}
+                                    }`}
                             >
                                 {categoria}
                             </Link>
