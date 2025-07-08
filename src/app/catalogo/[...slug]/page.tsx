@@ -7,10 +7,7 @@ import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 
 // usadas em vez do PageProps interno do Next
-type Params = { slug: string[] };          // segmentos da URL
-interface CatalogPageProps {               // Next 15 → params é Promise
-    params: Promise<Params>;
-}
+type Params = { slug: string[] }
 export type CatalogPageProps = { params: Params }
 
 export async function generateStaticParams() {

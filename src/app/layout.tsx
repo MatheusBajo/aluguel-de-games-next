@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import {ThemeProvider} from "@/components/theme-provider";
 import SchemaMarkup from "@/components/seo/SchemaMarkup";
 import Script from "next/script";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     metadataBase: new URL("https://alugueldegames.com"),
