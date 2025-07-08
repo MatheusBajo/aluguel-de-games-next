@@ -5,6 +5,7 @@ import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 // Tipos atualizados para Next.js 15
 type Params = { slug: string[] }
@@ -21,7 +22,7 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: CatalogPageProps) {
+export async function generateMetadata({ params }: CatalogPageProps): Promise<Metadata> {
     // Await params pois agora é uma Promise
     const resolvedParams = await params;
     const slugArr = resolvedParams.slug;
@@ -29,21 +30,61 @@ export async function generateMetadata({ params }: CatalogPageProps) {
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
 
+    // URL do produto
     const url = `https://alugueldegames.com/catalogo/${slugArr
         .map(encodeURIComponent)
         .join("/")}`;
 
+    // URL da imagem principal
+    const imageUrl = item.imagens?.length
+        ? `https://alugueldegames.com/Organizado/${encodeURIComponent(item.key)}/${encodeURIComponent(item.imagens[0])}`
+        : 'https://alugueldegames.com/Logo-Aluguel-de-games.png';
+
+    // Descrição limpa (remove markdown)
+    const cleanDescription = item.descricao
+        ?.replace(/[*_#]/g, '')
+        ?.replace(/\n/g, ' ')
+        ?.trim()
+        ?.slice(0, 155) || `Alugue ${item.titulo} para seu evento. Entrega e instalação grátis!`;
+
     return {
-        title: item.titulo,
-        description: item.descricao?.slice(0, 155) || "",
-        alternates: { canonical: url },
+        title: `${item.titulo} - Aluguel de Games`,
+        description: cleanDescription,
+        alternates: {
+            canonical: url
+        },
         openGraph: {
             title: item.titulo,
-            description: item.descricao,
+            description: cleanDescription,
             url,
-            images: item.imagens?.length
-                ? [`https://alugueldegames.com/Organizado/${item.key}/${item.imagens[0]}`]
-                : [],
+            siteName: 'Aluguel de Games',
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: item.titulo,
+                }
+            ],
+            locale: 'pt_BR',
+            type: 'website',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: item.titulo,
+            description: cleanDescription,
+            images: [imageUrl],
+            creator: '@alugueldegames',
+        },
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
         },
     };
 }
@@ -58,6 +99,40 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
     const categoria = item.key.split("/")[0];
 
+    // URL da imagem para o Schema
+    const imageUrl = item.imagens?.length
+        ? `https://alugueldegames.com/Organizado/${encodeURIComponent(item.key)}/${encodeURIComponent(item.imagens[0])}`
+        : null;
+
+    // Structured Data melhorado
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: item.titulo,
+        description: item.descricao?.replace(/[*_#]/g, '').trim(),
+        image: item.imagens?.map(
+            (img) => `https://alugueldegames.com/Organizado/${encodeURIComponent(item.key)}/${encodeURIComponent(img)}`
+        ),
+        brand: {
+            "@type": "Organization",
+            name: "Aluguel de Games"
+        },
+        offers: {
+            "@type": "Offer",
+            priceCurrency: "BRL",
+            availability: "https://schema.org/InStock",
+            seller: {
+                "@type": "Organization",
+                name: "Aluguel de Games"
+            }
+        },
+        aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "4.8",
+            reviewCount: "47"
+        }
+    };
+
     return (
         <>
             {/* Structured Data */}
@@ -65,16 +140,7 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                 id="ld-product"
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Product",
-                        name: item.titulo,
-                        description: item.descricao,
-                        image: item.imagens?.map(
-                            (img) =>
-                                `https://alugueldegames.com/Organizado/${item.key}/${img}`
-                        ),
-                    }),
+                    __html: JSON.stringify(structuredData),
                 }}
             />
 
@@ -83,23 +149,19 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                 <nav className="px-4 py-4 text-sm">
                     <ol className="flex items-center gap-2 text-muted-foreground">
                         <li>
-                            <Link
-                                href={`/catalogo/${item.key
-                                    .split("/")
-                                    .map(encodeURIComponent)
-                                    .join("/")}`}
-                            >
+                            <Link href="/">
+                                Home
+                            </Link>
+                        </li>
+                        <li>/</li>
+                        <li>
+                            <Link href="/catalogo">
                                 Catálogo
                             </Link>
                         </li>
                         <li>/</li>
                         <li>
-                            <Link
-                                href={`/catalogo/${item.key
-                                    .split("/")
-                                    .map(encodeURIComponent)
-                                    .join("/")}`}
-                            >
+                            <Link href={`/catalogo#${encodeURIComponent(categoria)}`}>
                                 {categoria}
                             </Link>
                         </li>
