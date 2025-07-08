@@ -10,12 +10,17 @@ export function getSiteUrl(): string {
         return process.env.NEXT_PUBLIC_SITE_URL;
     }
 
-    // 2. URL do Vercel (para previews)
+    // 2. Para produção, usa o domínio final
+    if (process.env.NODE_ENV === 'production' && !process.env.VERCEL_URL) {
+        return 'https://alugueldegames.com';
+    }
+
+    // 3. Para Vercel (preview e branches)
     if (process.env.VERCEL_URL) {
         return `https://${process.env.VERCEL_URL}`;
     }
 
-    // 3. URL de produção (fallback)
+    // 4. Fallback
     return 'https://alugueldegames.com';
 }
 

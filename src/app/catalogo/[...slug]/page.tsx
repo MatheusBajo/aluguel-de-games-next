@@ -40,9 +40,10 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
         .map(encodeURIComponent)
         .join("/")}`;
 
-    // URL da imagem principal - sem duplo encoding
+    // URL da imagem - usa path relativo para funcionar em qualquer domínio
+    const imagePath = getImagePath(item.key, item.imagens[0]);
     const imageUrl = item.imagens?.length
-        ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
+        ? `${baseUrl}${imagePath}`
         : `${baseUrl}/Logo-Aluguel-de-games.png`;
 
     // Descrição limpa (remove markdown)
