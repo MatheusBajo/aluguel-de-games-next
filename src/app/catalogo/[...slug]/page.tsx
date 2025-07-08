@@ -1,84 +1,157 @@
-// app/catalogo/[...slug]/page.tsx – Server Component com Open Graph (sem dynamic ssr:false)
-import fs from "fs/promises";
-import path from "path";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+import Script from "next/script";
+import { getCatalog, getItem } from "@/lib/catalog.server";
+import { ProductGallery } from "@/components/catalogo/ProductGallery";
+import { ProductInfo } from "@/components/catalogo/ProductInfo";
+import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
+import Link from "next/link";
+import {Metadata} from "next";
 
-// ⬇️ Componentes client‑side já exportados com "use client" no próprio arquivo
-import {ProductGallery} from "@/components/catalogo/ProductGallery";
-import {ProductInfo} from "@/components/catalogo/ProductInfo";
+/* ------------------------------------------------------------------ */
+/*  TIPAGENS                                                          */
+/* ------------------------------------------------------------------ */
 
-// ---------- helpers ----------
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-
-async function readMeta(dir: string) {
-    const metaPath = path.join(dir, "metadata.json");
-    return JSON.parse(await fs.readFile(metaPath, "utf-8")) as {
-        titulo: string;
-        descricao: string;
-        imagens: string[];
-    };
+type Params = { slug: string[] };          // segmentos da URL
+interface CatalogPageProps {               // Next 15 → params é Promise
+    params: Promise<Params>;
 }
 
-// ---------- params / metadata ----------
+/* ------------------------------------------------------------------ */
+/*  STATIC PARAMS                                                     */
+/* ------------------------------------------------------------------ */
 export async function generateStaticParams() {
-    const root = path.join(process.cwd(), "Organizado");
-    const params: { slug: string[] }[] = [];
-    const walk = async (dir: string, parts: string[] = []) => {
-        for (const d of await fs.readdir(dir, { withFileTypes: true })) {
-            if (d.isDirectory()) await walk(path.join(dir, d.name), [...parts, d.name]);
-            if (d.name === "metadata.json") params.push({ slug: parts });
-        }
-    };
-    await walk(root);
-    return params;
+    const catalogo = await getCatalog();
+
+    return catalogo.map((item) => ({
+        slug: item.key.split("/").map(encodeURIComponent),
+    }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
-    const dir = path.join(process.cwd(), "Organizado", ...params.slug);
-    let meta;
-    try {
-        meta = await readMeta(dir);
-    } catch {
-        return {};
+/* ------------------------------------------------------------------ */
+/*  METADADOS                                                         */
+/* ------------------------------------------------------------------ */
+export async function generateMetadata(
+    { params }: { params: Promise<{ slug: string[] }> }
+): Promise<Metadata> {
+    const { slug } = await params;
+    const item = await getItem(slug.map(decodeURIComponent));
+
+    // Fallback se o produto não existir
+    if (!item) {
+        return {
+            title: "Produto não encontrado",
+            openGraph: { title: "Produto não encontrado", url: "https://alugueldegames.com/catalogo" },
+        };
     }
-    const imgAbs = meta.imagens?.[0]
-        ? `${SITE}/${path.join("Organizado", ...params.slug, meta.imagens[0])}`
-        : `${SITE}/og-default.jpg`;
-    const plain = meta.descricao.replace(/\*\*|\n|\r/g, " ").slice(0, 150);
-    const url = `${SITE}/catalogo/${params.slug.join("/")}`;
+
+    const url = `https://alugueldegames.com/catalogo/${slug.map(encodeURIComponent).join("/")}`;
+    const image = `https://alugueldegames.com/Organizado/${item.key}/${item.imagens[0]}`;
+
     return {
-        title: meta.titulo,
-        description: plain,
+        title: item.titulo,
+        description: item.descricao?.slice(0, 155) ?? "",
+        alternates: { canonical: url },
         openGraph: {
-            title: meta.titulo,
-            description: plain,
+            type: "product",
             url,
-            images: [{ url: imgAbs, width: 800, height: 600 }],
-            type: "website",
+            title: item.titulo,
+            description: item.descricao,
+            siteName: "Aluguel de Games",
+            locale: "pt_BR",
+            images: [{ url: image, width: 1200, height: 630 }],
         },
         twitter: {
             card: "summary_large_image",
-            title: meta.titulo,
-            description: plain,
-            images: [imgAbs],
+            title: item.titulo,
+            description: item.descricao,
+            images: [image],
         },
-        alternates: { canonical: url },
+        // Metas extras de produto para Facebook
+        other: {
+            "product:price:amount": item.preco?.toString() ?? "",
+            "product:price:currency": "BRL",
+        },
     };
 }
 
-// ---------- page component ----------
-export default async function ProdutoPage({ params }: { params: { slug: string[] } }) {
-    const dir = path.join(process.cwd(), "Organizado", ...params.slug);
-    const meta = await readMeta(dir).catch(() => null);
-    if (!meta) notFound();
+/* ------------------------------------------------------------------ */
+/*  PÁGINA                                                            */
+/* ------------------------------------------------------------------ */
+export default async function ProdutoPage({ params }: CatalogPageProps) {
+    const { slug: slugArr } = await params;                // ← idem
 
-    const media = meta.imagens.map((img) => `/Organizado/${params.slug.join("/")}/${img}`);
+    const item = await getItem(slugArr.map(decodeURIComponent));
+    if (!item) notFound();
+
+    const categoria = item.key.split("/")[0];
 
     return (
-        <div className="mx-auto max-w-screen-lg px-4 py-8 space-y-8">
-            <ProductInfo titulo={meta.titulo} descricao={meta.descricao} />
-            <ProductGallery imagens={media} />
-        </div>
+        <>
+            <Script
+                id="ld-product"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Product",
+                        name: item.titulo,
+                        description: item.descricao,
+                        image: item.imagens?.map(
+                            (img) =>
+                                `https://alugueldegames.com/Organizado/${item.key}/${img}`
+                        ),
+                    }),
+                }}
+            />
+
+            <main className="relative mx-auto max-w-screen-2xl">
+                {/* Breadcrumb */}
+                <nav className="px-4 py-4 text-sm">
+                    <ol className="flex items-center gap-2 text-muted-foreground">
+                        <li>
+                            <Link
+                                href={`/catalogo/${item.key
+                                    .split("/")
+                                    .map(encodeURIComponent)
+                                    .join("/")}`}
+                            >
+                                Catálogo
+                            </Link>
+                        </li>
+                        <li>/</li>
+                        <li>
+                            <Link
+                                href={`/catalogo/${item.key
+                                    .split("/")
+                                    .map(encodeURIComponent)
+                                    .join("/")}`}
+                            >
+                                {categoria}
+                            </Link>
+                        </li>
+                        <li>/</li>
+                        <li className="text-foreground font-medium">{item.titulo}</li>
+                    </ol>
+                </nav>
+
+                {/* Product Content */}
+                <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
+                    <ProductGallery
+                        images={item.imagens || []}
+                        title={item.titulo}
+                        itemKey={item.key}
+                    />
+
+                    <ProductInfo
+                        titulo={item.titulo}
+                        descricao={item.descricao || ""}
+                        categoria={categoria}
+                    />
+                </div>
+
+                {/* Related Products */}
+                <RelatedProducts categoria={categoria} currentKey={item.key} />
+            </main>
+        </>
     );
 }
