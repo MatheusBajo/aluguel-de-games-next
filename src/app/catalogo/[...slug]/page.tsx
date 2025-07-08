@@ -5,16 +5,14 @@ import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
-import {Metadata} from "next";
+import type { Metadata } from "next";
 
 /* ------------------------------------------------------------------ */
 /*  TIPAGENS                                                          */
 /* ------------------------------------------------------------------ */
 
-type Params = { slug: string[] };          // segmentos da URL
-interface CatalogPageProps {               // Next 15 → params é Promise
-    params: Promise<Params>;
-}
+type Params = { slug: string[] };
+
 
 /* ------------------------------------------------------------------ */
 /*  STATIC PARAMS                                                     */
@@ -30,29 +28,34 @@ export async function generateStaticParams() {
 /* ------------------------------------------------------------------ */
 /*  METADADOS                                                         */
 /* ------------------------------------------------------------------ */
+
+
 export async function generateMetadata(
-    { params }: { params: Promise<{ slug: string[] }> }
+    { params }: { params: { slug: string[] } }
 ): Promise<Metadata> {
-    const { slug } = await params;
+    const { slug } = params;
     const item = await getItem(slug.map(decodeURIComponent));
 
-    // Fallback se o produto não existir
     if (!item) {
         return {
             title: "Produto não encontrado",
-            openGraph: { title: "Produto não encontrado", url: "https://alugueldegames.com/catalogo" },
+            openGraph: {
+                title: "Produto não encontrado",
+                url: "https://alugueldegames.com/catalogo",
+                type: "website",
+            },
         };
     }
 
     const url = `https://alugueldegames.com/catalogo/${slug.map(encodeURIComponent).join("/")}`;
-    const image = `https://alugueldegames.com/Organizado/${item.key}/${item.imagens[0]}`;
+    const image = `https://alugueldegames.com/Organizado/${item.key}/${item.imagens?.[0] ?? "default.jpg"}`;
 
     return {
         title: item.titulo,
         description: item.descricao?.slice(0, 155) ?? "",
         alternates: { canonical: url },
         openGraph: {
-            type: "product",
+            type: "website",          // <- trocado
             url,
             title: item.titulo,
             description: item.descricao,
@@ -66,13 +69,13 @@ export async function generateMetadata(
             description: item.descricao,
             images: [image],
         },
-        // Metas extras de produto para Facebook
         other: {
             "product:price:amount": item.preco?.toString() ?? "",
             "product:price:currency": "BRL",
         },
     };
 }
+
 
 /* ------------------------------------------------------------------ */
 /*  PÁGINA                                                            */
