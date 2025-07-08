@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import {ThemeProvider} from "@/components/theme-provider";
 import SchemaMarkup from "@/components/seo/SchemaMarkup";
 import Script from "next/script";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -45,11 +46,11 @@ export default function RootLayout({
                     })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
                 `}
             </Script>
-                <link rel="icon" href="/Logo-Aluguel-de-games.ico"/>
+            <link rel="icon" href="/Logo-Aluguel-de-games.ico"/>
         </head>
         <body>
         <noscript>
-        <iframe
+            <iframe
                 src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
                 height="0"
                 width="0"
@@ -64,18 +65,7 @@ export default function RootLayout({
         >
             <Header/>
             {children}
-            <a
-                href="https://wa.me/+551142377766"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fixed bottom-4 right-4 z-50 drop-shadow-primary lg:m-6 m-0 p-0 select-none"
-            >
-                <img
-                    src="/WhatsApp-logo-42377766.png"
-                    alt="WhatsApp"
-                    className="lg:size-25 size-16 object-contain"
-                />
-            </a>
+            <WhatsAppFloat />
             <Footer/>
         </ThemeProvider>
         <SchemaMarkup/>
