@@ -6,6 +6,7 @@ import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getImagePath } from "@/lib/image-utils";
 
 // Tipos atualizados para Next.js 15
 type Params = { slug: string[] }
@@ -35,9 +36,9 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
         .map(encodeURIComponent)
         .join("/")}`;
 
-    // URL da imagem principal
+    // URL da imagem principal - sem duplo encoding
     const imageUrl = item.imagens?.length
-        ? `https://alugueldegames.com/Organizado/${encodeURIComponent(item.key)}/${encodeURIComponent(item.imagens[0])}`
+        ? `https://alugueldegames.com${getImagePath(item.key, item.imagens[0])}`
         : 'https://alugueldegames.com/Logo-Aluguel-de-games.png';
 
     // Descrição limpa (remove markdown)
@@ -64,6 +65,7 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
                     width: 1200,
                     height: 630,
                     alt: item.titulo,
+                    type: 'image/jpeg',
                 }
             ],
             locale: 'pt_BR',
@@ -75,6 +77,13 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
             description: cleanDescription,
             images: [imageUrl],
             creator: '@alugueldegames',
+        },
+        // Meta tags adicionais para WhatsApp
+        other: {
+            'og:image:secure_url': imageUrl,
+            'og:image:type': 'image/jpeg',
+            'og:image:width': '1200',
+            'og:image:height': '630',
         },
         robots: {
             index: true,
@@ -101,8 +110,13 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
     // URL da imagem para o Schema
     const imageUrl = item.imagens?.length
-        ? `https://alugueldegames.com/Organizado/${encodeURIComponent(item.key)}/${encodeURIComponent(item.imagens[0])}`
+        ? `https://alugueldegames.com${getImagePath(item.key, item.imagens[0])}`
         : null;
+
+    // Todas as imagens para o Schema
+    const allImages = item.imagens?.map(
+        (img) => `https://alugueldegames.com${getImagePath(item.key, img)}`
+    );
 
     // Structured Data melhorado
     const structuredData = {
@@ -110,9 +124,7 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
         "@type": "Product",
         name: item.titulo,
         description: item.descricao?.replace(/[*_#]/g, '').trim(),
-        image: item.imagens?.map(
-            (img) => `https://alugueldegames.com/Organizado/${encodeURIComponent(item.key)}/${encodeURIComponent(img)}`
-        ),
+        image: allImages,
         brand: {
             "@type": "Organization",
             name: "Aluguel de Games"
