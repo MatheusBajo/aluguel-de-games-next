@@ -4,15 +4,14 @@ import Footer from "@/components/Footer";
 import {ThemeProvider} from "@/components/theme-provider";
 import SchemaMarkup from "@/components/seo/SchemaMarkup";
 import Script from "next/script";
+import type { Metadata } from "next";
 
-export const metadata = {
+
+export const metadata: Metadata = {
+    metadataBase: new URL("https://alugueldegames.com"),
     title: {
         template: "%s | Aluguel de Games",
         default: "Aluguel de Games",
-    },
-    icons: {
-        icon: "/Logo-Aluguel-de-games.ico",
-        apple: "/Logo-Aluguel-de-games.ico",
     },
     description: "Aluguel de fliperamas, karaokês e entretenimento para eventos",
     openGraph: {
@@ -20,7 +19,10 @@ export const metadata = {
         locale: "pt_BR",
         url: "https://www.alugueldegames.com/",
         siteName: "Aluguel de Games",
-
+    },
+    icons: {
+        icon: "/Logo-Aluguel-de-games.ico",
+        apple: "/Logo-Aluguel-de-games.ico",
     },
 };
 
