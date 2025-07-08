@@ -13,7 +13,6 @@ import type { Metadata } from "next";
 
 type Params = { slug: string[] };
 
-
 /* ------------------------------------------------------------------ */
 /*  STATIC PARAMS                                                     */
 /* ------------------------------------------------------------------ */
@@ -80,8 +79,8 @@ export async function generateMetadata(
 /* ------------------------------------------------------------------ */
 /*  PÁGINA                                                            */
 /* ------------------------------------------------------------------ */
-export default async function ProdutoPage({ params }: CatalogPageProps) {
-    const { slug: slugArr } = await params;                // ← idem
+export default async function ProdutoPage({ params }: { params: Params }) {
+    const { slug: slugArr } = params;  // sem await
 
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) notFound();
