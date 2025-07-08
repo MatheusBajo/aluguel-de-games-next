@@ -1,64 +1,93 @@
+"use client";
+// app/catalogo/[...slug]/page.tsx – versão revisada com Open Graph absoluto e descrição limpa
 import { notFound } from "next/navigation";
 import Script from "next/script";
+import Link from "next/link";
 import { getCatalog, getItem } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
-import Link from "next/link";
 
-/* ------------------------------------------------------------------ */
-/*  TIPAGENS                                                          */
-/* ------------------------------------------------------------------ */
-type Params = { slug: string[] };          // segmentos da URL
-interface CatalogPageProps {               // Next 15 → params é Promise
+/* -------------------------------------------------------------
+ * Constantes utilitárias
+ * -----------------------------------------------------------*/
+const SITE = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? ""; // sem barra final
+
+function stripMarkdown(md: string) {
+    return md
+        .replace(/\*\*|__/g, "")            // bold/italic
+        .replace(/`([^`]+)`/g, "$1")          // inline code
+        .replace(/\![^[\]]*\[[^\]]*\]\([^)]*\)/g, "") // imagens markdown
+        .replace(/\[[^\]]*\]\([^)]*\)/g, "")           // links
+        .replace(/[#>*_\-]/g, "")             // demais tokens
+        .replace(/\n+/g, " ")                // novas linhas → espaço
+        .trim();
+}
+
+/* -------------------------------------------------------------
+ * Tipagem Next 14+ app router
+ * -----------------------------------------------------------*/
+type Params = { slug: string[] };
+interface CatalogPageProps {
     params: Promise<Params>;
 }
 
-/* ------------------------------------------------------------------ */
-/*  STATIC PARAMS                                                     */
-/* ------------------------------------------------------------------ */
+/* -------------------------------------------------------------
+ * SSG params
+ * -----------------------------------------------------------*/
 export async function generateStaticParams() {
     const catalogo = await getCatalog();
-
     return catalogo.map((item) => ({
         slug: item.key.split("/").map(encodeURIComponent),
     }));
 }
 
-/* ------------------------------------------------------------------ */
-/*  METADADOS                                                         */
-/* ------------------------------------------------------------------ */
+/* -------------------------------------------------------------
+ * Meta dinâmico (OpenGraph + Twitter + canonical)
+ * -----------------------------------------------------------*/
 export async function generateMetadata({ params }: CatalogPageProps) {
-    const { slug: slugArr } = await params;                // ← await aqui
-
+    const { slug: slugArr } = await params;
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) return { title: "Produto não encontrado" };
 
-    const url = `https://alugueldegames.com/catalogo/${slugArr
-        .map(encodeURIComponent)
-        .join("/")}`;
+    const url = `${SITE}/catalogo/${slugArr.map(encodeURIComponent).join("/")}`;
+    const descricaoPlain = stripMarkdown(item.descricao || "").slice(0, 155);
+    const firstImg = item.imagens?.[0]
+        ? `${SITE}/Organizado/${item.key}/${item.imagens[0]}`
+        : `${SITE}/og-default.jpg`;
 
     return {
         title: item.titulo,
-        description: item.descricao?.slice(0, 155) || "",
+        description: descricaoPlain,
         alternates: { canonical: url },
         openGraph: {
             title: item.titulo,
-            description: item.descricao,
+            description: descricaoPlain,
+            type: "website",
             url,
-            images: item.imagens?.length
-                ? [`https://alugueldegames.com/Organizado/${item.key}/${item.imagens[0]}`]
-                : [],
+            images: [
+                {
+                    url: firstImg,
+                    width: 800,
+                    height: 600,
+                    alt: item.titulo,
+                },
+            ],
         },
-    };
+        twitter: {
+            card: "summary_large_image",
+            title: item.titulo,
+            description: descricaoPlain,
+            images: [firstImg],
+        },
+    } as const;
 }
 
-/* ------------------------------------------------------------------ */
-/*  PÁGINA                                                            */
-/* ------------------------------------------------------------------ */
+/* -------------------------------------------------------------
+ * Página do produto
+ * -----------------------------------------------------------*/
 export default async function ProdutoPage({ params }: CatalogPageProps) {
-    const { slug: slugArr } = await params;                // ← idem
-
+    const { slug: slugArr } = await params;
     const item = await getItem(slugArr.map(decodeURIComponent));
     if (!item) notFound();
 
@@ -66,6 +95,7 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
     return (
         <>
+            {/* LD-JSON para SEO */}
             <Script
                 id="ld-product"
                 type="application/ld+json"
@@ -74,10 +104,9 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                         "@context": "https://schema.org",
                         "@type": "Product",
                         name: item.titulo,
-                        description: item.descricao,
+                        description: stripMarkdown(item.descricao || ""),
                         image: item.imagens?.map(
-                            (img) =>
-                                `https://alugueldegames.com/Organizado/${item.key}/${img}`
+                            (img) => `${SITE}/Organizado/${item.key}/${img}`
                         ),
                     }),
                 }}
@@ -88,32 +117,20 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                 <nav className="px-4 py-4 text-sm">
                     <ol className="flex items-center gap-2 text-muted-foreground">
                         <li>
-                            <Link
-                                href={`/catalogo/${item.key
-                                    .split("/")
-                                    .map(encodeURIComponent)
-                                    .join("/")}`}
-                            >
-                                Catálogo
-                            </Link>
+                            <Link href="/catalogo">Catálogo</Link>
                         </li>
                         <li>/</li>
                         <li>
-                            <Link
-                                href={`/catalogo/${item.key
-                                    .split("/")
-                                    .map(encodeURIComponent)
-                                    .join("/")}`}
-                            >
-                                {categoria}
-                            </Link>
+                            <Link href={`/catalogo/${encodeURIComponent(categoria)}`}>{
+                                categoria
+                            }</Link>
                         </li>
                         <li>/</li>
-                        <li className="text-foreground font-medium">{item.titulo}</li>
+                        <li className="font-medium text-foreground">{item.titulo}</li>
                     </ol>
                 </nav>
 
-                {/* Product Content */}
+                {/* Conteúdo do produto */}
                 <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
                     <ProductGallery
                         images={item.imagens || []}
@@ -128,7 +145,7 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                     />
                 </div>
 
-                {/* Related Products */}
+                {/* Produtos Relacionados */}
                 <RelatedProducts categoria={categoria} currentKey={item.key} />
             </main>
         </>
