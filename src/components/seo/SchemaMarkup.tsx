@@ -4,8 +4,8 @@ export default function SchemaMarkup() {
         '@context': 'https://schema.org',
         '@type': 'Organization',
         name: 'Aluguel de Games',
-        url: 'https://alugueldegames.com',
-        logo: 'https://alugueldegames.com/carro-logo-aluguel-de-games.png',
+        url: 'https://www.alugueldegames.com.br',
+        logo: 'https://www.alugueldegames.com.br/carro-logo-aluguel-de-games.png',
         description: 'Empresa especializada em locação de equipamentos de entretenimento para festas e eventos',
         address: {
             '@type': 'PostalAddress',
@@ -31,12 +31,12 @@ export default function SchemaMarkup() {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: 'Aluguel de Games',
-        url: 'https://alugueldegames.com',
+        url: 'https://www.alugueldegames.com.br',
         potentialAction: {
             '@type': 'SearchAction',
             target: {
                 '@type': 'EntryPoint',
-                urlTemplate: 'https://alugueldegames.com/catalogo?search={search_term_string}'
+                urlTemplate: 'https://www.alugueldegames.com.br/catalogo?search={search_term_string}'
             },
             'query-input': 'required name=search_term_string'
         }
@@ -50,13 +50,13 @@ export default function SchemaMarkup() {
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: 'https://alugueldegames.com'
+                item: 'https://www.alugueldegames.com.br'
             },
             {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'Catálogo',
-                item: 'https://alugueldegames.com/catalogo'
+                item: 'https://www.alugueldegames.com.br/catalogo'
             }
         ]
     };

@@ -8,7 +8,7 @@ import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://alugueldegames.com"),
+    metadataBase: new URL("https://www.alugueldegames.com.br"),
     title: {
         template: "%s | Aluguel de Games",
         default: "Aluguel de Games",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         locale: "pt_BR",
-        url: "https://www.alugueldegames.com/",
+        url: "https://www.alugueldegames.com.br/",
         siteName: "Aluguel de Games",
     },
     icons: {

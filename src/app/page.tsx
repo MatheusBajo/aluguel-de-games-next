@@ -9,7 +9,7 @@ import {getCatalog} from "@/lib/catalog.server";
 
 /* ---------- SEO / Metadata ---------- */
 export const metadata: Metadata = {
-    metadataBase: new URL('https://alugueldegames.com'),
+    metadataBase: new URL('https://www.alugueldegames.com.br'),
     title: {
         default:
             'Aluguel de Games - Locação de Jogos e Equipamentos para Festas e Eventos',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
         title: 'Aluguel de Games - Transforme seu Evento em Diversão',
         description:
             'Locação de equipamentos de entretenimento para festas e eventos. Fliperamas, VR, Karaokê e muito mais! Entrega grátis em SP.',
-        url: 'https://alugueldegames.com',
+        url: 'https://www.alugueldegames.com.br',
         siteName: 'Aluguel de Games',
         images: [
             {
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
         images: ['/Logo-Aluguel-de-games.png'],
         creator: '@alugueldegames',
     },
-    alternates: { canonical: 'https://alugueldegames.com' },
+    alternates: { canonical: 'https://www.alugueldegames.com.br' },
     robots: {
         index: true,
         follow: true,
@@ -87,7 +87,7 @@ const jsonLd = {
     name: 'Aluguel de Games',
     description:
         'Aluguel de equipamentos de entretenimento para festas e eventos',
-    url: 'https://alugueldegames.com',
+    url: 'https://www.alugueldegames.com.br',
     telephone: '+551142377766',
     address: {
         '@type': 'PostalAddress',
@@ -98,7 +98,7 @@ const jsonLd = {
     geo: { '@type': 'GeoCoordinates', latitude: -23.5505, longitude: -46.6333 },
     openingHours: 'Mo-Fr 09:00-18:00, Sa 09:00-14:00',
     priceRange: '$$',
-    image: 'https://alugueldegames.com/logo.png',
+    image: 'https://www.alugueldegames.com.br/logo.png',
     sameAs: [
         'https://wa.me/+551142377766',
         'https://instagram.com/alugueldegames',

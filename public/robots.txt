@@ -6,7 +6,7 @@ Allow: /_next/image
 Allow: /_next/static
 
 # Sitemap
-Sitemap: https://www.alugueldegames.com/sitemap.xml
+Sitemap: https://www.alugueldegames.com.br/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

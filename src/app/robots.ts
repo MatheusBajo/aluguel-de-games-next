@@ -21,7 +21,7 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
             },
         ],
-        sitemap: 'https://alugueldegames.com/sitemap.xml',
-        host: 'https://alugueldegames.com',
+        sitemap: 'https://www.alugueldegames.com.br/sitemap.xml',
+        host: 'https://www.alugueldegames.com.br',
     };
 }

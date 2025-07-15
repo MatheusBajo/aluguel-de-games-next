@@ -17,7 +17,7 @@ export function generateMetaTags({
                                      keywords = [],
                                  }: MetaTagsProps) {
     const siteName = 'Aluguel de Games';
-    const defaultImage = 'https://www.alugueldegames.com/og-image.jpg';
+    const defaultImage = 'https://www.alugueldegames.com.br/og-image.jpg';
 
     return {
         title: `${title} | ${siteName}`,

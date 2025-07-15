@@ -6,7 +6,7 @@ import { MetadataRoute } from 'next';
 import { getCatalog } from '@/lib/catalog.server';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://alugueldegames.com';
+    const baseUrl = 'https://www.alugueldegames.com.br';
 
     // Páginas estáticas
     const staticPages = [
