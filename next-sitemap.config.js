@@ -5,4 +5,5 @@ module.exports = {
   generateRobotsTxt: false, // Já temos um robots.txt customizado
   generateIndexSitemap: false,
   outDir: 'public',
+  trailingSlash: true,
 }

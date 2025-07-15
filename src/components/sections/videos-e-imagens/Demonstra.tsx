@@ -18,33 +18,33 @@ const mediaItems: MediaItem[] = [
         id: '1',
         type: 'video',
         src: '/demonstra/VID-20230928-WA0025.mp4',
-        title: 'Danilo Gentili - Pinball',
+        title: 'Evento',
         preserveAspect: false
-    },
-    {
-        id: '2',
-        type: 'video',
-        src: '/demonstra/VID-20231020-WA0026.mp4',
-        title: 'Evento Especial',
-    },
-    {
-        id: '3',
-        type: 'image',
-        src: '/carousel/compressed/PinballDaniloGentili.webp',
-        title: 'Pinball Premium - Danilo',
-        preserveAspect: true
     },
     {
         id: '4',
         type: 'video',
         src: '/demonstra/WhatsApp Video 2021-08-09 at 11.57.30.mp4',
-        title: 'Festa Corporativa',
+        title: 'Evento',
+    },
+    {
+        id: '3',
+        type: 'image',
+        src: '/carousel/compressed/PinballDaniloGentili.webp',
+        title: 'Aniversário Danilo Gentili - Pinball 007',
+        preserveAspect: true
+    },
+    {
+        id: '2',
+        type: 'video',
+        src: '/demonstra/VID-20231020-WA0026.mp4',
+        title: 'Máquina de Dança',
     },
     {
         id: '5',
         type: 'video',
         src: '/demonstra/WhatsApp Video 2023-10-04 at 17.45.14 - Copia.mp4',
-        title: 'Fliperama Clássico',
+        title: 'Pinballs e Fliperamas',
     },
     {
         id: '6',
@@ -56,19 +56,19 @@ const mediaItems: MediaItem[] = [
         id: '7',
         type: 'video',
         src: '/demonstra/Vídeo do WhatsApp de 2024-11-13 à(s) 17.19.45_c9e99fd1.mp4',
-        title: 'Diversão Garantida',
+        title: 'Máquina de Martelo',
     },
     {
         id: '8',
         type: 'image',
         src: '/demonstra/photo_4997175938043194978_y.webp',
-        title: 'Momento Especial',
+        title: 'Máquina de Pegar Bixinho',
     },
     {
         id: '9',
         type: 'video',
         src: '/demonstra/20250405_165640.mp4',
-        title: 'Lançamento 2025',
+        title: 'Máquina de Martelo',
     }
 ];
 

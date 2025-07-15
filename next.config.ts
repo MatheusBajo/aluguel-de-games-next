@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     },
     // Se for hospedar no GitHub Pages
     // basePath: '/aluguel-de-games-proj',
-    // trailingSlash: true,
+    trailingSlash: true,
     eslint: {
         ignoreDuringBuilds: true,
     },

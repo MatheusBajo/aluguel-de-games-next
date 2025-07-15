@@ -7,24 +7,31 @@ declare global {
 }
 
 /**
- * Envia evento para o Google Tag Manager
+ * Função genérica para enviar eventos para a camada de dados do GTM.
+ * @param eventName - O nome do evento que será usado no acionador do GTM.
+ * @param eventData - Um objeto com todos os parâmetros a serem enviados.
  */
-export function trackEvent(eventName: string, parameters?: Record<string, any>) {
-    if (typeof window !== 'undefined' && window.dataLayer) {
-        window.dataLayer.push({
-            event: eventName,
-            ...parameters
-        });
-    }
+export function trackEvent(eventName: string, eventData: Record<string, any>) {
+    // Garante que o dataLayer exista no objeto window
+    window.dataLayer = window.dataLayer || [];
+
+    // Envia o objeto para a camada de dados.
+    // A chave 'event' é o que o GTM usa para identificar um evento.
+    // O '...eventData' adiciona todos os outros parâmetros que enviamos.
+    window.dataLayer.push({
+        'event': eventName,
+        ...eventData
+    });
 }
 
 /**
- * Rastreia cliques no WhatsApp
+ * Função específica para rastrear cliques de WhatsApp.
+ * @param location - String que identifica o local do clique no site.
+ * @param additionalData - Quaisquer outros dados a serem enviados.
  */
 export function trackWhatsAppClick(location: string, additionalData?: Record<string, any>) {
     trackEvent('whatsapp_click', {
         click_location: location,
-        timestamp: new Date().toISOString(),
         ...additionalData
     });
 }

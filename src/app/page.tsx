@@ -98,7 +98,7 @@ const jsonLd = {
     geo: { '@type': 'GeoCoordinates', latitude: -23.5505, longitude: -46.6333 },
     openingHours: 'Mo-Fr 09:00-18:00, Sa 09:00-14:00',
     priceRange: '$$',
-    image: 'https://www.alugueldegames.com.br/logo.png',
+    image: 'public/Logo-Aluguel-de-games.png',
     sameAs: [
         'https://wa.me/+551142377766',
         'https://instagram.com/alugueldegames',
