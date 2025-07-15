@@ -1,0 +1,749 @@
+Organizado
+├── Jogos Eletrônicos
+│   ├── Carrinho Infantil
+│   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 15.41.49_1f84fb15.webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.24.webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.28 (1).webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.28.webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.29.webp
+│   │   ├── dd6b636e-297a-43f3-b9c5-29c6d89d2c0b.webp
+│   │   ├── metadata.json
+│   │   └── photo_5024261350431501412_y.webp
+│   ├── Consoles
+│   │   ├── Atari 2600
+│   │   │   ├── 0137c481-a10e-4971-9162-33fb53866b86 - Copia.webp
+│   │   │   ├── 0137c481-a10e-4971-9162-33fb53866b86.webp
+│   │   │   ├── 0d74664e-cb37-4c62-a4ad-a29d12703b64.webp
+│   │   │   ├── 90850327-067e-4060-b928-0d0270601443.webp
+│   │   │   ├── Atari 3.webp
+│   │   │   ├── Atari.webp
+│   │   │   ├── Atarii.webp
+│   │   │   ├── Estação Atari  Tv 32 e Pedestal = 0,70 x 0,40.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 15.42.07_7add15ca.webp
+│   │   │   ├── f7f4e8e5-3f61-4950-8920-4eaef185c1e7.webp
+│   │   │   ├── metadata.json
+│   │   │   └── photo_4902244877195127391_y.webp
+│   │   ├── Nintendo
+│   │   │   ├── Nintendo Wii
+│   │   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.23.30_6fb94b7f.jpg
+│   │   │   │   └── metadata.json
+│   │   │   └── category.json
+│   │   ├── Playstation
+│   │   │   ├── Playstation 3
+│   │   │   │   ├── Estações de Games.webp
+│   │   │   │   └── metadata.json
+│   │   │   ├── Playstation 4
+│   │   │   │   ├── 516d5de9-5168-421d-a0c3-de7e5992e472.webp
+│   │   │   │   ├── ccafe0f0-8af4-4f7c-a8f9-5844e22a69e8.webp
+│   │   │   │   └── metadata.json
+│   │   │   ├── Playstation 5
+│   │   │   │   ├── 0300f3ac-67aa-4b2d-9020-e5d0a9bd38e6.webp
+│   │   │   │   ├── 1a2c5fd7-e359-4e15-a687-00e875fcd2cb.webp
+│   │   │   │   ├── 2420b79b-94ac-47fe-a169-1639dc75437f.webp
+│   │   │   │   ├── 65099052-a118-4c4d-bdd7-db1e61954385.webp
+│   │   │   │   ├── 71d1f1f6-4123-45d8-9bc2-a6f6aba8e973.webp
+│   │   │   │   ├── 92863bfb-3a04-40fa-8b14-478de2a64342.webp
+│   │   │   │   ├── Estação Play 5 0,75 Larg (Tv32)  x 0,40 Comp x 1,95 Altura.webp
+│   │   │   │   ├── Videos Play5
+│   │   │   │   │   ├── document_5147916662472704779.mp4
+│   │   │   │   │   └── document_5147916662472704784.mp4
+│   │   │   │   ├── a643bdec-aba3-4c11-855c-de0d1096d92c.webp
+│   │   │   │   ├── b2719ad9-0d6b-48d4-8fa5-f4691a92c945.webp
+│   │   │   │   ├── d44bdacd-84bd-4b26-a07f-d0f527628e06.webp
+│   │   │   │   ├── d6e7c07a-ca9d-4329-bb2b-6a2ad3ea5b0f.webp
+│   │   │   │   ├── dbea34fb-8e48-4ffa-8091-b4ab8d9571b3.webp
+│   │   │   │   ├── manual
+│   │   │   │   │   ├── video tutorial playstation 5 - versão lenta.mp4
+│   │   │   │   │   └── video tutorial playstation 5 - versão rapida.mp4
+│   │   │   │   ├── metadata.json
+│   │   │   │   ├── photo_5006081002975636827_y.webp
+│   │   │   │   ├── photo_5006081002975636828_y.webp
+│   │   │   │   ├── photo_5006081002975636852_y.webp
+│   │   │   │   ├── photo_5006081002975636854_y.webp
+│   │   │   │   ├── photo_5008321507025333276_y.webp
+│   │   │   │   └── photo_5147916662928944180_y (1).webp
+│   │   │   ├── Rock Band
+│   │   │   │   ├── 0,75 Larg (Tv32)  x 2,00 Comp x 1,95 Altura.webp
+│   │   │   │   ├── 3e767f5c-e617-4d69-bebd-573e4eb030ad.webp
+│   │   │   │   ├── Rock Band (Kit Bateria + Guitarra + Microfone + 1 Jogo) - Cópia.webp
+│   │   │   │   ├── Rock Band.webp
+│   │   │   │   ├── Tutorial.mp4
+│   │   │   │   └── metadata.json
+│   │   │   └── category.json
+│   │   ├── Xbox
+│   │   │   ├── Xbox 360
+│   │   │   │   ├── WhatsApp Video 2025-05-02 at 15.06.46.mp4
+│   │   │   │   ├── Xbox.webp
+│   │   │   │   ├── dbe6a384-cdb1-4b0b-96b9-f52b4b626829.webp
+│   │   │   │   └── metadata.json
+│   │   │   └── Xbox One
+│   │   │       ├── 004c1b73-0eaa-4323-8032-74f26521d6bf.webp
+│   │   │       ├── 165df83e-f4aa-4cfd-80f1-4e07db6f45fa.webp
+│   │   │       ├── 1a684bc2-2b3f-4028-b803-dab4aa245c38.webp
+│   │   │       ├── IMG-20170817-WA0036.webp
+│   │   │       ├── WhatsApp Video 2025-02-06 at 11.19.28.mp4
+│   │   │       ├── a620791c-1146-419c-82f7-697f086d820b.webp
+│   │   │       ├── a98cc450-e344-4ccc-b96b-a80ba48d7eda.webp
+│   │   │       ├── document_5161669444107240160 (1).mp4
+│   │   │       ├── ffc79197-fa28-4da4-843c-90f3d5294547.webp
+│   │   │       ├── metadata.json
+│   │   │       └── photo1693751359.webp
+│   │   └── category.json
+│   ├── Fliperamas
+│   │   ├── Fliperama 11.000
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.25.27_e11a37fe.jpg
+│   │   │   └── metadata.json
+│   │   ├── Fliperama Infantil de 1.000
+│   │   │   └── metadata.json
+│   │   ├── Fliperama Mesa
+│   │   │   ├── 2f175ad2-5235-44a9-8388-cf98568fdfc4.webp
+│   │   │   ├── 42067a94-7887-43a7-ba86-f0e777824c78.webp
+│   │   │   ├── 66fb6101-02cc-4bd6-98a6-b8dada0b5954.webp
+│   │   │   ├── 8d6fe964-8a1d-4a19-aa50-4eb76938172d.webp
+│   │   │   ├── Altura 0,26  x 0,78 Largura X 0,26 comprimento.webp
+│   │   │   ├── a5538036-2ec5-4b2f-a9cc-89dcc9b4f6a7.webp
+│   │   │   ├── bce1fd6a-9b1a-4103-8fa7-5e39ee0f4fe5.webp
+│   │   │   ├── e729bf4f-26db-497b-b947-12a909d3e501.webp
+│   │   │   └── metadata.json
+│   │   ├── Fliperama SF4 e KOF XIII
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.25.28_f7dd16d3.jpg
+│   │   │   └── metadata.json
+│   │   ├── Fliperama de 1.000
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.25.26_7bf48aec.jpg
+│   │   │   └── metadata.json
+│   │   ├── Fliperama de 5.000
+│   │   │   ├── Fliperama 5.000.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.25.28_4880e5c1.jpg
+│   │   │   └── metadata.json
+│   │   └── category.json
+│   ├── Máquinas
+│   │   ├── Maquina  de Dança
+│   │   │   ├── 0190abcd-2932-41ec-9a72-00a07e4900e2.webp
+│   │   │   ├── 1,02 ALT X 1,42 COM X 60CM LAR.webp
+│   │   │   ├── 16aafa6a-427b-410b-a773-02db8da4320b.webp
+│   │   │   ├── 2M e 10CM por 2M e 10CM.webp
+│   │   │   ├── 9b9553a6-dc0a-4bdd-9f4b-861c31771b1c.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.17.01_85aa83f5.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.17.03_f6b1a5be.webp
+│   │   │   ├── WhatsApp Image 2024-10-09 at 16.54.37.webp
+│   │   │   ├── fefa5c65-fde7-4e9f-82cb-6a1a8e27ca15.webp
+│   │   │   ├── metadata.json
+│   │   │   ├── photo_4954366942442007346_y.webp
+│   │   │   └── photo_5100860356988873700_y.webp
+│   │   ├── Maquina Boxe
+│   │   │   ├── 220 CM Alt X 130 CM Base lateral x 140CM Base Frontal.webp
+│   │   │   ├── 34ea22c7-20b3-48fb-9b1e-a353a92a2f0d.webp
+│   │   │   ├── Boxing Machine.webp
+│   │   │   ├── Imagem do WhatsApp .webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 12.17.13_545d993b.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-03-23 à(s) 14.09.14_78752ef6.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-03-23 à(s) 14.09.53_722ec22b.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-03-23 à(s) 14.10.04_d6238229.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-03-23 à(s) 14.10.17_52776a5f.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-03-23 à(s) 14.10.19_03fa4918.webp
+│   │   │   ├── c42266ad-77b0-42a5-a47e-2f9705cbed0f.webp
+│   │   │   ├── c6bec8b0-c144-4d60-9724-409703a0b27e.webp
+│   │   │   ├── d7f19f37-1938-425e-aa19-874310147d87.webp
+│   │   │   ├── dd0c6a0a-41bc-42dc-8806-26cc215f31c7.webp
+│   │   │   ├── fe9cc9f9-02c9-4013-b484-6c56a8bb126c.webp
+│   │   │   └── metadata.json
+│   │   ├── Maquina Martelo
+│   │   │   ├── 2,55 Alt Com o carrinho.webp
+│   │   │   ├── 6068490e-80b7-4241-9881-ad57b24bf97d.webp
+│   │   │   ├── 72c850af-e2e9-4fe7-a207-0dcec3392063.webp
+│   │   │   ├── 7ed0f20a-7de0-435f-8550-cc9c1462cb30.webp
+│   │   │   ├── 8cbc588b-a580-4c10-a0f2-0a19f864033e.webp
+│   │   │   ├── Hammer2.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-13 à(s) 10.38.09_d4881204.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-29 à(s) 12.04.40_90d802c5.webp
+│   │   │   ├── Martelo de força.webp
+│   │   │   ├── Vídeo do WhatsApp de 2024-08-15 à(s) 16.28.17_aa075270.mp4
+│   │   │   ├── Vídeo do WhatsApp de 2024-11-13 à(s) 17.19.44_4508a747.mp4
+│   │   │   ├── Vídeo do WhatsApp de 2024-11-13 à(s) 17.19.45_c9e99fd1.mp4
+│   │   │   ├── af8cbe4a-9349-44e1-98bc-43932dfb90dc.webp
+│   │   │   ├── c42266ad-77b0-42a5-a47e-2f9705cbed0f.webp
+│   │   │   ├── c6bec8b0-c144-4d60-9724-409703a0b27e.webp
+│   │   │   ├── d7f19f37-1938-425e-aa19-874310147d87.webp
+│   │   │   ├── f72d622b-adbf-4a48-99f6-8fde5688a749.webp
+│   │   │   └── metadata.json
+│   │   ├── Martelo Infantil
+│   │   │   ├── 0d386f6a-55ba-4124-94ab-30febc814f8a.webp
+│   │   │   ├── 0d386f6a-55ba-4124-94ab-30febc814f8aa.webp
+│   │   │   ├── 0ed0fdfd-9b6c-4188-8671-13e8d4ca0961.webp
+│   │   │   ├── 1,10M A X 60CM C x 90CM L.webp
+│   │   │   ├── 2e78f3be-57eb-4ecd-94b2-faabd9f70088.webp
+│   │   │   ├── 4a10456e-54a5-40f6-8364-d64614471c4a.webp
+│   │   │   ├── 8ad89cbc-90a5-43ca-96c6-082c845a4597.webp
+│   │   │   ├── IMG_0239 (1).MOV
+│   │   │   ├── ab023c0c-b465-4933-bcb3-cb41bb2e2b94.webp
+│   │   │   ├── adaa8c21-7c1b-454f-aa2d-d37742c0812e.webp
+│   │   │   ├── document_5078181949957211076.mp4
+│   │   │   ├── fa398973-cf23-4b48-a245-ac47e4560876.webp
+│   │   │   ├── fa398973-cf23-4b48-a245-ac47e45608768.webp
+│   │   │   └── metadata.json
+│   │   ├── Máquina de pegar Bichinho - Azul
+│   │   │   ├── 07072402-646d-494d-a480-445ffb2a2b42.webp
+│   │   │   ├── 200cm Altura x 80cm Largura x 80cm Profundidade - Copia.webp
+│   │   │   ├── 200cm Altura x 80cm Largura x 80cm Profundidade.webp
+│   │   │   ├── 20994d31-eff6-4305-bec7-67f717499043.webp
+│   │   │   ├── 2499c3af-dcc0-486e-81f5-8978a4029aad.webp
+│   │   │   ├── 2d028828-18d8-4ff9-b7de-5090a0fdbf6d.webp
+│   │   │   ├── 2da30029-b513-45d9-8945-5a682118851c.webp
+│   │   │   ├── 5e4e0d73-3b53-46e7-a33d-170e68dac0f7 - Copia.webp
+│   │   │   ├── 5e4e0d73-3b53-46e7-a33d-170e68dac0f7.webp
+│   │   │   ├── Medidas
+│   │   │   │   ├── 2c7853bc-a00e-4828-a2b3-61f3bfeef8da.webp
+│   │   │   │   ├── 4d182158-0f56-4d5b-a651-0b1e6b198cb4.webp
+│   │   │   │   ├── 5cc321a0-b37f-4dfd-9e10-90fd0f0ad294.webp
+│   │   │   │   ├── 6256d2be-f5de-440f-96f1-b4714dc31327.webp
+│   │   │   │   ├── 72d8e297-91a4-41f7-8dd8-645b8bfd75a4.webp
+│   │   │   │   ├── 76381a8c-d90a-40b4-8c30-f1d46a3ff88d.webp
+│   │   │   │   ├── 82b80eeb-6938-43b4-8acc-d93f4f999e8b.webp
+│   │   │   │   └── 9cfac72e-26c0-4691-af45-0c170bcc0bf5.webp
+│   │   │   ├── Vídeos
+│   │   │   │   ├── 20240330_153832.mp4
+│   │   │   │   └── WhatsApp Video 2024-10-21 at 10.30.17.mp4
+│   │   │   ├── b901a61d-8297-4097-a1b1-a210063b391c.webp
+│   │   │   ├── c0aa55f0-f4e8-49e4-a830-a3c669323587.webp
+│   │   │   ├── d56f8058-a8cc-4637-8c16-0abf60132d2c.webp
+│   │   │   ├── da4cfd91-bec5-47ce-a367-6e88057a7951.webp
+│   │   │   ├── metadata.json
+│   │   │   └── photo_4997175938043194978_y.webp
+│   │   ├── Máquina de pegar Bichinho - Grua 2 garras Japonesa
+│   │   │   ├── 02f1f6af-6fc3-4cf6-8deb-8a621216af31.webp
+│   │   │   ├── 2,00 a x 90 comp x 91 larg.webp
+│   │   │   ├── 20230921_090054.webp
+│   │   │   ├── 20230921_090114(0).webp
+│   │   │   ├── 7b1e9e1f-945c-4f90-8fed-f4ffde473310.webp
+│   │   │   ├── Grua.webp
+│   │   │   ├── Máquina Pelucia - Grua Mini Hunting  2,00 a x 90 comp x 91 larg.webp
+│   │   │   ├── cd0fb96f-1847-4f9f-a93d-8fb47c6460f7.webp
+│   │   │   ├── faada4be-90c8-4ea3-bc2d-699eace5e179.webp
+│   │   │   ├── metadata.json
+│   │   │   ├── photo_4943019149219703647_y.webp
+│   │   │   ├── photo_4954429197992962975_y (1).webp
+│   │   │   ├── photo_4954429197992962976_y (1).webp
+│   │   │   ├── photo_4954429197992962978_y.webp
+│   │   │   └── photo_4954429197992962979_y.webp
+│   │   └── category.json
+│   ├── Passa ou Repassa
+│   │   ├── 1ebb7215-217d-4ac5-8ebb-f317f91871ef.webp
+│   │   ├── WhatsApp Video 2024-03-20 at 10.11.39.mp4
+│   │   ├── WhatsApp Video 2025-05-09 at 14.50.36.mp4
+│   │   ├── b4deb4a6-7eaa-49cf-b81f-929c81abea95.webp
+│   │   ├── b880e725-1222-40cf-8c8d-54352fdb4fc3.webp
+│   │   ├── bd6bc21a-9fd9-4354-9ccb-b72f39ec9ca8.webp
+│   │   ├── metadata.json
+│   │   └── photo_5098579003505224659_y.webp
+│   ├── Pinballs
+│   │   ├── Pinball 007
+│   │   │   ├── 02711617-08cc-4c5e-ab88-2a75cf30dd0c.webp
+│   │   │   ├── 2,00 ALT x 0,73 LAR x 1,55 COM.webp
+│   │   │   ├── 43bcb833-d303-45c2-b39e-210308ea2cad.webp
+│   │   │   ├── 4988c927-3efa-445b-a487-c3b7bdabd255.webp
+│   │   │   ├── 5a3b6630-42ea-4527-8b95-391c4680a57f.webp
+│   │   │   ├── 6f685f4d-3878-4f93-a9b7-a7f1dfb633eb.webp
+│   │   │   ├── Pimball  2,00 ou 1,40 cabeça abaixada x 0,73 x 1,55 com pistola ,1,33 sem pistola.webp
+│   │   │   ├── a4ba869c-724f-44cf-8cac-65fa009b762d.webp
+│   │   │   ├── af1368f6-cfa7-4585-91b6-004114f08831.webp
+│   │   │   ├── c6bec8b0-c144-4d60-9724-409703a0b27e.webp
+│   │   │   ├── d7f19f37-1938-425e-aa19-874310147d87.webp
+│   │   │   ├── d99f80f0-659a-491b-bb8b-677b61276e2c.webp
+│   │   │   ├── f91e873f-d31e-466a-a1f0-83ab695e52c2.webp
+│   │   │   ├── metadata.json
+│   │   │   ├── photo_4994960258904468244_y.webp
+│   │   │   └── photo_5024261350431501418_y.webp
+│   │   ├── Pinball Capcom Football
+│   │   │   ├── 0792d067-5b17-4831-b556-c8b726777a29.webp
+│   │   │   ├── 1,86 altura x 0,71 largura x 1,40 comprimento.webp
+│   │   │   ├── 4c899151-2724-40f9-ac6b-a5b8833e5f97.webp
+│   │   │   ├── 5e540836-4a13-4c7a-a242-9c0d4b77a371.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-01 à(s) 15.57.47_353ba557.webp
+│   │   │   └── metadata.json
+│   │   ├── Pinball Digital
+│   │   │   ├── 0d2acb31-a8d4-41c5-9bac-635cea4e4f8c.webp
+│   │   │   ├── 0d386f6a-55ba-4124-94ab-30febc814f8a.webp
+│   │   │   ├── 84a4407e-3ab4-4b82-b203-8a9aae236e19.webp
+│   │   │   ├── 8aa26add-a2cb-4f64-9169-f476ab463219.webp
+│   │   │   ├── Pinball Digital Lar Frete 0,69, Larg Trás 0,80, Comp 1,29, Altura Traz 1,67 , Altura Frente 0,95.webp
+│   │   │   ├── metadata.json
+│   │   │   ├── photo_5134491454155107625_y.webp
+│   │   │   ├── photo_5134491454155107630_y.webp
+│   │   │   └── pinball-digital.webp
+│   │   ├── Pinball Magic
+│   │   │   ├── Pinball Magic II 1,40C x 0,75L x 2A.webp
+│   │   │   ├── WhatsApp Video 2025-05-09 at 14.45.45.mp4
+│   │   │   ├── a541c008-895c-4184-87f1-0cbe0e0d9f9a.webp
+│   │   │   ├── b75fb556-2731-4640-a8b9-1942688510bc.webp
+│   │   │   ├── download.webp
+│   │   │   ├── f8aa289c-2f58-4692-83ae-68121bd105d7.webp
+│   │   │   └── metadata.json
+│   │   └── Pinball No Fear
+│   │       ├── 4b8469fe-48e9-49ce-8c88-f1c3c173812a.webp
+│   │       ├── Pinball No Fear 1,37 x 0,75.webp
+│   │       ├── ae587ff5-0812-4871-a950-43985ea2d477.webp
+│   │       ├── metadata.json
+│   │       └── no-fear-image-1.webp
+│   ├── Simuladores
+│   │   ├── Simulador de Corrida
+│   │   │   ├── 49aaa18c-f061-4c31-a0da-6aeb8ad2a091.webp
+│   │   │   ├── 4c6c22f8-9ba0-4b95-b041-bc6ba217abc5.webp
+│   │   │   ├── 59d93738-135c-42ca-9970-4dc5b4532798.webp
+│   │   │   ├── 5bb3a419-57ff-424d-ad95-66b67e58a041.webp
+│   │   │   ├── 6336a459-f720-431b-81e8-3a68cedab021.webp
+│   │   │   ├── Altura 1,18  Largura 0,78 Comprimento 1,12.webp
+│   │   │   ├── Cowboy da Costela 30-11-2013 Simulador de corrida2.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 15.24.28_9b56e11e.webp
+│   │   │   ├── Simulador de Corrida Van Games c Play 5 , Volante G29,jogo DriveClub, e Tv 32'.webp
+│   │   │   ├── Simulador de Corrida XT Premium Extreme Racing c Ps4  II.webp
+│   │   │   ├── e5e90e1e-6d12-4024-8e01-03c68ee0d402.webp
+│   │   │   ├── f43e8591-7f6e-47e3-8596-28cf10656ff7.webp
+│   │   │   └── metadata.json
+│   │   └── Simulador de Montanha Russa
+│   │       ├── 2,05 Com 1,26 Larg 0,70 Alt.webp
+│   │       ├── Simulador Montanha Russa 2,05 m 1,40m altura 90 cm.webp
+│   │       ├── Tutorial Rilix
+│   │       │   ├── Como Ligar Rilix.mp4
+│   │       │   ├── WhatsApp Video 2023-11-22 at 14.53.50.mp4
+│   │       │   └── Óculus Rilix.mp4
+│   │       ├── b202a4d3-4969-4643-81ae-380d8c37d7c3.webp
+│   │       ├── cenarios021280x888.webp
+│   │       ├── metadata.json
+│   │       ├── photo_5158873438033652546_y.webp
+│   │       ├── photo_5158873438033652549_y.webp
+│   │       ├── photo_5158873438033652559_y.webp
+│   │       └── photo_5158873438033652574_y.webp
+│   └── category.json
+├── Jogos de Mesa
+│   ├── Air Games
+│   │   ├── Air Game Infantil
+│   │   │   ├── 051a4ada-5d6f-4a75-a35f-e17e310a974f.webp
+│   │   │   ├── 1,72 x 0,88 c 69.webp
+│   │   │   ├── 8e1dedb1-6050-429f-8585-878efd63a1a4.webp
+│   │   │   ├── Air Game Infantil (8).webp
+│   │   │   ├── Air Game Infantil.webp
+│   │   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 15.24.27_00b32b97.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.21.08_7437351e.jpg
+│   │   │   ├── a1a5308f-9f7e-426b-b517-1f6d7debbd33.webp
+│   │   │   ├── document_5078181949957211071.mp4
+│   │   │   ├── f290aa2a-e4e1-4ad1-98fb-24c5883fe054.webp
+│   │   │   └── metadata.json
+│   │   ├── Air Game Quântico
+│   │   │   ├── 1,90 x 0,95 c 75 cm.webp
+│   │   │   ├── 2fd4c5b7-87fc-49a4-afc8-c488fdaeb482.webp
+│   │   │   ├── 3c3b64c9-48ab-480a-b479-55dad9b75860.webp
+│   │   │   ├── 44f23c65-1774-4422-805f-11c8da5b4b3f.webp
+│   │   │   ├── 4c751133-b316-491a-9499-d616b873301e.webp
+│   │   │   ├── 541bd6e2-92cc-46aa-ad34-60adc954c15b.webp
+│   │   │   ├── 8b32c7b3-d8c9-4429-94f9-0dabc057ce23.webp
+│   │   │   ├── Air Game Infantil (5).webp
+│   │   │   ├── Air Game Quantico 1,90 comp x 0,75 alt x 97,5 larg.webp
+│   │   │   ├── a5eb19c4-6e63-4e46-90be-d1ffeec9ac54.webp
+│   │   │   ├── fb47819d-8082-4230-a2e6-359d53d6f37f.webp
+│   │   │   ├── metadata.json
+│   │   │   └── photo_5015252811146963999_y (1).webp
+│   │   ├── Air Game Super Metal
+│   │   │   ├── 11b33e2d-f618-433d-a3c6-0d924fda06e3.webp
+│   │   │   ├── 1a7a9386-3f4b-4f26-8cd6-a3b982288ea8.webp
+│   │   │   ├── 2,00 x 1,00 c 77 cm altura.webp
+│   │   │   ├── 5153a9b9-0a4a-454a-a431-2f11e4a75214.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.21.09_234ec636.jpg
+│   │   │   ├── WhatsApp Video 2025-05-30 at 16.04.38.mp4
+│   │   │   └── metadata.json
+│   │   ├── Air Game Tradicional
+│   │   │   ├── 63e0b609-e189-453d-9587-5daa902128b3.webp
+│   │   │   ├── Air Game Tradicional.webp
+│   │   │   ├── CROQUI 1,87 x 0,93 c 75 cm de altura.webp
+│   │   │   ├── metadata.json
+│   │   │   └── photo_4978776792068369624_y.webp
+│   │   ├── Air Game Tradicional Roxo
+│   │   │   ├── 1,90 x 0,95 c 75 cm de altura.webp
+│   │   │   ├── 33b5fc1a-29c1-42c9-977d-e376ea68222b.webp
+│   │   │   ├── 67f43483-8d10-4fd3-84af-3881e241c6fb.webp
+│   │   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.21.08_6121ce35.jpg
+│   │   │   ├── WhatsApp Video 2025-05-09 at 14.49.50 (1).mp4
+│   │   │   ├── alt 75cm x lar 95cm x com 1.90cm.webp
+│   │   │   ├── b14ed211-575e-428c-a688-27b411b14d3d.webp
+│   │   │   ├── cf3d5fd8-87be-4e69-b5ec-c9d512b0ea32.webp
+│   │   │   ├── e2fad78d-d128-4471-a92b-7c8347e0068f.webp
+│   │   │   ├── fde9bddf-1fd9-43e9-b048-7bdaa6b21f79.webp
+│   │   │   └── metadata.json
+│   │   └── category.json
+│   ├── Basquete
+│   │   ├── 2,00 Alt x 2,00 Comp x 1,23 Lar Fechado 0,85 Comp x 1,23 Lar x 2,00 Alt.webp
+│   │   ├── 2,07 Alt x 1,07 Comp x 2,03 Lar Fechado 0,87 Comp x 1,07 Lar x 2,03 Alt.webp
+│   │   ├── 2b3228bf-a743-47fb-8749-6d7d57b4109e.webp
+│   │   ├── 5900d219-d17f-47b3-89c1-b024691838cf.webp
+│   │   ├── 64523268-c6c4-4833-a2e5-1df4c3fcac70.webp
+│   │   ├── 68429879-bfe5-4759-b657-aa0e9ac9dd5b.webp
+│   │   ├── 98d636df-c148-4c35-9246-833965eb1bad.webp
+│   │   ├── Basquete.webp
+│   │   ├── cf3d5fd8-87be-4e69-b5ec-c9d512b0ea32.webp
+│   │   ├── download.webp
+│   │   ├── metadata.json
+│   │   └── photo_4983406749633588104_y (2).webp
+│   ├── Mesa de Sinuca
+│   │   ├── 051430c2-7b95-449c-852e-c2eda5d15215.webp
+│   │   ├── 07a827fc-7635-4337-b697-8fd45fb84110.webp
+│   │   ├── 1,90 C x 1,20 L x 0,86 A.webp
+│   │   ├── 13991980-44f9-438b-ae52-c7d7152e1f2f.webp
+│   │   ├── 2c7093d5-da42-4565-bdcf-4550d23d5c2a.webp
+│   │   ├── 2f4fdae3-1e6c-4fac-a759-ad4b60b285cb.webp
+│   │   ├── 37544d61-0821-4bf2-97dc-dfa641eddf03.webp
+│   │   ├── 3ca38e46-d27c-463c-bb93-df841e0da852.webp
+│   │   ├── 5648ab7f-3da7-494f-abb7-983388e76efc.webp
+│   │   ├── 5d61ef31-f926-44f3-a49f-a11a45d2b211.webp
+│   │   ├── 5fe71045-5edd-4e68-9f99-26e39160c7ad.webp
+│   │   ├── 612ec8ab-9a5f-4b0e-b2c5-5aead529150d.webp
+│   │   ├── 6496c8fe-1b8c-415c-84c1-19bd446456d0.webp
+│   │   ├── 6c2e3991-023f-4134-817b-65e4ee7c8fff.webp
+│   │   ├── 6da64f46-3853-4f32-9eb8-06fb29115eb2.webp
+│   │   ├── 7677c38e-36cc-453d-b6f8-804b7bec38e6.webp
+│   │   ├── 7a20c025-120d-4c0b-9b09-ec77badb0140.webp
+│   │   ├── Alt 1 x Comp 2.webp
+│   │   ├── Mesa Sinuca Preta s.webp
+│   │   ├── Mesa Snooker 1,90 x 1,20 x 0,86.webp
+│   │   ├── Mesa sinuca Preta.webp
+│   │   ├── WhatsApp Image 2024-10-09 at 16.54.36.webp
+│   │   ├── WhatsApp Image 2024-10-12 at 11.08.54.webp
+│   │   ├── af8e8329-6e9d-41b1-8761-a20207fe9d8f.webp
+│   │   ├── c71c0260-95d7-4e66-9ca6-0bda25008d18.webp
+│   │   ├── cae4f3c3-fb18-4dfe-894a-7c4d3cecbd04.webp
+│   │   ├── d47af906-87d4-4f65-a7b1-d65ea0196498.webp
+│   │   ├── e03741a8-b0a2-4303-b9d6-bcb4e4a377c7.webp
+│   │   ├── f7b75a28-83f3-4af1-9f51-a3496998d49f.webp
+│   │   ├── fbe5e168-b727-4bc7-bd77-01e58922e4e5.webp
+│   │   ├── metadata.json
+│   │   ├── photo_4909125921609460880_y.webp
+│   │   ├── photo_4994960258904468358_y.webp
+│   │   └── photo_5075930150599765280_y.webp
+│   ├── Pebolim
+│   │   ├── 1M Alt x 80 CM Larg x 1,45 Comp.webp
+│   │   ├── 24d32478-f3b7-41c3-ad27-13483f8bc0a0.webp
+│   │   ├── 26062f5a-e2c5-413f-8639-8b8ef3dfcf53.webp
+│   │   ├── 302bf90b-249a-456c-9f1f-0bb8a607441d.webp
+│   │   ├── 4789f3b8-41b5-4306-9bc4-befbef768086.webp
+│   │   ├── 54be92b0-68c1-4c7e-8a57-1c622647bbc2.webp
+│   │   ├── 5af511ff-d261-43ba-a611-104ea8a11c92.webp
+│   │   ├── 5f4a8573-cd9c-475c-946b-76976bee4b84.webp
+│   │   ├── 638393f1-92e7-446e-af0f-055c6191f26e.webp
+│   │   ├── 69c9993e-f505-485d-becf-26171b1a4b29.webp
+│   │   ├── 6a24b13a-bc70-4f42-8341-58532e8f924a.webp
+│   │   ├── 713316e4-49be-4620-b3ec-5756f5aa6979.webp
+│   │   ├── 738fd28e-ed62-47a7-b2f7-847377d3ae90.webp
+│   │   ├── 8316ed73-50e4-41b6-8613-b59f3ab0431d.webp
+│   │   ├── 8375a8f1-9c4f-43ab-94c2-8b6b9db2843d.webp
+│   │   ├── 8ca3214e-5bc4-44d0-9e0a-95b1d6969613.webp
+│   │   ├── 984253a2-6c25-4ee4-a97b-aec0df1efb89.webp
+│   │   ├── Pebolim 0,96 altura x 1,38 largura x 1,41 comprimento x 0,80 sem a cabeça.webp
+│   │   ├── a7348ff3-5bec-40c2-8ea5-b89877ee0a88.webp
+│   │   ├── a82be71d-f6cd-41d6-aa41-69c112ba9b7b.webp
+│   │   ├── af8e8329-6e9d-41b1-8761-a20207fe9d8f.webp
+│   │   ├── b6857410-644f-4ab8-8caf-f7b2d388cc0c.webp
+│   │   ├── ca157bde-a338-42c7-9b94-0f7b4df51356.webp
+│   │   ├── caf659df-91dc-48c5-8174-3125d5f77bbe.webp
+│   │   ├── ce02a009-bb9b-4cb7-a1ae-98aff9cd1978.webp
+│   │   ├── d02ecfe7-ff0e-4c3f-80b4-35c856d5fef7.webp
+│   │   ├── d650b535-e1e8-402c-becb-694242ec37b1.webp
+│   │   ├── de84928c-7d6f-49c8-a8d1-3ffdfb75cd9b.webp
+│   │   ├── e73bd414-ef7a-4391-b54f-9f2506876e08.webp
+│   │   ├── f32c14ba-69f5-4262-adcd-afce64615266.webp
+│   │   ├── f41dde30-84c9-4b24-8dee-4185d839685c.webp
+│   │   ├── fcac5b3c-f679-476c-a0a2-b6bacc8cf3ce.webp
+│   │   ├── metadata.json
+│   │   ├── photo_4978776792068369623_y.webp
+│   │   ├── photo_5017465419384073216_y (1).webp
+│   │   └── photo_5156697650551171863_y.webp
+│   ├── Tamancobol
+│   │   ├── Tamalcobol 0,85 x 0,75 x 1,38.webp
+│   │   ├── Tamancobol 1.webp
+│   │   ├── Tamancobol.webp
+│   │   ├── WhatsApp Image 2024-10-18 at 15.37.06.webp
+│   │   └── metadata.json
+│   ├── Tênis de Mesa
+│   │   ├── 2,74 Comp x 1,52 Larg  x 0,76m Alt.webp
+│   │   ├── 24ded76e-54dc-4258-8421-fbb61f443122.webp
+│   │   ├── 2935b582-6305-4157-b3a2-29b4965a783b.webp
+│   │   ├── 2a3ce1c8-9119-4eff-abd3-292374ccd79f.webp
+│   │   ├── 35a4ff8f-754b-4a0a-8307-f39abee1f6d5.webp
+│   │   ├── 3c51dcd6-7837-48bb-ab1f-91149991586a.webp
+│   │   ├── 4789f3b8-41b5-4306-9bc4-befbef768086.webp
+│   │   ├── 4f0fcab8-997a-4734-8734-7f967f6a7943.webp
+│   │   ├── 5aaae047-8603-4ec2-98ff-99a78c71506b.webp
+│   │   ├── 71fce4dc-b2d8-43cf-9947-ceb50315192c.webp
+│   │   ├── 947058ab-37a6-475b-a965-69956fe63f2a.webp
+│   │   ├── Imagem do WhatsApp de 2024-10-23 à(s) 17.01.17_9f98c638.webp
+│   │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.16.51_0b139e9c.webp
+│   │   ├── Imagem do WhatsApp de 2025-07-14 à(s) 12.33.11_faf3e703.jpg
+│   │   ├── Tênis de mesa (ping-pong).webp
+│   │   ├── a3f4bfea-f125-4bcc-a451-91ca365e5a0e.webp
+│   │   ├── b080ce81-2f6b-403e-9490-1d5eb2eeb129.webp
+│   │   ├── b824c193-aa36-41b6-aa74-39752d718aa9.webp
+│   │   ├── bf2aa5da-162d-4be2-8cf4-3ae2ba9ee04d.webp
+│   │   ├── c59e7298-3a16-44ed-9450-f424dd884d9c.webp
+│   │   ├── fa10e059-f267-4509-be3c-23b8b92e789c.webp
+│   │   ├── fea41683-5dc7-434b-8d99-f46df90887c7.webp
+│   │   ├── metadata.json
+│   │   └── photo_5123199156205235430_y.webp
+│   └── category.json
+├── Pasta X
+│   └── category.json
+├── Piscinas, Infláveis, Cama Elástica, Infantil
+│   ├── Balão Pula-Pula
+│   │   ├── Balão Pula Pula 3x3 mt 2mt altura.webp
+│   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 15.41.57_11419ccb.webp
+│   │   ├── metadata.json
+│   │   ├── photo_5080147228663852098_y.webp
+│   │   └── photo_5080147228663852099_y.webp
+│   ├── Cama Elástica
+│   │   ├── 2,23mt.webp
+│   │   ├── 3,05 mt x 2,50 Altura.webp
+│   │   ├── 85a81d5d-4dbc-4b00-a062-b7cb8e041126.webp
+│   │   ├── bb7c69c0-f10d-466b-b12c-682c639ac676.webp
+│   │   ├── metadata.json
+│   │   ├── photo_5039813787787570057_y.webp
+│   │   └── photo_5039813787787570060_y.webp
+│   ├── Carrinho Infantil
+│   │   ├── Imagem do WhatsApp de 2024-11-12 à(s) 15.41.49_1f84fb15.webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.24.webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.28 (1).webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.28.webp
+│   │   ├── WhatsApp Image 2024-11-14 at 12.31.29.webp
+│   │   ├── dd6b636e-297a-43f3-b9c5-29c6d89d2c0b.webp
+│   │   ├── metadata.json
+│   │   └── photo_5024261350431501412_y.webp
+│   ├── Piscina de Bolinhas Inflável
+│   │   ├── 2MT x 2MT - Copia.webp
+│   │   ├── 2MT x 2MT.webp
+│   │   ├── 3eba4a78-7027-45a7-89e2-5bea34c4a369.webp
+│   │   ├── c9606be1-4c34-4e04-94e7-60dcf11dc1b1.webp
+│   │   ├── metadata.json
+│   │   └── photo_4983406749633588105_y.webp
+│   └── category.json
+├── Projetores & Extras
+│   ├── Mesa Beer Pong
+│   │   ├── Mesa Beer Pong 0,70 Alt x 0,60 Larg x 2,40 Comp.webp
+│   │   ├── metadata.json
+│   │   └── photo_5116257496917453966_y.webp
+│   ├── Mesa Liftime
+│   │   ├── metadata.json
+│   │   └── photo_5132398482232028125_y.webp
+│   ├── Mesa de Carteado
+│   │   ├── 45eca5d8-d6d7-4407-a454-921f53e94f61.webp
+│   │   └── metadata.json
+│   ├── Mesas e Cadeiras
+│   │   ├── 6619580a-7ce2-45f4-9102-9cf57dc892c0.webp
+│   │   ├── 6b06a840-f378-4b9f-b662-c069180a7675.webp
+│   │   ├── Kits de mesa e cadeira.webp
+│   │   └── metadata.json
+│   ├── Plataforma 360°
+│   │   ├── 80a79b5e-e5bb-4f0c-b8d2-09f932fb36da.webp
+│   │   ├── Espaço 2MT x 2MT.webp
+│   │   ├── Plataforma 360º.webp
+│   │   ├── Tutorial Plataforma 360
+│   │   │   └── WhatsApp Video 2023-09-28 at 12.29.36.mp4
+│   │   ├── Videos Plataforma 360
+│   │   │   ├── WhatsApp Video 2023-04-26 at 15.26.24.mp4
+│   │   │   ├── WhatsApp Video 2023-09-28 at 11.27.00 (1).mp4
+│   │   │   ├── WhatsApp Video 2023-09-28 at 11.27.00 (2).mp4
+│   │   │   ├── WhatsApp Video 2023-09-28 at 12.29.25.mp4
+│   │   │   └── WhatsApp Video 2023-09-28 at 12.32.56.mp4
+│   │   ├── metadata.json
+│   │   ├── photo_5053175564189412196_y.webp
+│   │   └── photo_5080147228663852068_y.webp
+│   ├── Projetor
+│   │   ├── Projetor Epson.webp
+│   │   ├── Tela mede 2,00 Larg x 1,50 Altura x 2,50 altura total com pedestal.webp
+│   │   └── metadata.json
+│   └── category.json
+├── Realidade Virtual
+│   ├── Oculus Go
+│   │   ├── 06f3a6c1-7cc6-403b-a416-a175ec1fc801 - Copia - Copia.webp
+│   │   ├── Jogos Go.txt
+│   │   ├── download.webp
+│   │   ├── e978551b-1f03-4bd1-95bc-af47bf540cf9.webp
+│   │   └── metadata.json
+│   ├── Oculus Quest 2
+│   │   ├── 347fdd05-496a-45c0-ac70-7283a83976ec.webp
+│   │   ├── 467ba8e8-45ff-4241-a0ad-3a84c25bf006.webp
+│   │   ├── 6bfd24bb-2bb6-41fe-9db6-e3af7c1726c1.webp
+│   │   ├── 7559e055-f170-4fd1-97b4-406d108b41a3.webp
+│   │   ├── Jogos Quest2.txt
+│   │   ├── Oculus Quest 2 Review_ Budget VR for Everyone - Copia.webp
+│   │   ├── Tutorial Quest
+│   │   │   ├── 1 Clica na [câmera] (ÍCONE ROSA).webp
+│   │   │   ├── 2 [Transmissão].webp
+│   │   │   ├── 3 Conecta no do FireTV.webp
+│   │   │   ├── Alinhando Quest con Fire Stick - Comprimido.mp4
+│   │   │   └── Alinhando Quest con Fire Stick.mp4
+│   │   ├── WhatsApp Video 2023-10-06 at 17.35.18.mp4
+│   │   ├── WhatsApp Video 2024-09-27 at 08.49.30.mp4
+│   │   ├── WhatsApp Video 2025-02-06 at 11.19.27.mp4
+│   │   ├── e8b4d239-a16e-4e6c-bc47-224529f1033d.webp
+│   │   ├── e8e50fac-4288-4b75-9338-0f47bab5fd35.webp
+│   │   ├── f306e986-8b40-40cb-b4e6-d31d0e098b8e.webp
+│   │   └── metadata.json
+│   ├── Playstation VR
+│   │   ├── 7a53ebb6-bcc6-460a-aebc-110c37a5c5f7.webp
+│   │   ├── 80615ef5-d5cc-4da3-94fb-d79cbdc42ed6.webp
+│   │   ├── IMG_20210613_121843435.webp
+│   │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.16.40_d0964494.webp
+│   │   ├── WhatsApp Image 2023-07-01 at 10.50.42.webp
+│   │   ├── WhatsApp Image 2023-07-01 at 11.52.24.webp
+│   │   ├── WhatsApp Video 2023-07-01 at 10.50.44 (1).mp4
+│   │   ├── WhatsApp Video 2023-07-01 at 10.50.44.mp4
+│   │   ├── WhatsApp Video 2023-10-09 at 16.52.44.mp4
+│   │   ├── a3ccf166-c67c-4464-8728-735f50a6ae7f.webp
+│   │   └── metadata.json
+│   └── category.json
+└── Videokês
+    ├── Karaokês
+    │   ├── 060a14b5-1a15-4780-9879-3a75dc1ea62a.webp
+    │   ├── 100dfa00-f947-4147-a052-f0493a126e95.webp
+    │   ├── 1432364b-53cd-4326-a66e-99d9cb235521.webp
+    │   ├── 2c705e3a-6068-477e-8e12-c80f77f8e98c.webp
+    │   ├── 3cbef40e-8b8f-4be8-ab00-a9c32d0815fa.webp
+    │   ├── 40b17ad2-b83c-4a04-9b93-c7354fd0ac9d.webp
+    │   ├── 4262995f-a2b2-49da-a9d4-66115f6fbf32.webp
+    │   ├── 45fe2f9e-fa2f-4bb8-b703-ea3f90732fde.webp
+    │   ├── 47647bf3-ad0a-4f6c-8c11-0db3aa48f459.webp
+    │   ├── 517dada5-894b-4c1d-8323-2d82ff640af4.webp
+    │   ├── 5d5d6406-f6f4-4bac-8cd1-db5e996f9cdb.webp
+    │   ├── 5df0dc11-e9ec-4cfc-b6c4-d15cee997ecd.webp
+    │   ├── 868446e5-4df9-4a1a-a1a2-5e6d08cf225c.webp
+    │   ├── 8f2fc0d4-4af8-4e86-88bf-f5f026ef3f6d.webp
+    │   ├── 9061e058-6397-4596-9ca5-3239257cd5f6.webp
+    │   ├── 95a17739-711e-427b-932f-2a4fd05c16bf.webp
+    │   ├── 963c35ec-e99c-4a26-b6b2-c44067125711.webp
+    │   ├── Caixa KSR pro K812.webp
+    │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.16.53_cad6a7b9.webp
+    │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.16.54_56e7ce10.webp
+    │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.16.56_b45a394a.webp
+    │   ├── Imagem do WhatsApp de 2024-11-18 à(s) 12.16.58_c940d613.webp
+    │   ├── Karaokê 2025
+    │   │   ├── Karaokê Digital Matrix Slim.webp
+    │   │   ├── Karaokê Matrix 30.000.webp
+    │   │   ├── Karaokê Matrix Mesa.webp
+    │   │   ├── Videokê Pop 300.webp
+    │   │   └── metadata.json
+    │   ├── MATRIX C TV.webp
+    │   ├── Matrix com Pedestal.webp
+    │   ├── Mesa.webp
+    │   ├── QR Code
+    │   │   ├── Folha para imprimir POP 300.docx
+    │   │   ├── Lista Músicas Matrix Rps 30.000 músicas
+    │   │   │   ├── Evangélicas (1).webp
+    │   │   │   ├── Folha para imprimir RPS docx.docx
+    │   │   │   ├── Internacional RPS Inter 15d.webp
+    │   │   │   ├── Japonesas 8 (1).webp
+    │   │   │   ├── Lista Músicas Rps Jul-24.cdr
+    │   │   │   ├── QR Codes do camva
+    │   │   │   │   ├── Evangélicas (1).webp
+    │   │   │   │   ├── Internacional RPS Inter 15d.webp
+    │   │   │   │   ├── Japonesas 8 (1).webp
+    │   │   │   │   ├── Lista Músicas Rps Jul-24.cdr
+    │   │   │   │   ├── bts (1).webp
+    │   │   │   │   └── nacional RPS 40m.webp
+    │   │   │   ├── bts (1).webp
+    │   │   │   └── nacional RPS 40m.webp
+    │   │   ├── Lista de Músicas Matrix Slim 12.900 músicas Nacionais, Internacionais, Japonesas e Bts
+    │   │   │   ├── Folha para imprimir matrix slim .docx
+    │   │   │   ├── Internacional Matrix Slim 15D (1).webp
+    │   │   │   ├── Jap 1 ao 8.webp
+    │   │   │   ├── Nacionais Matrix Slim 40M (1).webp
+    │   │   │   ├── Nacionais musica 40m.webp
+    │   │   │   ├── bts (1).webp
+    │   │   │   ├── camva
+    │   │   │   │   ├── Internacional Matrix Slim 15D (1).webp
+    │   │   │   │   ├── Jap 1 ao 8.webp
+    │   │   │   │   ├── Nacionais Matrix Slim 40M (1).webp
+    │   │   │   │   ├── Nacionais musica 40m.webp
+    │   │   │   │   └── bts (1).webp
+    │   │   │   └── ~$lha para imprimir matrix slim .docx
+    │   │   ├── Lista de Músicas Matrix Slim 16.000 músicas Nacionais, Internacionais, Japonesas e Bts
+    │   │   │   ├── BTS.webp
+    │   │   │   ├── Folha para imprimir matrix slim .docx
+    │   │   │   ├── Folha para imprimir matrix slim .pdf
+    │   │   │   ├── Jap 1 ao 8 .webp
+    │   │   │   ├── Lista Internacionais Raf15F Cts 10 (1).webp
+    │   │   │   ├── Lista Nacional Cantor 40P +Cts.webp
+    │   │   │   └── Lista Nacional Musica 40P + Cts (1).webp
+    │   │   ├── Senacsorocaba.mp4
+    │   │   └── Videokê POP 300 c 12.000 músicas_(nacionaisinternacionaisjaponesas)_da Raf até 2023
+    │   │       ├── Cantor Pop 300 - 38 (2).webp
+    │   │       ├── Folha para imprimir POP 300.docx
+    │   │       ├── Internacionais POP 300 (1).webp
+    │   │       ├── Japonesas 7 (1).webp
+    │   │       └── QR Codes
+    │   │           ├── Cantor Pop 300 - 38 (2).webp
+    │   │           ├── Internacionais POP 300 (1).webp
+    │   │           └── Japonesas 7 (1).webp
+    │   ├── QRcodes
+    │   │   ├── Lista Músicas Matrix Rps 30.000 músicas
+    │   │   │   ├── Evangélicas (1).webp
+    │   │   │   ├── Folha para imprimir RPS docx.docx
+    │   │   │   ├── Internacional RPS Inter 15d.webp
+    │   │   │   ├── Japonesas 8 (1).webp
+    │   │   │   ├── Lista Músicas Rps Jul-24.cdr
+    │   │   │   ├── QR Codes do camva
+    │   │   │   │   ├── Evangélicas (1).webp
+    │   │   │   │   ├── Internacional RPS Inter 15d.webp
+    │   │   │   │   ├── Japonesas 8 (1).webp
+    │   │   │   │   ├── Lista Músicas Rps Jul-24.cdr
+    │   │   │   │   ├── bts (1).webp
+    │   │   │   │   └── nacional RPS 40m.webp
+    │   │   │   ├── bts (1).webp
+    │   │   │   └── nacional RPS 40m.webp
+    │   │   ├── Lista de Músicas Matrix Slim 12.900 músicas Nacionais, Internacionais, Japonesas e Bts
+    │   │   │   ├── Folha para imprimir matrix slim .docx
+    │   │   │   ├── Internacional Matrix Slim 15D (1).webp
+    │   │   │   ├── Jap 1 ao 8.webp
+    │   │   │   ├── Nacionais Matrix Slim 40M (1).webp
+    │   │   │   ├── Nacionais musica 40m.webp
+    │   │   │   ├── bts (1).webp
+    │   │   │   ├── camva
+    │   │   │   │   ├── Internacional Matrix Slim 15D (1).webp
+    │   │   │   │   ├── Jap 1 ao 8.webp
+    │   │   │   │   ├── Nacionais Matrix Slim 40M (1).webp
+    │   │   │   │   ├── Nacionais musica 40m.webp
+    │   │   │   │   └── bts (1).webp
+    │   │   │   └── ~$lha para imprimir matrix slim .docx
+    │   │   ├── Lista de Músicas Matrix Slim 16.000 músicas Nacionais, Internacionais, Japonesas e Bts
+    │   │   │   ├── BTS.webp
+    │   │   │   ├── Folha para imprimir matrix slim .docx
+    │   │   │   ├── Folha para imprimir matrix slim .pdf
+    │   │   │   ├── Jap 1 ao 8 .webp
+    │   │   │   ├── Lista Internacionais Raf15F Cts 10 (1).webp
+    │   │   │   ├── Lista Nacional Cantor 40P +Cts.webp
+    │   │   │   └── Lista Nacional Musica 40P + Cts (1).webp
+    │   │   └── Videokê POP 300 c 12.000 músicas_(nacionaisinternacionaisjaponesas)_da Raf até 2023
+    │   │       ├── Cantor Pop 300 - 38 (2).webp
+    │   │       ├── Folha para imprimir POP 300.docx
+    │   │       ├── Internacionais POP 300 (1).webp
+    │   │       ├── Japonesas 7 (1).webp
+    │   │       └── QR Codes
+    │   │           ├── Cantor Pop 300 - 38 (2).webp
+    │   │           ├── Internacionais POP 300 (1).webp
+    │   │           └── Japonesas 7 (1).webp
+    │   ├── Tutorial Instalação Matrix Slim e defeitos
+    │   │   ├── Modo de Reparo - Iniciar o windows normalmente.mp4
+    │   │   ├── Tutorial Antigo.mp4
+    │   │   └── Tutorial Matrix Slim.mp4
+    │   ├── VMP 2500.webp
+    │   ├── aa56e7e2-7272-47d8-ac80-8ce2a401d022.webp
+    │   ├── cd7e3745-aa53-4b09-9694-196162ee7a1e.webp
+    │   ├── d316a022-4a33-4c1f-927a-1bc061b22e08.webp
+    │   ├── d368b80f-c541-4e86-90ab-18aaa4a8ac81.webp
+    │   ├── d490633b-06c5-4a0a-852b-ae9b2705068b.webp
+    │   ├── d9cafb3a-afe9-4084-a1e1-baddf1ed2c59.webp
+    │   ├── dfcd062c-0bd7-4ba4-959c-ffc1b6d85d86.webp
+    │   ├── e8154ba5-5bbc-4dc1-afe6-0805151912fa.webp
+    │   ├── fdeeee10-dc0b-4d70-98b5-d73facbd32f2.webp
+    │   ├── metadata.json
+    │   ├── photo_5026557100645527071_y.webp
+    │   ├── photo_5037336880147967762_y.webp
+    │   ├── photo_5037336880147967763_y.webp
+    │   ├── photo_5039870747643849994_y.webp
+    │   ├── photo_5039918838392663214_y.webp
+    │   └── videoke.webp
+    └── category.json
