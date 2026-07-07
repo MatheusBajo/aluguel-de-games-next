@@ -192,6 +192,60 @@ export function faqPageSchema(items: FaqItem[]) {
     };
 }
 
+export interface ServiceSchemaInput {
+    name: string;
+    description?: string;
+    url: string;
+    /** Ex.: "Aluguel de games para eventos corporativos". */
+    serviceType?: string;
+}
+
+/**
+ * Service (páginas de serviço tipo /empresas). provider = a EntertainmentBusiness
+ * global; areaServed reaproveita BUSINESS.areaServed. Sem preço (gate 1.6).
+ */
+export function serviceSchema(input: ServiceSchemaInput) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: input.name,
+        ...(input.serviceType ? { serviceType: input.serviceType } : {}),
+        ...(input.description ? { description: input.description } : {}),
+        url: input.url.startsWith('http') ? input.url : `${SITE_URL}${input.url}`,
+        provider: {
+            '@type': 'EntertainmentBusiness',
+            '@id': ORGANIZATION_ID,
+            name: BUSINESS.name,
+        },
+        areaServed: BUSINESS.areaServed.map((name) => ({ '@type': 'City', name })),
+    };
+}
+
+export interface HowToStep {
+    name: string;
+    text: string;
+}
+
+/**
+ * HowTo (/como-funciona). Valor = GEO/extração (Google matou o rich result de
+ * HowTo em 2023 — vendido ao dono como AI-friendly, nunca como rich snippet).
+ * Sem `totalTime`/`estimatedCost` inventado.
+ */
+export function howToSchema(input: { name: string; description?: string; steps: HowToStep[] }) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: input.name,
+        ...(input.description ? { description: input.description } : {}),
+        step: input.steps.map((s, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: s.name,
+            text: s.text,
+        })),
+    };
+}
+
 export interface CollectionSchemaInput {
     name: string;
     description?: string;

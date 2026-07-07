@@ -5,14 +5,14 @@ import { WhatsAppCta, PhoneSupportLine } from "@/components/cta/WhatsAppCta";
 import { Counter } from "@/components/ui/Counter";
 
 export const metadata: Metadata = {
-    title: "Sobre Nós - 33 Anos de História desde 1993",
+    title: "Sobre a Aluguel de Games — a mais antiga da Grande SP, desde 1993",
     description:
-        "Conheça a história da Aluguel de Games. Desde 1993 transformando festas e eventos em São Paulo com fliperamas, videokês, realidade virtual e muito mais. Tradição, qualidade e diversão.",
+        "A Aluguel de Games loca fliperamas, videokês, realidade virtual e games para festas e eventos em Osasco e Grande São Paulo desde 1993. Clientes como Bradesco, Spotify, Arnold Classic e Danilo Gentili.",
     alternates: { canonical: "https://www.alugueldegames.com.br/sobre" },
     openGraph: {
-        title: "Sobre a Aluguel de Games - Desde 1993",
+        title: "Sobre a Aluguel de Games — Desde 1993",
         description:
-            "33+ anos transformando festas e eventos em São Paulo. Conheça nossa história, valores e missão.",
+            "A mais antiga do segmento na Grande SP. Nossa história, os clientes reais e como a gente trabalha.",
         url: "https://www.alugueldegames.com.br/sobre",
         siteName: "Aluguel de Games",
         locale: "pt_BR",
@@ -47,17 +47,10 @@ const linhaDoTempo = [
     },
     {
         ano: "Hoje",
-        titulo: "Mais de 60 atrações",
+        titulo: "Dezenas de atrações",
         texto:
-            "Atendemos toda a Grande São Paulo com a mesma paixão de 1993, agora com um catálogo gigantesco e equipe experiente em qualquer tipo de evento.",
+            "Atendemos Osasco e toda a Grande São Paulo com a mesma pegada de 1993, agora com dezenas de atrações no catálogo e equipe experiente em qualquer tipo de evento.",
     },
-];
-
-const valores = [
-    { num: "01", titulo: "Tradição", texto: "Mais de três décadas no mercado, com clientes que voltam geração após geração." },
-    { num: "02", titulo: "Qualidade", texto: "Equipamentos modernos, com manutenção preventiva e suporte disponível se precisar." },
-    { num: "03", titulo: "Atendimento", texto: "Consultor dedicado do primeiro orçamento até a retirada dos equipamentos." },
-    { num: "04", titulo: "Diversão", texto: "Garantia de entretenimento de qualidade para todas as idades em qualquer evento." },
 ];
 
 export default function SobrePage() {
@@ -88,8 +81,8 @@ export default function SobrePage() {
                 <div className="rise-in mt-12 grid gap-12 md:grid-cols-[2fr_1fr] md:gap-20" style={{ animationDelay: '240ms' }}>
                     <p className="font-body text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl">
                         Quando um fliperama ainda era a estrela das esquinas, decidimos levá-lo para
-                        festas e eventos. <strong className="text-foreground font-semibold">{anos} anos depois</strong>, a missão segue a mesma:
-                        criar momentos inesquecíveis com entretenimento de qualidade — agora também
+                        festas e eventos. <strong className="text-foreground font-semibold">{anos} anos depois</strong>, o trabalho segue o mesmo:
+                        levar entretenimento de qualidade pra festa e evento na Grande SP — agora também
                         com VR, simuladores, consoles modernos e dezenas de atrações no catálogo.
                     </p>
 
@@ -153,37 +146,6 @@ export default function SobrePage() {
                     ))}
                     <li className="border-t border-border/50" />
                 </ol>
-            </section>
-
-            {/* ============= VALORES ============= */}
-            <section className="relative mx-auto max-w-6xl px-4 py-24 md:py-32">
-                <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" aria-hidden />
-
-                <div className="relative">
-                    <p className="label-arcade text-pink-400 mb-3">Capítulo 03 · O que nos move</p>
-                    <h2 className="font-display font-extrabold text-4xl md:text-6xl tracking-tight leading-[0.95] mb-16">
-                        Quatro pilares<br />
-                        <span className="italic font-normal text-muted-foreground/80">que sustentam tudo.</span>
-                    </h2>
-
-                    <div className="grid gap-px bg-border/50 md:grid-cols-2 lg:grid-cols-4 rounded-2xl overflow-hidden border border-border/50">
-                        {valores.map((v, i) => (
-                            <article
-                                key={v.num}
-                                className="rise-in relative bg-background p-8 transition-all hover:bg-card/60 group"
-                                style={{ animationDelay: `${i * 80}ms` }}
-                            >
-                                <p className="numeral-huge !text-7xl mb-4 transition-all group-hover:[-webkit-text-stroke-color:_rgba(168,85,247,0.9)]">
-                                    {v.num}
-                                </p>
-                                <h3 className="font-display text-xl font-bold mb-2">{v.titulo}</h3>
-                                <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                                    {v.texto}
-                                </p>
-                            </article>
-                        ))}
-                    </div>
-                </div>
             </section>
 
             {/* ============= PROVA (frase citável + clientes reais) ============= */}

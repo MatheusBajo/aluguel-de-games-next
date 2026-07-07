@@ -57,6 +57,22 @@ export function trackTelClick(surface: string, location?: string) {
     });
 }
 
+/** Taxonomia GA4 (§8): kit_pdf_download — clique no kit de aprovação B2B. */
+export function trackKitPdfDownload(location?: string) {
+    trackEvent('kit_pdf_download', {
+        surface: 'empresas',
+        click_location: location ?? 'empresas_kit',
+    });
+}
+
+/** Taxonomia GA4 (§8): form_submit_b2b — envio do form corporativo. */
+export function trackFormSubmitB2B(porte?: string) {
+    trackEvent('form_submit_b2b', {
+        surface: 'empresas',
+        ...(porte ? { porte } : {}),
+    });
+}
+
 /**
  * Rastreia visualização de produto
  */

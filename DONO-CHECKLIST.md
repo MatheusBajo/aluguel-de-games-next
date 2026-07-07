@@ -60,6 +60,34 @@ o dev aplica.
 16. [ ] **Nº de convidados por Kit** (Teen/Retrô, Confra/SIPAT, Infantil) —
     "ideal pra X convidados". Sem número, a linha não aparece no card.
 
+## Prioridade 2b — empresas (B2B) e páginas novas
+
+Destas depende o quanto a página /empresas e o kit de aprovação convencem o
+financeiro/RH. Nada disso é inventado no site: enquanto não confirmar, o texto
+fica na versão honesta (sem número/dado cravado).
+
+17. [ ] **E-mail do comercial** que aparece no /empresas e no kit. Hoje mostra
+    `contato@alugueldegames.com.br`. É esse ou tem um e-mail comercial/vendas
+    dedicado? (aparece no hero, no form e no kit imprimível).
+18. [ ] **Faturamento B2B** — trabalha com prazo (ex.: pagamento 30 dias após o
+    evento)? Empenho? O site hoje diz só "condições ajustadas ao seu financeiro".
+    Confirmando, dá pra ser específico.
+19. [ ] **Dimensionamento por porte** — a tabela do /empresas sugere faixas de
+    "atrações por nº de participantes" (2-3 até 50 pessoas, 5-7 pra 151-250 etc.)
+    como PONTO DE PARTIDA. Confere se essas faixas batem com o que você faz na
+    prática e, se quiser, me passa m² / nº de tomadas / nº de técnicos por porte
+    pra virar coluna exata (hoje isso é "dimensionado no projeto").
+20. [ ] **Agenda de novembro/dezembro** — qual a janela real pra fechar confra de
+    fim de ano? (o site avisa que lota, sem data específica).
+21. [ ] **Seguro / responsabilidade** — a locação tem cobertura de seguro? O kit
+    NÃO menciona seguro até você confirmar (não afirmamos o que não sabemos).
+22. [ ] **Relatório/fotos pós-evento** — você entrega registro/fotos da ativação
+    pro cliente corporativo prestar contas? O processo do /empresas e o kit citam
+    isso como "se solicitado"; confirma se é padrão.
+23. [ ] **CNPJ + razão social + endereço no kit** — assim que preencher no
+    `business.config.ts` (itens 3 e 13), o kit de aprovação passa a imprimir o
+    bloco legal completo automaticamente (hoje diz "enviados junto com a proposta").
+
 ## Off-site (não é do site, mas é do projeto)
 
 - [ ] Google Business Profile completo (categoria, fotos, horário).

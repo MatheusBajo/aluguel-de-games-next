@@ -22,6 +22,10 @@ const STATIC_ROUTES: Array<{ path: string; priority: number; changeFrequency: En
     { path: '', priority: 1.0, changeFrequency: 'weekly' },
     { path: '/catalogo', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/empresas', priority: 0.9, changeFrequency: 'weekly' },
+    // LPs de intenção (nascem no estágio 4): quanto-custa = gap nº1 do nicho,
+    // festas = LP do público que paga o Ads.
+    { path: '/quanto-custa', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/festas', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/como-funciona', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/sobre', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/galeria', priority: 0.7, changeFrequency: 'monthly' },

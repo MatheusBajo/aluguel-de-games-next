@@ -318,3 +318,111 @@ FAQPage + 4 `<details>`, BreadcrumbList, telefone + wa.me, garantia, vai-bem-em.
 Categoria (pinballs): capsule, CTA acima da dobra, tabela comparativa (3 itens),
 bloco de preço, FAQPage, CollectionPage. Produto sem medida (Karaoke): ficha
 omitida (§1.3). Hub: headings-link + ordem curada NFC.
+
+---
+
+## Estágio 4 — PÁGINAS DE DINHEIRO E CONFIANÇA (SPEC-FINAL-V2 §5/§6) — redesign-v2-fable
+
+Nasceram `/quanto-custa`, `/festas` e `/empresas/kit-aprovacao`; `/empresas`,
+`/como-funciona` e `/sobre` foram elevadas ao brief. Build verde (86 páginas,
++3) + 3 audits verdes (fake/sitemap/raw).
+
+### Páginas
+- **/quanto-custa (nasce):** H1-pergunta "Quanto custa alugar games para festa?"
+  + answer capsule (resposta direta, telefone + 1993, extraível) + 4 fatores
+  (equipamento/data/bairro/combo) + "o que já está incluso" + período da diária
+  na versão honesta SEM número + FAQ de preço (§9.5, 6 perguntas) FAQPage +
+  BreadcrumbList. **Versão B** (sem faixa): nenhum preço assinado (gate 1.6), então
+  a página ENSINA os fatores em vez de cravar R$ — e diz isso ao usuário ("prefiro
+  passar valor fechado a cravar número genérico"). Estado COM-faixa entra sozinho
+  quando o dono assinar.
+- **/festas (nasce, NUNCA-CORTA):** H1 keyword + capsule + duas seções ancoradas
+  `#infantil` e `#adulto` (casam com os chips "vai bem em" do produto e com
+  occasions.ts). Mix = PRODUTOS REAIS via `itemsForOccasion` (OccasionCard em
+  scroll-snap; fileira nunca nasce magra) + link pra categoria + CTA verde surface
+  "festas". Faixa "é empresa? (confra/SIPAT)" → /empresas. FAQ B2C (mistura
+  criança/adulto, apto/elevador, chuva, montagem, antecedência, preço) FAQPage +
+  BreadcrumbList.
+- **/empresas (elevada, máquina B2B §5):** H1 transacional "Aluguel de games para
+  eventos corporativos em SP" (MATA o "que ninguém esquece"). `--glow-scale: .5`
+  aplicado no `<main>`. Answer capsule §9.4 (fatura de locação + e-mail). Gates:
+  (a) **e-mail corporativo VISÍVEL** (`BUSINESS.email`) + `mailto:` com assunto
+  pré-preenchido, no hero/form/CTA; (b) **tabela de dimensionamento** com as 5
+  faixas incl. a **linha 151-250** (colunas: participantes/atrações/perfil/espaço);
+  (c) **kit de aprovação** (bloco + 2 CTAs → /empresas/kit-aprovacao); (d) **FAQ
+  B2B** (NF/fatura de locação, faturamento, homologação, "funcionário opera?",
+  montagem fora de horário, preço) FAQPage; (e) **form B2B Web3Forms**
+  (B2BContactForm); (g) **agenda nov/dez** honesta; (h) **processo com passo
+  pós-evento** (retirada + relatório/fotos). Schema: Service + FAQPage +
+  BreadcrumbList. Removidos os fabricados "1000+ pessoas" e "33+ anos atendendo".
+- **/empresas/kit-aprovacao (nasce):** kit de aprovação interna como **página
+  imprimível** (window.print → PDF), URL estável, **sem e-mail gate**, `noindex`
+  e FORA do sitemap. 2 blocos-página: quem somos + o que inclui + documentação
+  (fatura de locação) + NAP + cronograma + investimento (versão sem-faixa) +
+  próximos passos. GA4 `kit_pdf_download`.
+- **/como-funciona (elevada):** answer capsule + FAQ OPERACIONAL das personas
+  (chuva, sinal/cancelamento, duração/hora extra, elevador/escada, tomada
+  110/220V, horário de chegada da equipe, garantia de substituição) FAQPage +
+  **HowTo** (derivado dos 6 passos; vendido como GEO, não rich result) +
+  BreadcrumbList. Label "press start" trocado.
+- **/sobre (enxuta):** removida a seção "Quatro pilares/valores" (missão/visão =
+  frufru proibido §11/1.7); "Mais de 60 atrações" → "dezenas"; hero reescrito sem
+  "missão"/"inesquecíveis"; título sem "33 anos" hardcoded (não envelhece).
+- **404:** mantida (arcade Insert Coin; atalhos e "Since 1993" ok).
+
+### Forms (gate 1.2)
+- **ContactForm (/contato) consertado:** telefone virou OBRIGATÓRIO, e-mail
+  OPCIONAL (era o inverso — pendência da fase 0); "A gente responde em **1 dia
+  útil**" (SLA sem assinatura, proibido §11) → "em horário comercial"; pós-envio
+  oferece **wa.me pré-preenchido** com os dados do form (o lead não evapora).
+- **B2BContactForm (novo):** Web3Forms (mesma access key), empresa+responsável+
+  e-mail+telefone obrigatórios, porte/tipo/data/cidade; subject "Site B2B — …";
+  pós-envio botão wa.me com prefill do que a pessoa digitou; GA4 `form_submit_b2b`.
+
+### Infra
+- `schema.ts`: + `serviceSchema()` (provider = EntertainmentBusiness global,
+  areaServed, sem preço) + `howToSchema()` (sem totalTime/cost fabricado).
+- `gtm-utils.ts`: + `trackKitPdfDownload` + `trackFormSubmitB2B` (taxonomia §8).
+- `sitemap.ts`: + /quanto-custa + /festas (priority 0.9). kit-aprovacao fora.
+- Componentes novos: `empresas/KitAprovacaoCta` + `empresas/PrintButton`
+  (client só pelo GA4/print), `forms/B2BContactForm`.
+
+### Decisões / ambiguidades resolvidas (sem perguntar, pelo espírito do brief)
+1. **Kit = página imprimível, não PDF binário:** static export + dados legais
+   ([CONFIRMAR] CNPJ/razão social) tornam um PDF fixo pior — o print→PDF respeita
+   os 2 estados (o bloco legal aparece sozinho quando o dono preencher o config).
+   URL estável honrada em /empresas/kit-aprovacao (não `.pdf`, que não casa com
+   route segment do export).
+2. **Dimensionamento honesto:** as faixas de convidados são input do RH; a coluna
+   "atrações" é RANGE-SUGESTÃO ("ponto de partida", a gente ajusta no projeto) —
+   guia profissional defensável, não claim de negócio. m²/carga/tomadas/técnicos
+   exatos NÃO foram fabricados (a spec marca [CONFIRMAR: números]): viram
+   "dimensionado no projeto" + descritor qualitativo de espaço. Checklist item 19
+   deixa o dono transformar em coluna numérica.
+3. **NF/fatura de locação:** explicada como locação de BEM MÓVEL (não NFS-e/ISS —
+   espírito da Súmula Vinculante 31) sem cravar o regime tributário do dono;
+   faturamento/prazo descritos como "ajustável ao seu financeiro" (não fabricar
+   "30 dias"); **seguro NÃO é mencionado** (gate: sem resposta, kit não afirma —
+   checklist item 21).
+4. **/quanto-custa versão B:** sem nenhuma faixa de R$ (gate 1.6) — a página vira
+   um explicador de fatores + snippet/citação IA, que é o valor real do gap nº1.
+5. **/festas âncoras #infantil/#adulto:** batem com `product-content.ts`
+   (occasionChipsFor) e `occasions.ts` (OCCASIONS[].cta.href) — links internos já
+   existentes deixam de 404.
+6. **E-mail:** uso `BUSINESS.email` (contato@) como visível; checklist item 17
+   pergunta se há e-mail comercial/vendas dedicado a trocar.
+
+### Pendências (fora do escopo deste estágio)
+- Kit como PDF binário anexável (se o dono preferir arquivo fixo) — fase futura;
+  hoje print→PDF resolve.
+- Dimensionamento com m²/tomadas/técnicos exatos — depende do dono (checklist 19).
+- QuoteCart/Drawer (carrinho multi-item → wa.me) segue fase 2.
+- /regiao/{osasco,sao-paulo} segue pós-launch (só com 40-60% conteúdo único).
+- /galeria continua a polir (álbuns nomeados) — fora deste estágio.
+
+Build: `npm run build` verde (86 páginas) + audit:fake/sitemap/raw verdes.
+Gates conferidos no HTML exportado: /quanto-custa (H1, capsule, 6 FAQ + FAQPage,
+telefone, BreadcrumbList); /festas (#infantil/#adulto, cards reais, 6 FAQ,
+BreadcrumbList); /empresas (H1 transacional, e-mail visível, linha 151-250,
+Service + FAQPage, kit link); /empresas/kit-aprovacao (noindex, cronograma, fora
+do sitemap); /como-funciona (HowTo, 7 FAQ + FAQPage); /sobre (zero pilares/60).

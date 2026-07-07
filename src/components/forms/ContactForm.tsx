@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { FaPaperPlane } from "react-icons/fa";
+import { FaPaperPlane, FaWhatsapp } from "react-icons/fa";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
 
 const WEB3FORMS_ACCESS_KEY = "6d317f61-9318-4774-942e-ccca86001983";
 
@@ -25,6 +26,7 @@ type FormState = "idle" | "sending" | "success" | "error";
 export default function ContactForm() {
     const [state, setState] = useState<FormState>("idle");
     const [message, setMessage] = useState<string>("");
+    const [waHref, setWaHref] = useState<string>(WHATSAPP_CONFIG.link);
     const formRef = useRef<HTMLFormElement>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,12 +42,20 @@ export default function ContactForm() {
         // Subject personalizado baseado no tipo de evento
         const tipo = (formData.get("tipoEvento") as string) || "Evento";
         const nome = (formData.get("nome") as string) || "";
+        const dataEvento = (formData.get("dataEvento") as string) || "";
+        const local = (formData.get("local") as string) || "";
         formData.append(
             "subject",
             `Site — Orçamento ${tipo}${nome ? ` — ${nome}` : ""}`
         );
         // Nome do remetente no painel
         formData.append("from_name", "Site Aluguel de Games");
+
+        // Pós-envio abre wa.me pré-preenchido (gate 1.2) — o dado não evapora.
+        const waMsg =
+            `Oi! Acabei de mandar o formulário do site${nome ? `, sou ${nome}` : ""}.\n` +
+            `Tipo: ${tipo}\nData: ${dataEvento || "___"}\nBairro/cidade: ${local || "___"}`;
+        setWaHref(`${WHATSAPP_CONFIG.link}?text=${encodeURIComponent(waMsg)}`);
 
         try {
             const response = await fetch("https://api.web3forms.com/submit", {
@@ -104,13 +114,12 @@ export default function ContactForm() {
                     <label htmlFor="email" className="flex items-center gap-2 label-arcade text-cyan-400 mb-2.5">
                         <span className="h-1 w-4 bg-cyan-400" />
                         <span>Email</span>
-                        <span className="text-pink-400">*</span>
+                        <span className="text-muted-foreground/50 normal-case tracking-normal">(opcional)</span>
                     </label>
                     <input
                         id="email"
                         name="email"
                         type="email"
-                        required
                         autoComplete="email"
                         placeholder="voce@email.com"
                         className={inputClass}
@@ -124,11 +133,13 @@ export default function ContactForm() {
                     <label htmlFor="telefone" className="flex items-center gap-2 label-arcade text-cyan-400 mb-2.5">
                         <span className="h-1 w-4 bg-cyan-400" />
                         <span>Telefone / WhatsApp</span>
+                        <span className="text-pink-400">*</span>
                     </label>
                     <input
                         id="telefone"
                         name="telefone"
                         type="tel"
+                        required
                         autoComplete="tel"
                         placeholder="(11) 9 9999-9999"
                         className={inputClass}
@@ -229,19 +240,29 @@ export default function ContactForm() {
                 <div className="text-center sm:text-left">
                     <p className="label-arcade text-cyan-400/80">★ Direto no nosso email</p>
                     <p className="text-xs text-muted-foreground/60 mt-1">
-                        A gente responde em 1 dia útil.
+                        A gente responde em horário comercial.
                     </p>
                 </div>
             </div>
 
             {/* Feedback visual */}
             {state === "success" && (
-                <div role="status" className="flex items-start gap-3 rounded-xl border-2 border-green-500/50 bg-green-500/10 p-4 text-sm">
-                    <CheckCircle2 className="h-5 w-5 shrink-0 text-green-400 mt-0.5" />
-                    <div>
-                        <p className="font-semibold text-green-400">Enviado com sucesso!</p>
-                        <p className="text-green-300/80 mt-0.5">{message}</p>
+                <div role="status" className="rounded-xl border-2 border-green-500/50 bg-green-500/10 p-4 text-sm">
+                    <div className="flex items-start gap-3">
+                        <CheckCircle2 className="h-5 w-5 shrink-0 text-green-400 mt-0.5" />
+                        <div>
+                            <p className="font-semibold text-green-400">Enviado com sucesso!</p>
+                            <p className="text-green-300/80 mt-0.5">{message}</p>
+                        </div>
                     </div>
+                    <a
+                        href={waHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-green-600 to-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:from-green-700 hover:to-green-800 transition-colors"
+                    >
+                        <FaWhatsapp className="h-4 w-4" /> Continuar no WhatsApp (mensagem pronta)
+                    </a>
                 </div>
             )}
 
