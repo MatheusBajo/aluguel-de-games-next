@@ -42,6 +42,16 @@ o dev aplica.
 12. [ ] **Autorização de logos** (Bradesco/Spotify/etc. em texto é seguro;
     logo-wall só com autorização formal).
 13. [ ] **Endereço completo** (rua/CEP) — necessário pro NAP idêntico ao GBP.
+14. [ ] **Fotos nomeadas de evento** pra dobra de prova da home (§3.9): hoje
+    entram Danilo Gentili + Bradesco/Braland (fotos reais) + 1 foto de máquina
+    de boxe sem cliente. Faltam fotos que possamos NOMEAR de **Arnold Classic**
+    e **Spotify** (senão o nome fica só na frase citável, sem card com foto —
+    não colamos nome em foto que não é do evento). Manda foto + ano/escopo.
+15. [ ] **"Mais pedido"/"novo" por produto** — se quiser badge honesta na
+    vitrine, diga quais itens são de fato "mais pedido" ou novidade. Sem isso
+    nenhum card leva badge e a fileira "Chegou no catálogo" fica fora.
+16. [ ] **Nº de convidados por Kit** (Teen/Retrô, Confra/SIPAT, Infantil) —
+    "ideal pra X convidados". Sem número, a linha não aparece no card.
 
 ## Off-site (não é do site, mas é do projeto)
 

@@ -127,3 +127,96 @@ Log append-only: cada estágio registra o que decidiu onde a spec era ambígua.
   junto com /empresas máquina).
 
 Build: `npm run build` verde (export estático, 76 rotas) + 3 audits verdes.
+
+---
+
+## Estágio 2 — HOME V2 + NAVEGAÇÃO (SPEC-FINAL-V2 §3) — redesign-v2-fable
+
+Home reconstruída seção por seção, na ordem da spec. Monolitos
+`HomeShell.tsx`/`Main.tsx`/`StartCarousel.tsx` removidos e substituídos por
+componentes focados em `src/components/home/` compostos no `src/app/page.tsx`.
+
+### Seções entregues
+- **§3.1 Hero** (`HomeHero` server + `HeroCarousel` client): ordem do 1º
+  viewport = badge → H1 → sub → CTA dual → linha tel; carrossel (~52vh) ABAIXO
+  do CTA; counter único = anos desde 1993 (texto no HTML, não animado).
+- **§3.2 TrustStrip** (server): estática, quebra em 2 linhas, NUNCA marquee;
+  desde 1993 + anos + clientes nomeados. Slots omitidos: "milhares de eventos"
+  (sem nº) e "★ nota Google" (sem GBP).
+- **§3.3 AnswerCapsule** (server, HTML cru): copy §9.1 verbatim, telefone e
+  "Desde 1993" no HTML (passa audit:raw / curl-grep).
+- **§3.4 Vitrine por ocasião** (`OccasionRow`/`OccasionCard` + `occasions.ts`):
+  3 fileiras Netflix scroll-snap CSS (infantil/adulta/empresa), fonte =
+  fallback categoria→ocasião (fileira nunca nasce magra) + override
+  `metadata.ocasioes[]`. Card honesto = foto + título + specLine (fallback
+  "Entrega e montagem incluídas") + verde compacto (prefill do produto) +
+  "Ver detalhes". Régua de 7 chips de categoria.
+- **§3.5 Kits** (`KitsSection` + `data/kits.ts`): 3 cards honestos (itens em
+  texto, sem preço/convidados inventado; linhas condicionais).
+- **§3.6 Quanto custa** (`PriceTeaser`, ABERTA): versão B (3 fatores + combo,
+  zero número) + link forte /quanto-custa + CTA verde.
+- **§3.7 Top 10** (`TopToys`): tirado o `ssr:false` (agora `"use client"` que
+  SSR-a; existe no HTML). Contador/estrela já mortos na fase 0.
+- **§3.8 Como funciona** (`HowItWorks`): 4 passos 2×2 + garantia 1 linha (§9.6)
+  + link /como-funciona.
+- **§3.9 Prova FUNDIDA** (`ProofSection`): mata grid de 4 valores + stats; 3
+  cards de evento + 1 vídeo do Demonstra (poster + preload=metadata) +
+  blockquote §9.3 verbatim + numeral de anos + link /sobre.
+- **§3.10 FAQ** (`HomeFaq` + `seo/FaqNative`): 5 `<details>` + FAQPage 1:1
+  (pergunta "quanto custa" ENTRA com resumo + link).
+- **§3.11 CTA final** (`FinalCta`) + **StickyBar** global mobile.
+
+### Navegação
+- `StickyBar` (global, `md:hidden`): WhatsApp (prefill por rota) + Ligar; na
+  home só após 400px de scroll, nas demais rotas de cara. `WhatsAppFloat` virou
+  DESKTOP-only (`hidden md:block`) — nunca 2 barras flutuantes juntas (§11).
+- Header/nav mantido (já ok da fase 0).
+
+### Tokens (§7)
+Adicionados em `globals.css`: `--color-whatsapp(-hover)`, `--color-fact`,
+`--color-surface-fact`, `--trust-accent`, `--glow-scale`, `--text-min`, +
+utilitários `.occasion-scroller` (scroll-snap) e `.hero-lqip`.
+
+### Decisões / ambiguidades resolvidas (sem perguntar, pelo espírito do brief)
+1. **H1 sem opacity:0 no LCP (§3.1):** a antiga `AnimatedHeadline` nascia
+   `opacity:0` e revelava via GSAP — violação explícita da spec. Troquei por
+   H1 server pintado imediato; a "animação letter-by-letter" virou o shine CSS
+   do `.gradient-slide` (fundo, texto sempre visível). LCP protegido.
+2. **Slide 1 server-side + LQIP:** slide 1 = `<img loading="eager"
+   fetchPriority="high">` sobre LQIP base64 (24px, gerado com sharp) inline no
+   HTML; embla só hidrata depois (autoplay só pós-hidratação, não liga em
+   prefers-reduced-motion, para em interação/mouse-enter). Sem JS, fica a foto
+   1. Legenda estática no scrim de todo slide (≥12px). O texto animado
+   letra-a-letra (`AnimatedCarouselText`) saiu do hero (legenda em HTML > efeito).
+3. **"+ Orçamento" (carrinho) → "Ver detalhes":** o QuoteCart/Drawer é estágio
+   posterior (fase 2 da spec). Até lá a ação secundária do card leva ao produto
+   (que hospedará o add-to-cart), sempre COM RÓTULO (nunca ícone solto, §11).
+4. **Fileira "Chegou no catálogo" OMITIDA:** badge "novo" só é honesto com
+   assinatura do dono (item 15 do checklist). Sem dado, não renderiza (§1.3).
+5. **Links pra rotas futuras:** `/quanto-custa` e `/festas` nascem em estágios
+   posteriores do roadmap V2; os links já apontam pro destino final da spec
+   (§3.4/§3.6). Build não quebra (Next não valida href de `<Link>`); até essas
+   páginas existirem, são os únicos 2 links internos que 404 em isolado —
+   intencional (forward-compat). Row adulta "Montar minha festa" → /catalogo
+   (QuoteDrawer é fase 2).
+6. **7 chips de categoria:** Fliperamas, Videokê, VR, Consoles, Máquinas, Jogos
+   de Mesa, Infláveis/Infantil (Pinballs segue no header/footer).
+7. **Prova (§3.9):** só 2 cards têm foto nomeável honesta (Gentili, Bradesco);
+   o 3º é foto real de equipamento SEM cliente falso. Fotos nomeadas de
+   Arnold/Spotify = checklist item 14.
+
+### Pendências (fora do escopo deste estágio)
+- **JS budget (§7):** home em ~201kB First Load JS (TopToys + carrossel +
+  framer). `next/dynamic` (ssr:true) pros blocos abaixo da dobra pra
+  code-split = fase 6 (CWV). LCP já resolvido por arquitetura no hero.
+- **Poster de vídeo real da prova:** hoje usa um frame webp do catálogo como
+  poster; poster próprio (ffmpeg) = fase 6.
+- **OG por template da home:** metadata enxuta; OG 1200×630 por página = fase 6.
+- **/festas, /quanto-custa, QuoteCart/Drawer:** estágios seguintes.
+- Órfãos deixados de propósito (podem ser reusados): `Demonstra.tsx`,
+  `AnimatedHeadline.tsx`, `AnimatedCarouselText.tsx` (não importados mais).
+
+Build: `npm run build` verde (export estático, 83 páginas) + 3 audits verdes
+(fake/sitemap/raw). Gates verificados no HTML: H1 sem opacity:0, capsule +
+telefone + "1993", slide1 eager/fetchPriority + LQIP inline, 5 `<details>` +
+FAQPage, 3 fileiras povoadas (56 cards), trust strip, quanto-custa, sticky bar.

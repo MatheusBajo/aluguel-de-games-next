@@ -6,6 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { globalGraph } from "@/lib/schema";
 import Script from "next/script";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import StickyBar from "@/components/StickyBar";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -87,7 +88,12 @@ export default function RootLayout({
             <div>
                 <Header/>
                 {children}
-                <WhatsAppFloat />
+                {/* Float = DESKTOP only; no mobile quem atende é a StickyBar
+                    (nunca duas barras flutuantes juntas — §11). */}
+                <div className="hidden md:block">
+                    <WhatsAppFloat />
+                </div>
+                <StickyBar />
                 <Footer/>
             </div>
         </ThemeProvider>

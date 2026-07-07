@@ -1,3 +1,6 @@
+"use client";
+// SPEC-FINAL-V2 §3.7: Top 10 SEM `ssr:false` — client component que SSR-a
+// (existe no HTML servido) e hidrata depois. Sem contador/estrela (fase 0).
 import "./top-toys.css";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import {useEffect, useRef, useState} from "react";
