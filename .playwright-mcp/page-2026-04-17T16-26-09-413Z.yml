@@ -1,0 +1,78 @@
+- generic [ref=e5]:
+  - region "Notifications alt+T"
+  - generic [ref=e6]:
+    - complementary [ref=e7]:
+      - button "logo" [ref=e10]:
+        - img "logo" [ref=e11]
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - link [ref=e14] [cursor=pointer]:
+            - /url: /
+            - img [ref=e15]
+          - separator [ref=e17]
+          - link [ref=e18] [cursor=pointer]:
+            - /url: /orcamento/calculadora
+            - img [ref=e19]
+          - link [ref=e21] [cursor=pointer]:
+            - /url: /reservas
+            - img [ref=e22]
+          - link [ref=e24] [cursor=pointer]:
+            - /url: /agenda
+            - img [ref=e25]
+          - separator [ref=e27]
+          - link [ref=e28] [cursor=pointer]:
+            - /url: /contratos
+            - img [ref=e29]
+          - link [ref=e31] [cursor=pointer]:
+            - /url: /produtos
+            - img [ref=e32]
+          - link [ref=e34] [cursor=pointer]:
+            - /url: /kits
+            - img [ref=e35]
+          - link [ref=e37] [cursor=pointer]:
+            - /url: /precos
+            - img [ref=e38]
+          - link [ref=e40] [cursor=pointer]:
+            - /url: /inventario
+            - img [ref=e41]
+          - link [ref=e43] [cursor=pointer]:
+            - /url: /entregas
+            - img [ref=e44]
+          - link [ref=e46] [cursor=pointer]:
+            - /url: /respostas-padrao
+            - img [ref=e47]
+          - separator [ref=e49]
+          - link [ref=e50] [cursor=pointer]:
+            - /url: /database
+            - img [ref=e51]
+        - button "Toggle theme" [ref=e54]:
+          - img
+          - img
+          - generic [ref=e55]: Toggle theme
+    - main [ref=e57]:
+      - generic [ref=e59]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - img [ref=e64]
+            - generic [ref=e68]:
+              - heading "Reservas" [level=1] [ref=e69]
+              - paragraph [ref=e70]: 0 no horizonte de 14 dias
+            - generic [ref=e72]: 0 pendências
+          - generic [ref=e73]:
+            - combobox [ref=e74]:
+              - generic: Próximos 14 dias
+              - img
+            - button [ref=e75]:
+              - img
+        - generic [ref=e77]:
+          - tablist [ref=e79]:
+            - tab "Pendências" [selected] [ref=e80]:
+              - img
+              - text: Pendências
+            - tab "Lista" [ref=e81]:
+              - img
+              - text: Lista
+          - tabpanel "Pendências" [ref=e82]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - generic [ref=e86]: Erro ao carregar pendências
