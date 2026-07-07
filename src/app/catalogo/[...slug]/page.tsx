@@ -4,10 +4,17 @@ import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, collectionPageSchema, productSchema } from "@/lib/schema";
 import { getCatalog, getCategoryItems, getItem } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
-import { ProductInfo } from "@/components/catalogo/ProductInfo";
+import { ProductPanel } from "@/components/catalogo/ProductPanel";
+import { SpecsTable } from "@/components/catalogo/SpecsTable";
+import { OccasionChips } from "@/components/catalogo/OccasionChips";
+import { ProductDescription } from "@/components/catalogo/ProductDescription";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import { CategoryListing } from "@/components/catalogo/CategoryListing";
+import { FaqNative } from "@/components/content/FaqNative";
+import { SetStickyProduct } from "@/components/orcamento/ProductStickyContext";
 import { getCategoryMetadata } from "@/lib/catalog-categories";
+import { resolveSpecs, specsToRows } from "@/lib/catalog-specs";
+import { buildProductCapsule, getProductFaq } from "@/lib/catalog-content";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getImagePath } from "@/lib/image-utils";
@@ -62,7 +69,8 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
             const meta = getCategoryMetadata(slugArr);
             const url = `${baseUrl}/catalogo/${slugArr.join('/')}/`;
             return {
-                title: meta.metaTitle ?? meta.title,
+                // absolute: metaTitle já traz a marca (evita duplo branding do template)
+                title: { absolute: meta.metaTitle ?? meta.title },
                 description: meta.description.slice(0, 160),
                 alternates: { canonical: url },
                 openGraph: {
@@ -110,14 +118,17 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
         ?.trim()
         ?.slice(0, 155) || `Alugue ${item.titulo} para seu evento. Entrega e instalação grátis!`;
 
+    // Título transacional (spec §4.3 + brief): keyword "aluguel" + intenção de festa.
+    const transactionalTitle = `Aluguel de ${item.titulo} para Festas e Eventos`;
+
     return {
-        title: `${item.titulo} - Aluguel de Games`,
+        title: { absolute: `${transactionalTitle} | Aluguel de Games` },
         description: cleanDescription,
         alternates: {
             canonical: url
         },
         openGraph: {
-            title: item.titulo,
+            title: transactionalTitle,
             description: cleanDescription,
             url,
             siteName: 'Aluguel de Games',
@@ -212,83 +223,110 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
         notFound();
     }
 
-    const categoria = item.key.split("/")[0];
+    const segments = item.key.split("/");
+    const categoria = segments[0];
     const categoriaSlug = segmentsToSlug([categoria])[0];
+    const categoriaHref = `/catalogo/${categoriaSlug}/`;
+    const categoriaMeta = getCategoryMetadata([categoriaSlug]);
+    const categoriaLabel = categoriaMeta.breadcrumbName ?? categoria;
 
     // Usa a função centralizada para pegar a URL base
     const baseUrl = getSiteUrl();
-    const productUrl = `${baseUrl}/catalogo/${segmentsToSlug(item.key.split('/')).join('/')}/`;
+    const productUrl = `${baseUrl}/catalogo/${segmentsToSlug(segments).join('/')}/`;
 
     // Todas as imagens para o Schema
     const allImages = item.imagens?.map(
         (img) => `${baseUrl}${getImagePath(item.key, img)}`
     );
 
-    // Schemas server-side no HTML cru: Product+Offer LeaseOut + BreadcrumbList.
-    // aggregateRating continua fora — só com reviews reais (gate binário).
+    // Ficha técnica: specs do metadata + dimensões migradas do nome do arquivo (§4.5).
+    const specs = resolveSpecs(item.specs, item.imagens);
+    const specRows = specsToRows(specs); // mesmas linhas viram additionalProperty (machine-readable)
+
+    // Cápsula + FAQ (do item, ou herdada da categoria — spec §7).
+    const capsule = buildProductCapsule(item.titulo, item.capsule);
+    const faqs = item.faq?.length ? item.faq : getProductFaq();
+
+    // Schemas server-side no HTML cru: Product+Offer LeaseOut + additionalProperty + BreadcrumbList.
+    // aggregateRating continua fora — só com reviews reais (gate binário). FAQPage sai do <FaqNative>.
     const structuredData = productSchema({
         name: item.titulo,
         description: item.descricao?.replace(/[*_#]/g, '').trim(),
         images: allImages,
         url: productUrl,
+        additionalProperty: specRows.map((r) => ({ name: r.label, value: r.value })),
     });
     const crumbs = breadcrumbSchema([
         { name: 'Home', url: '/' },
         { name: 'Catálogo', url: '/catalogo/' },
-        { name: categoria, url: `/catalogo/${categoriaSlug}/` },
+        { name: categoriaLabel, url: categoriaHref },
         { name: item.titulo, url: productUrl },
     ]);
 
     return (
         <>
             <JsonLd data={[structuredData, crumbs]} />
+            {/* Ponte pra StickyBar global nomear o produto no prefill (spec §4.10) */}
+            <SetStickyProduct product={item.titulo} />
 
-            <main className="relative mx-auto max-w-screen-2xl">
+            <main className="relative mx-auto max-w-screen-xl px-4 md:px-6 pb-20">
                 {/* Breadcrumb */}
-                <nav className="px-4 py-4 text-sm">
-                    <ol className="flex items-center gap-2 text-muted-foreground">
+                <nav aria-label="Breadcrumb" className="py-4 text-sm">
+                    <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+                        <li><Link href="/" className="hover:text-foreground transition-colors">Home</Link></li>
+                        <li aria-hidden>/</li>
+                        <li><Link href="/catalogo" className="hover:text-foreground transition-colors">Catálogo</Link></li>
+                        <li aria-hidden>/</li>
                         <li>
-                            <Link href="/">
-                                Home
+                            <Link href={categoriaHref} className="hover:text-foreground transition-colors">
+                                {categoriaLabel}
                             </Link>
                         </li>
-                        <li>/</li>
-                        <li>
-                            <Link href="/catalogo">
-                                Catálogo
-                            </Link>
-                        </li>
-                        <li>/</li>
-                        <li>
-                            {/* Link real da categoria (antes: âncora morta /catalogo#Categoria) */}
-                            <Link href={`/catalogo/${categoriaSlug}/`}>
-                                {categoria}
-                            </Link>
-                        </li>
-                        <li>/</li>
+                        <li aria-hidden>/</li>
                         <li className="text-foreground font-medium">{item.titulo}</li>
                     </ol>
                 </nav>
 
-                {/* Product Content */}
-                <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
-                    {/* Gallery */}
+                {/* Dobra 1: galeria + painel de decisão */}
+                <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
                     <ProductGallery
                         images={item.imagens || []}
                         title={item.titulo}
                         itemKey={item.key}
+                        placeholder={item.placeholder}
                     />
-
-                    {/* Info */}
-                    <ProductInfo
+                    <ProductPanel
                         titulo={item.titulo}
-                        descricao={item.descricao || ""}
-                        categoria={categoria}
+                        capsule={capsule}
+                        categoriaLabel={categoriaLabel}
+                        categoriaHref={categoriaHref}
+                        badges={item.badges}
                     />
                 </div>
 
-                {/* Related Products */}
-                <RelatedProducts categoria={categoria} currentKey={item.key} />
+                {/* Ficha técnica (some se não houver spec) */}
+                <SpecsTable specs={specs} className="mt-14" />
+
+                {/* Vai bem em (ocasião → LP do público) */}
+                <OccasionChips className="mt-14" />
+
+                {/* Sobre o equipamento (descrição markdown do dono) */}
+                <div className="mt-14">
+                    <ProductDescription descricao={item.descricao} titulo={item.titulo} />
+                </div>
+
+                {/* FAQ do item (<details> nativo + FAQPage 1:1) */}
+                <section className="mt-14">
+                    <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight mb-5">
+                        Perguntas frequentes
+                    </h2>
+                    <FaqNative faqs={faqs} />
+                </section>
+
+                {/* Relacionados (curadoria) */}
+                <div className="mt-16">
+                    <RelatedProducts categoria={categoria} currentKey={item.key} />
+                </div>
             </main>
         </>
     );

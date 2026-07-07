@@ -7,6 +7,7 @@ import { localBusinessSchema, websiteSchema } from "@/lib/schema";
 import Script from "next/script";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { StickyBar } from "@/components/orcamento/StickyBar";
+import { StickyProductProvider } from "@/components/orcamento/ProductStickyContext";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -85,13 +86,15 @@ export default function RootLayout({
         <ThemeProvider
             defaultTheme="dark"
         >
-            <div>
-                <Header/>
-                {children}
-                <WhatsAppFloat />
-                <StickyBar />
-                <Footer/>
-            </div>
+            <StickyProductProvider>
+                <div>
+                    <Header/>
+                    {children}
+                    <WhatsAppFloat />
+                    <StickyBar />
+                    <Footer/>
+                </div>
+            </StickyProductProvider>
         </ThemeProvider>
         {/* JSON-LD server-side no HTML cru (LocalBusiness + WebSite) */}
         <JsonLd data={[localBusinessSchema(), websiteSchema()]} />

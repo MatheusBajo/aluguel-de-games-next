@@ -3,6 +3,8 @@ import 'server-only'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { segmentsToSlug } from './slug-utils'
+import type { ProductSpecs } from './catalog-specs'
+import type { FaqEntry } from './schema'
 
 export interface CatalogItem {
     key: string
@@ -10,7 +12,19 @@ export interface CatalogItem {
     descricao?: string
     imagens?: string[]
     ordem?: number
-    // Propriedades admin
+    // ─── Extensão do metadata.json (spec §7). Todos OPCIONAIS: o dono
+    //     preenche via planilha (fase 4). Sem dado, o slot não renderiza.
+    /** Ficha técnica estruturada (dimensões, tomada, jogadores, etc.) */
+    specs?: ProductSpecs
+    /** FAQ específica do item (senão herda a da categoria) */
+    faq?: FaqEntry[]
+    /** Cápsula de resposta própria (senão é gerada a partir do nome/categoria) */
+    capsule?: string
+    /** Selos editoriais (enum controlado) */
+    badges?: ('novo' | 'mais-pedido')[]
+    /** LQIP/cor dominante (data URI) — pipeline sharp da fase 1 */
+    placeholder?: string
+    // Propriedades admin (legado)
     metadata?: any
     path?: string
     images?: string[]

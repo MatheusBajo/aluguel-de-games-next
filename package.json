@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "audit:fake": "! grep -rEn --exclude='*.css' 'sales-utils|98%|reviewCount|ratingValue|locações' src && echo 'audit:fake OK (zero número fabricado)'",
+    "audit:fake": "! grep -rEn --exclude='*.css' 'sales-utils|98%|reviewCount|ratingValue|locações' src && ! grep -rEln '\"locac(oes|ões)\"' public/Organizado && echo 'audit:fake OK (zero número fabricado)'",
     "clean": "node -e \"require('fs').rmSync('.next', { recursive: true, force: true }); require('fs').rmSync('out', { recursive: true, force: true }); console.log('✓ .next e out/ limpos')\""
   },
   "dependencies": {

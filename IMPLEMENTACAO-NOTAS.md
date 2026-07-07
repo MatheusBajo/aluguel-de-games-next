@@ -145,3 +145,115 @@ verificação por build + inspeção do HTML servido.
   hoje /catalogo/* usa surface `category`. Enriquecer na fase 4.
 - `audit:raw` / `audit:sitemap` como scripts de CI = fase 6 (a checagem foi feita à mão aqui).
 - Órfãos Demonstra/TopToys: limpar em passada dedicada.
+
+---
+
+## Estágio 3 — Catálogo + página de produto · 2026-07-08
+
+### O que foi feito
+Reconstrução da PÁGINA DE PRODUTO (maior intenção) na ordem da spec §4 + upgrade
+da LP de categoria (§4 anatomia) + hub /catalogo (§2). Tudo server-first: specs,
+capsule, FAQ, schema e telefone existem no HTML cru.
+
+**Data / contrato (spec §7 "extensão do metadata.json")**
+- `CatalogItem` (catalog.server.ts) ganhou campos OPCIONAIS: `specs`, `faq`,
+  `capsule`, `badges`, `placeholder`. Sem dado, o slot não renderiza (§1.3).
+- `src/lib/catalog-specs.ts`: tipo `ProductSpecs` + `specsToRows` (linhas legíveis
+  E machine-readable) + **migração de DIMENSÃO do nome de arquivo das fotos**
+  (achado §4 passo 5 — dado que o DONO digitou, nunca inventado). Parser
+  conservador (`dimensionFromImages`): só extrai string que começa em token de
+  medida (decimal ou nº+unidade), corta prefixo de nome-de-produto, exige unidade.
+  **14/53 produtos ganham dimensão real hoje**; o resto herda o contrato pro dono
+  preencher (fase 4). `resolveSpecs` nunca sobrescreve dado confirmado com derivado.
+- `src/lib/catalog-content.ts`: FAQ da categoria (6) + do produto (4, herdada) +
+  answer capsules (categoria usa CONTAGEM REAL; produto gera do nome) + chips de
+  ocasião. Respostas honestas: onde faltaria número do dono (horas da diária,
+  política de chuva formal), a copy responde SEM cravar número — nunca inventa.
+
+**Produto** (`catalogo/[...slug]/page.tsx` reescrito)
+- Título transacional `<title>` = "Aluguel de {Produto} para Festas e Eventos |
+  Aluguel de Games" (absolute, sem duplo-branding do template); H1 visível =
+  "Aluguel de {Produto}" (§4.3). OG title idem.
+- Layout: breadcrumb → (galeria | painel de decisão) → ficha técnica → chips
+  "vai bem em" → descrição → FAQ → relacionados.
+- `ProductGallery` REESCRITA (spec §4.2): **scroll-snap CSS nativa** (swipe no
+  touch), controles SEMPRE visíveis (não escondidos em :hover, que o dedo não
+  tem), tap na foto = fullscreen, 1ª imagem `priority` + aspect-square fixo (zero
+  CLS), teclado no lightbox. Framer-motion removido desta superfície.
+- `ProductPanel` (server): categoria linkada + badges + H1 + AnswerCapsule +
+  bloco de decisão (3 fatos verificáveis + garantia colada §9.6 + preço 2-estados
+  honesto "sem card celebrando a ausência" + link /quanto-custa) + CTAs (verde
+  exclusivo). `ShareButton` = ilha client mínima. `ProductDescription` = markdown
+  do dono (omite quando a descrição é só o próprio título).
+- `SpecsTable` (server): `<table>` mono/tabular; linha sem dado some, tabela some
+  se não houver spec. As MESMAS linhas viram `additionalProperty` no Product JSON-LD.
+- Schema: Product + Offer LeaseOut + additionalProperty + BreadcrumbList (server);
+  FAQPage sai do `<FaqNative>` (espelho 1:1). Sem aggregateRating. **JSON-LD
+  validado por parse no export** (5 blocos, todos OK).
+- Sticky com contexto do produto (§4.10): `ProductStickyContext` (provider no
+  layout) + `<SetStickyProduct>` na página → a StickyBar GLOBAL troca o prefill
+  pra surface="product" nomeando o item (progressive: HTML servido traz o prefill
+  de categoria, a hidratação faz o upgrade). Sem segunda barra.
+- `RelatedProducts`: curadoria por IRMÃOS (mesmo pai) + resto da categoria; nunca
+  "quem alugou" (não existe o dado).
+
+**Categoria** (`CategoryListing` reescrita p/ anatomia §4)
+- breadcrumb → H1=keyword → AnswerCapsule (contagem real) → **CTA dual acima da
+  dobra + tel + fora-do-horário** → grid FOTO-first (cards com 1 linha de spec
+  real via `specLine`; fallback "Entrega e montagem incluídas") → tabela
+  comparativa (`CategoryComparisonTable`, só com ≥3 specs, senão OMITE) → como
+  funciona (3 passos) → preço honesto (reusa `PriceBlock`, 2 estados) → FAQ
+  (`FaqNative` → FAQPage) → CTA final. Schema CollectionPage+ItemList+FAQPage+
+  BreadcrumbList completo (verificado no export).
+
+**Hub** (`Catalogo` reescrito, §2): headings LINKADOS às LPs de categoria + ordem
+curada (Jogos Eletrônicos → Videokês → VR → Jogos de Mesa → Projetores →
+Infláveis) + grids foto-first com spec real + capsule + CTA. Contagens reais.
+- `CatalogCard`: prop `specLine` (dimensão real, mono) no lugar do fallback; botão
+  "+ Orçamento" fica pra fase do QuoteCart (card é um `<a>` — botão aninhado é HTML
+  inválido; hoje o card leva pro produto, onde o CTA de orçamento vive).
+
+**Des-fabricação residual**
+- Removido `"locacoes": 185/…` de 5 metadata.json (PS3/4/5, Xbox 360/One) — número
+  fake que ainda SHIPPAVA pro out/ (não era renderizado, mas um crawler leria).
+  `audit:fake` endurecido pra pegar `locacoes|locações` em `public/Organizado`.
+- `/catalogo` metadata: "Mais de 60 equipamentos" (catálogo real tem ~53) → copy
+  sem número.
+
+### Decisões / ambiguidades resolvidas
+1. **Specs = migração honesta, não invenção**: dimensões vêm do nome de arquivo
+   das fotos (o dono digitou). Voltagem/jogadores/idade NÃO são adivinhados — só
+   entram quando o dono preencher `specs` no metadata. Alguns rótulos migrados são
+   imperfeitos ("2,55 Alt Com o carrinho") mas são a medida REAL dele; melhor real
+   e imperfeito que fabricado.
+2. **"11.000 jogos" na copy de categoria** (catalog-categories.ts) mantido: é o
+   nome do produto do dono, já flaggeado no estágio 1; não amplifiquei nem
+   inventei número novo. Rewrite dessa copy = fora do escopo do estágio.
+3. **"+ Adicionar ao orçamento" (§4.4) → "Tirar dúvida no WhatsApp"**: o carrinho
+   global (QuoteCart) é fase 1, ainda não existe. Rótulo honesto e funcional agora;
+   integra no cart quando nascer.
+4. **Tabela comparativa**: célula vazia = em branco (nunca "—", regra §1.3). Hoje
+   só a coluna Dimensões aparece (única spec disponível); jogadores/tomada entram
+   sozinhas quando o dono preencher.
+5. **react-markdown em server component**: funciona no RSC (sem "use client");
+   build valida.
+
+### Verificação (build + raw-HTML do export; sem dev server)
+- `npm run build` verde (85 páginas, estático). `audit:fake` passa (agora inclui
+  metadata público).
+- Produto (pebolim): `<title>` transacional, telefone, capsule, "Ficha técnica" +
+  dimensão real, 4 `<details>`, JSON-LD Product+LeaseOut+additionalProperty+
+  FAQPage+BreadcrumbList (todos parseiam), H1 "Aluguel de Pebolim", chips /festas.
+- Produto sem spec (Atari): ficha técnica OMITIDA (0), FAQ herdada (4), capsule ok.
+- Categoria (jogos-de-mesa): capsule, "Compare os modelos", 6 `<details>`,
+  CollectionPage+ItemList+FAQPage, CTA dual. Sitemap = 78 URLs, zero acento/espaço.
+
+### Pendências pro próximo estágio
+- Fase 4 real: dono preenche `specs` (voltagem/jogadores/idade/peso/porta/elevador)
+  dos 15 top via planilha; pipeline LQIP grava `placeholder` no metadata (galeria
+  já aceita `placeholder`). `badges` (novo/mais-pedido) idem.
+- QuoteCart/QuoteDrawer global (fase 1): então "+ Adicionar ao orçamento" no card e
+  no painel vira ação real de carrinho.
+- Órfãos após o reescrito: `CatalogList.server.tsx` + `CatalogSection.tsx`
+  (o hub não usa mais) + Demonstra/TopToys — limpar em passada dedicada.
+- OG image 1200×630 por template (produto/categoria) = fase 6.

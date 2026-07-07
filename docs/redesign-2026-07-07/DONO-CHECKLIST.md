@@ -38,8 +38,14 @@ Formato: **[ ]** pendente · **[x]** confirmado (data).
 
 ## 5. Specs dos 15 produtos mais pedidos (fase 4)
 - [ ] Planilha-template: dimensões L×A×P, peso, tomada 110/220V, nº jogadores, espaço mínimo,
-  passa em porta de 80cm?, elevador?, itens inclusos. Hoje o card de produto mostra "Entrega
-  e montagem incluídas" no lugar da spec (fallback). (fase 4)
+  passa em porta de 80cm?, elevador?, itens inclusos.
+- **JÁ ESTÁ LIGADO** (estágio 3): a ficha técnica `<table>` + JSON-LD `additionalProperty`
+  leem o campo **`specs`** de cada `public/Organizado/.../metadata.json`
+  (`{dimensoes, peso, tomada, jogadores, idade, espacoMinimo, passaPorta80, elevador, itensInclusos[]}`).
+  Preencher o `specs` = a linha aparece; deixar vazio = a linha some (sem "—", sem buraco).
+- **14 produtos já têm DIMENSÃO** automática, migrada do nome de arquivo das fotos (dado que o
+  dono digitou). Falta o resto: voltagem, jogadores, idade, peso — **só o dono tem**. Onde não há
+  nenhuma spec, a página omite a ficha e o card mostra "Entrega e montagem incluídas" (fallback).
 
 ## 6. Faixas de preço (opcional)
 - [ ] Faixas por categoria OU "a partir de R$ X" — SÓ com compromisso escrito do dono.

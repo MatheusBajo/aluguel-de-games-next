@@ -4,7 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
-import { Truck } from "lucide-react";
+import { Truck, Ruler } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -20,9 +20,11 @@ interface CatalogCardProps {
         categoria?: string;
     };
     index?: number;
+    /** 1 linha de spec real (ex.: dimensões). Server calcula e passa; senão cai no fallback. */
+    specLine?: string;
 }
 
-export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
+export function CatalogCard({ item, index = 0, specLine }: CatalogCardProps) {
     const [imageError, setImageError] = useState(false);
     const categorias = item.key.split("/");
     const categoria = categorias[0];
@@ -85,13 +87,22 @@ export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
                         {item.titulo}
                     </h3>
 
-                    {/* Fato real no lugar do contador fake (specs por produto entram na fase 4) */}
-                    <div className="flex items-center gap-1.5">
-                        <Truck className="h-3.5 w-3.5 text-gray-400 shrink-0" strokeWidth={2} />
-                        <span className="text-xs text-gray-400">
-                            Entrega e montagem incluídas
-                        </span>
-                    </div>
+                    {/* 1 linha de spec real (dimensões) ou fallback honesto */}
+                    {specLine ? (
+                        <div className="flex items-center gap-1.5">
+                            <Ruler className="h-3.5 w-3.5 text-gray-400 shrink-0" strokeWidth={2} />
+                            <span className="text-xs text-gray-400 font-mono tabular-nums line-clamp-1">
+                                {specLine}
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-1.5">
+                            <Truck className="h-3.5 w-3.5 text-gray-400 shrink-0" strokeWidth={2} />
+                            <span className="text-xs text-gray-400">
+                                Entrega e montagem incluídas
+                            </span>
+                        </div>
+                    )}
                 </div>
             </Link>
         </motion.div>

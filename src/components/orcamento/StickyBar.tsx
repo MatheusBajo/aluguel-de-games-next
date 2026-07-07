@@ -17,6 +17,7 @@ import {
     type WhatsAppSurface,
 } from "@/config/whatsapp.config";
 import { trackWhatsAppClick, trackTelClick } from "@/lib/gtm-utils";
+import { useStickyProduct } from "@/components/orcamento/ProductStickyContext";
 
 /** Deriva a superfície de conversão pela rota atual (prefill contextual). */
 function surfaceForPath(pathname: string | null): WhatsAppSurface {
@@ -30,6 +31,7 @@ function surfaceForPath(pathname: string | null): WhatsAppSurface {
 
 export function StickyBar() {
     const pathname = usePathname();
+    const { product } = useStickyProduct();
     const isHome = !pathname || pathname === "/";
     const [visible, setVisible] = useState(!isHome);
 
@@ -44,7 +46,9 @@ export function StickyBar() {
         return () => window.removeEventListener("scroll", onScroll);
     }, [isHome]);
 
-    const surface = surfaceForPath(pathname);
+    // Página de produto → prefill nomeia o item (contexto injetado via ponte).
+    const surface: WhatsAppSurface = product ? "product" : surfaceForPath(pathname);
+    const waHref = buildWhatsAppUrl(surface, product ? { product } : undefined);
 
     return (
         <div
@@ -58,10 +62,15 @@ export function StickyBar() {
         >
             <div className="flex h-14 items-stretch gap-px border-t border-border/60 bg-background/95 backdrop-blur-lg">
                 <a
-                    href={buildWhatsAppUrl(surface)}
+                    href={waHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackWhatsAppClick(surface, { placement: "sticky-bar" })}
+                    onClick={() =>
+                        trackWhatsAppClick(surface, {
+                            placement: "sticky-bar",
+                            ...(product ? { product } : {}),
+                        })
+                    }
                     className="flex flex-[2] items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-base font-semibold text-white"
                 >
                     <FaWhatsapp className="h-5 w-5" aria-hidden />

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     alternates: { canonical: "https://www.alugueldegames.com.br/catalogo" },
     openGraph: {
         title: "Catálogo Completo de Equipamentos para Festas e Eventos",
-        description: "Mais de 60 equipamentos disponíveis para sua festa ou evento corporativo em São Paulo. Entrega, montagem e suporte técnico inclusos.",
+        description: "Fliperamas, videokês, realidade virtual, consoles, pinball e mais para sua festa ou evento corporativo em São Paulo. Entrega, montagem e suporte técnico inclusos. Desde 1993.",
         url: "https://www.alugueldegames.com.br/catalogo",
         siteName: "Aluguel de Games",
         locale: "pt_BR",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "Catálogo - Aluguel de Games SP",
-        description: "Mais de 60 equipamentos para festas e eventos em São Paulo.",
+        description: "Fliperamas, videokês, VR, consoles e mais para festas e eventos em São Paulo. Desde 1993.",
     },
 };
 
