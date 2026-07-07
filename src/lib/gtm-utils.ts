@@ -67,6 +67,21 @@ export function trackProductView(product: {
 }
 
 /**
+ * Rastreia download/visualização do kit de aprovação B2B (taxonomia §8):
+ * kit_pdf_download
+ */
+export function trackKitDownload(additionalData?: Record<string, any>) {
+    trackEvent('kit_pdf_download', { surface: 'kit', ...additionalData });
+}
+
+/**
+ * Rastreia envio do formulário corporativo (taxonomia §8): form_submit_b2b
+ */
+export function trackFormSubmitB2b(additionalData?: Record<string, any>) {
+    trackEvent('form_submit_b2b', { surface: 'empresas', ...additionalData });
+}
+
+/**
  * Rastreia envio de formulário
  */
 export function trackFormSubmit(formName: string, formData?: Record<string, any>) {

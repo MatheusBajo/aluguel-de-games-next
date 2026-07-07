@@ -1,5 +1,9 @@
 # DONO-CHECKLIST — o que só o dono tem (spec §1.8)
 
+> **Versão canônica e completa (priorizada, com as 2h/semana orçadas por semana):
+> `/DONO-CHECKLIST.md` na RAIZ do projeto.** Este arquivo é o registro histórico das
+> fases 1-3; a raiz consolida tudo (fases 1-5) e é o que o dono deve seguir.
+
 As 2h/semana do dono são recurso orçado. Ordem de prioridade abaixo (spec §1.8).
 Cada item liga um trecho que HOJE está omitido ou genérico (regra do fallback §1.3:
 slot sem dado confirmado não renderiza — nada de "—", nada de placeholder cru pro

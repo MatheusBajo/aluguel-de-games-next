@@ -257,3 +257,125 @@ Infláveis) + grids foto-first com spec real + capsule + CTA. Contagens reais.
 - Órfãos após o reescrito: `CatalogList.server.tsx` + `CatalogSection.tsx`
   (o hub não usa mais) + Demonstra/TopToys — limpar em passada dedicada.
 - OG image 1200×630 por template (produto/categoria) = fase 6.
+
+---
+
+## Estágio 4 — Páginas de dinheiro e confiança · 2026-07-08
+
+### O que foi feito
+Reconstrução das páginas de intenção de compra/confiança (spec §5/§6), todas
+server-first: telefone, capsule, tabelas, FAQ e schema existem no HTML cru.
+
+**(a) /quanto-custa (completa)** — resposta direta ~50 palavras (snippet §9.5) +
+`<table>` "O que influencia o preço" (6 fatores: equipamento, nº de itens, data,
+período, região, acesso no local — cada linha diz COMO pesa, nunca QUANTO) +
+"Faixas de referência" com os **2 estados desenhados** (`PRICE_RANGES` em
+schema.ts: null → versão B "como a gente calcula" + "combos saem melhor", zero
+número; preenchido → tabela categoria×"a partir de"). FAQ ampliada (5, incl.
+"por que não tem tabela fixa" e "dá pra ter ideia sem passar dados") + FAQPage.
+
+**(b) /empresas (máquina B2B, rewrite total)** — hero H1 keyword "Aluguel de
+games para eventos corporativos em SP" + sub §5.1 + badge gated (CNPJ ou "desde
+1993 · emitimos nota") + **CTA triplo**: WhatsApp + "Ver kit de aprovação (PDF)"
++ e-mail visível (mailto gated em `CORP_EMAIL`; sem ele, fallback honesto aponta
+pro form "que vai direto pro e-mail" — os 2 estados). AnswerCapsule §9.4.
+**Dimensionamento `<table>`** com a linha 151-250 destacada (gate): mostra Porte
++ Atrações + Mix sugerido (recomendação editorial honesta) + CTA por porte; os
+números logísticos finos (m²/tomadas/técnicos) são [CONFIRMAR] e NÃO renderizam
+como fato ("o fino a gente fecha no orçamento"). Cases nomeados (Bradesco foto,
+Arnold vídeo, Spotify texto) com escopo qualitativo honesto (sem "6 máquinas · 2
+dias" fabricado). Agenda honesta (nov/dez lotam). Processo 4+1 passos (o 5º =
+registro pós-evento [CONFIRMAR]). **FAQ B2B** (`<details>`+FAQPage): NF explica
+locação de bem móvel (LC 116/2003 + Súmula Vinculante 31 STF), pagamento/boleto,
+homologação de fornecedor, operação, montagem fora do horário, shopping/expo —
+**seguro OMITIDO (gate §5.4)** até o dono confirmar. **Form B2B** `ContactFormB2B`
+(Web3Forms, mesmo padrão do ContactForm; campos empresa/tel obrigatório/email/
+data/pessoas; pós-envio = confirmação + botão OPCIONAL "continuar no WhatsApp"; o
+dado não evapora se a aba morrer). GA4 `form_submit_b2b`. Schema Service+FAQPage+
+BreadcrumbList.
+
+**Kit de aprovação** (`/empresas/kit-aprovacao`, item NUNCA-CORTA §5.4) — página
+IMPRIMÍVEL (o RH salva PDF pelo navegador; sem dep HTML→PDF nova). `@media print`
+some header/footer/sticky. Conteúdo: quem somos (desde 1993 = anti-risco), o que
+está incluso, como orçamos (versão sem-faixa), cronograma-modelo, cadastro de
+fornecedor (gated em CNPJ; sem ele, "a gente envia os dados na hora"). Botão
+`KitPrintButton` (client) dispara `window.print()` + GA4 `kit_pdf_download`.
+
+**(c) /como-funciona (rewrite)** — passos numerados (HowTo schema) + a **FAQ REAL
+das personas** em `<details>` (chuva, sinal/cancelamento, hora extra, elevador/
+escada, 110/220V, horário de chegada da equipe, garantia §9.6) + FAQPage. Sinal %
+e prazo de reagendamento = [CONFIRMAR] → resposta honesta sem número. Removidos os
+fakes herdados: "60+ equipamentos", "press start", "em até 1 dia útil".
+
+**(d) /festas (enriquecida)** — página única com âncoras #infantil/#adulto (spec
+§2 modela assim; sub-páginas por ocasião = risco de doorway §11, evitado). Cada
+seção: foto REAL com legenda honesta (infantil = grua+fliperama; adulto = pinball
+do Danilo Gentili, foto real nomeada) + "cobre" (bodas/60-70-80/15 anos/família) +
+4 produtos linkados + CTA. FAQ ampliada (idade, apto/salão, nº de itens×convidados,
+chuva, antecedência) + FAQPage. Índice rápido por âncora.
+
+**(e) /sobre (enxuto)** — REMOVIDA a seção "valores/Quatro pilares/O que nos move"
+(missão/visão/valores = proibido §11) e a linha "a missão segue a mesma". Ficou:
+linha do tempo de fatos datáveis 1993→hoje + frase citável VERBATIM (= home §9.3)
++ contador de anos. 404 ajustada: CTA "Insert Coin" → "Pedir orçamento no WhatsApp"
+(texto humano §7; resto do arcade 404 = assinatura mantida).
+
+**(f) DONO-CHECKLIST.md na RAIZ** — versão mestre priorizada por SEMANA (4×2h):
+sem1 garantia/chuva/sinal/período + CNPJ/e-mail; sem2 Google/NAP/endereço/horário;
+sem3 seguro(gate)/pagamento/dimensionamento/faixas; sem4 specs/galeria/logos/foto.
+Tabela de "interruptores" (cada dado → arquivo+constante). O checklist em `docs/`
+virou pointer pro da raiz (evita drift).
+
+### Infra nova
+- `schema.ts`: `serviceSchema`, `howToSchema`, e constantes gated `CORP_EMAIL`,
+  `PRICE_RANGES` (além de CNPJ/GBP_URL/STREET_ADDRESS/OPENING_HOURS já existentes).
+- `gtm-utils.ts`: `trackKitDownload` (kit_pdf_download) + `trackFormSubmitB2b`
+  (form_submit_b2b) — completam a taxonomia §8.
+- sitemap: +/empresas/kit-aprovacao (79 URLs).
+
+### Decisões / ambiguidades resolvidas
+1. **/festas: página única, não sub-páginas.** A spec §2/§6 modela /festas com
+   âncoras (#infantil/#adulto); §11 proíbe doorway pages. Sub-páginas finas por
+   ocasião seriam thin/doorway → enriqueci a página única com foto+mix+FAQ por
+   seção. Confraternização/SIPAT vive em /empresas (cross-link), não em /festas.
+2. **E-mail corporativo (gate /empresas) sem dado = fallback honesto.** A spec pede
+   "e-mail visível", mas o e-mail é [CONFIRMAR] e a regra §1.3 proíbe placeholder
+   cru pro cliente. Resolvi com `CORP_EMAIL` (null): sem ele, nenhum mailto quebrado
+   — a página aponta pro form B2B ("vai direto pro nosso e-mail"), que é destino
+   real. Marcado como bloqueador nº1 de /empresas no checklist. Vira 1 linha quando
+   o dono der o e-mail.
+3. **Dimensionamento: mix sim, logística não.** Recomendar "fliperama + console +
+   mesa" pra até 50 pessoas é conselho editorial honesto; cravar "~15m² · 2 tomadas
+   · 1 técnico" é dado logístico que só o dono tem (§5.3 [CONFIRMAR]). Tabela mostra
+   o mix + Atrações (faixa) e diz "o fino a gente fecha no orçamento".
+4. **Kit = página imprimível, não .pdf gerado no build.** Gerar PDF fixo exigiria
+   dep HTML→PDF (puppeteer) — a spec §5.4 aceita "PDF placeholder ou página
+   imprimível". A página `/empresas/kit-aprovacao` imprime/salva-PDF pelo navegador,
+   URL estável. PDF fixo no build = pós-launch (checklist).
+5. **NF de locação (LC 116/2003 + SV 31 STF).** Explicação fiscal correta e medida
+   ("locação de bem móvel não gera NFS-e de serviço; emitimos fatura/nota de
+   locação + contrato"), com "se tiver requisito específico, a gente adequa" pra não
+   dar conselho fiscal fechado sobre o regime do dono.
+6. **Seguro = gate binário.** Enquanto o dono não confirmar cobertura, o site NÃO
+   menciona seguro em lugar nenhum (nem FAQ, nem kit). Melhor silêncio honesto que
+   promessa. Vira FAQ nova quando confirmado.
+
+### Verificação (build + raw-HTML do export; sem dev server)
+`npm run build` verde (**86 páginas**, +1 = kit). `audit:fake` passa. Greps no
+out/: cada página nova tem telefone + FAQ `<details>` (empresas 6, como-funciona 7,
+quanto-custa 5, festas 5) + FAQPage. Schema por parse: /empresas = Service+FAQPage+
+BreadcrumbList (+ org/website globais), /como-funciona = HowTo+FAQPage+Breadcrumb,
+todos parseiam. Gates B2B no HTML: "151 a 250", "LC 116/2003", "Súmula Vinculante
+31", form ("Enviar cotação"), e-mail fallback. **Zero** "seguro" na /empresas,
+**zero** missão/visão/valores na /sobre, **zero** "60+ equipamentos"/"press start"
+na /como-funciona. Sitemap = 79 URLs, +/empresas/kit-aprovacao, zero acento/espaço.
+
+### Pendências pro próximo estágio (fase 6)
+- OG 1200×630 por template; `audit:raw`/`audit:sitemap` como scripts de CI (checagem
+  feita à mão aqui); llms.txt já cita as páginas mas pode ganhar as novas seções.
+- Órfãos ainda de pé (limpeza dedicada): `Demonstra`, `TopToys`(+CarouselModal/JSON/
+  CSS), `CatalogList.server`, `CatalogSection`, `ComoFunciona` (seção legada em
+  components/sections, NÃO é a page /como-funciona), `sales`? já morto. O
+  `components/sections/como-funciona/ComoFunciona.tsx` e `videos-e-imagens/Demonstra`
+  não são mais referenciados pelas páginas novas.
+- Kit em .pdf real (build), specs dos 15 top, faixas de preço — dependem do dono.

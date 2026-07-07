@@ -26,6 +26,21 @@ export const OPENING_HOURS: { days: string[]; opens: string; closes: string }[] 
 /** [CONFIRMAR COM DONO: CNPJ] → footer + schema (taxID) + /empresas */
 export const CNPJ: string | null = null;
 
+/**
+ * [CONFIRMAR COM DONO: e-mail corporativo] → gate da /empresas (persona RH com
+ * WhatsApp Web bloqueado). Enquanto null, o mailto NÃO renderiza (regra §1.3);
+ * a página cai no fallback honesto (form B2B + WhatsApp + tel). É o bloqueador
+ * nº1 de /empresas no DONO-CHECKLIST.
+ */
+export const CORP_EMAIL: string | null = null;
+
+/**
+ * [CONFIRMAR COM DONO: faixas de preço por categoria OU "a partir de R$ X"].
+ * SÓ com compromisso escrito do dono (spec §6/§1.2). Enquanto null, /quanto-custa
+ * e a home rodam na VERSÃO B (4 fatores + "combos saem melhor", zero número).
+ */
+export const PRICE_RANGES: { categoria: string; faixa: string }[] | null = null;
+
 const ORG_ID = () => `${getSiteUrl()}/#organization`;
 const WEBSITE_ID = () => `${getSiteUrl()}/#website`;
 
@@ -219,6 +234,55 @@ export function faqPageSchema(faqs: FaqEntry[]) {
             '@type': 'Question',
             name: faq.question,
             acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+    };
+}
+
+/* ------------------------------------------------------------------ */
+/* Service (/empresas — valor GEO, sem promessa de rich result)         */
+/* ------------------------------------------------------------------ */
+
+export function serviceSchema(input: {
+    name: string;
+    description: string;
+    url: string;
+    serviceType?: string;
+}) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: input.name,
+        description: input.description,
+        url: input.url,
+        ...(input.serviceType ? { serviceType: input.serviceType } : {}),
+        provider: { '@id': ORG_ID() },
+        areaServed: [
+            { '@type': 'City', name: 'São Paulo' },
+            { '@type': 'City', name: 'Osasco' },
+            { '@type': 'AdministrativeArea', name: 'Grande São Paulo' },
+        ],
+    };
+}
+
+/* ------------------------------------------------------------------ */
+/* HowTo (/como-funciona — GEO/consistência, NÃO rich result)           */
+/* ------------------------------------------------------------------ */
+
+export function howToSchema(input: {
+    name: string;
+    description?: string;
+    steps: { name: string; text: string }[];
+}) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: input.name,
+        ...(input.description ? { description: input.description } : {}),
+        step: input.steps.map((s, idx) => ({
+            '@type': 'HowToStep',
+            position: idx + 1,
+            name: s.name,
+            text: s.text,
         })),
     };
 }

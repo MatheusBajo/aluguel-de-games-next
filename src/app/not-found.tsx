@@ -320,7 +320,7 @@ export default function NotFound() {
                             variant="primary"
                             className="w-full sm:w-auto border-2 border-green-400 font-black uppercase tracking-widest transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
                         >
-                            Insert Coin · WhatsApp
+                            Pedir orçamento no WhatsApp
                         </WhatsAppCta>
 
                         <Button

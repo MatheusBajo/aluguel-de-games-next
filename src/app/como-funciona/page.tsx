@@ -1,14 +1,29 @@
+// src/app/como-funciona/page.tsx
+//
+// /como-funciona (spec §6): passos numerados (HowTo schema) + a FAQ REAL das
+// personas em <details> nativo (chuva, sinal/cancelamento, hora extra,
+// elevador/escada, 110/220V, horário de chegada da equipe, garantia de
+// substituição) + FAQPage. Onde faltaria número do dono (sinal %, prazo de
+// reagendamento), a resposta é honesta SEM cravar número (regra §1.2). HowTo/
+// FAQPage = valor GEO/consistência, zero promessa de rich result (§6).
 import type { Metadata } from "next";
+import Link from "next/link";
+
+import { AnswerCapsule } from "@/components/content/AnswerCapsule";
+import { FaqNative } from "@/components/content/FaqNative";
 import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, howToSchema, type FaqEntry } from "@/lib/schema";
 
 export const metadata: Metadata = {
-    title: "Como Funciona o Aluguel - Passo a Passo Simples",
+    title: "Como funciona o aluguel de games: passo a passo, chuva, defeito",
     description:
-        "Veja como funciona o aluguel de equipamentos para festas: escolha, orçamento via WhatsApp, entrega, montagem e suporte disponível durante o evento. Tudo simples e sem complicação.",
+        "Como funciona alugar fliperama, videokê e games para a sua festa: do orçamento no WhatsApp à retirada. E as respostas reais: e se chover, e o sinal, hora extra, elevador ou escada, 110 ou 220V, a que horas a equipe chega e a garantia se der defeito.",
     alternates: { canonical: "https://www.alugueldegames.com.br/como-funciona" },
     openGraph: {
-        title: "Como Funciona o Aluguel - Aluguel de Games",
-        description: "Processo simples e transparente. Veja como é fácil ter entretenimento de qualidade no seu evento.",
+        title: "Como funciona o aluguel de games",
+        description:
+            "Do orçamento à retirada, sem letra miúda. E as respostas reais: chuva, sinal, defeito, voltagem e acesso no local.",
         url: "https://www.alugueldegames.com.br/como-funciona",
         siteName: "Aluguel de Games",
         locale: "pt_BR",
@@ -16,165 +31,169 @@ export const metadata: Metadata = {
     },
 };
 
-const passos = [
+const PASSOS: { num: string; titulo: string; texto: string }[] = [
     {
         num: "01",
-        titulo: "Escolha seus equipamentos",
+        titulo: "Você chama no WhatsApp",
         texto:
-            "Navegue pelo nosso catálogo e veja os equipamentos disponíveis. Combine fliperamas, videokês, VR, pinballs e muito mais. Não sabe qual escolher? A gente ajuda a montar o pacote ideal pro tipo de evento e número de convidados.",
+            "Manda a data, o bairro e o que você tá pensando (ou pede ajuda pra escolher). A gente responde com o mix e o valor, sem compromisso e sem taxa escondida.",
     },
     {
         num: "02",
-        titulo: "Solicite o orçamento via WhatsApp",
+        titulo: "Fechamos data e valor",
         texto:
-            "Manda mensagem pro nosso WhatsApp com data, local e equipamentos desejados. Você recebe uma proposta detalhada e personalizada — sem burocracia e sem compromisso.",
+            "Aceitou? A gente reserva a data, faz o contrato e emite a nota fiscal de locação. Normalmente pede um sinal pra segurar a data — o valor e a forma a gente combina no fechamento.",
     },
     {
         num: "03",
-        titulo: "Agende a data",
+        titulo: "Entregamos e montamos antes",
         texto:
-            "Aceitou o orçamento? A gente reserva os equipamentos pra data do seu evento. Recomendamos agendar com 7 a 15 dias de antecedência (eventos corporativos grandes: 30+ dias).",
+            "No dia, a equipe chega com antecedência, monta tudo e testa cada equipamento antes da festa começar. Você não precisa fazer nada.",
     },
     {
         num: "04",
-        titulo: "Entrega e montagem",
+        titulo: "Buscamos depois",
         texto:
-            "No dia combinado, nossa equipe chega no local antes do evento começar, monta tudo, testa cada equipamento e deixa pronto pra diversão. Você não precisa fazer nada.",
-    },
-    {
-        num: "05",
-        titulo: "Aproveite seu evento",
-        texto:
-            "Durante o horário do evento, ficamos disponíveis por telefone caso algum equipamento precise de ajuste. Não é plantão no local, mas estamos alcançáveis se precisar.",
-    },
-    {
-        num: "06",
-        titulo: "Retirada sem stress",
-        texto:
-            "Depois do evento, nossa equipe volta pra desmontar e retirar tudo. Você não precisa se preocupar com nada além de relaxar e lembrar dos bons momentos.",
+            "Acabou a festa, a gente volta pra desmontar e retirar tudo. Durante a locação, se algo der problema, é só chamar: o problema é nosso, não seu.",
     },
 ];
 
-const beneficios = [
-    { titulo: "Orçamento sem compromisso", texto: "Resposta rápida pelo WhatsApp, sem pressão de venda." },
-    { titulo: "Cobertura na Grande SP", texto: "Capital, ABC, Alphaville, Guarulhos, Osasco e mais." },
-    { titulo: "Montagem incluída", texto: "Nossa equipe cuida de tudo no local — você só aproveita." },
-    { titulo: "Suporte durante o evento", texto: "Disponíveis por telefone pra qualquer ajuste nos equipamentos." },
-    { titulo: "60+ equipamentos", texto: "Maior variedade da Grande São Paulo." },
-    { titulo: "33+ anos de mercado", texto: "Tradição e confiança desde 1993." },
+const FAQ: FaqEntry[] = [
+    {
+        question: "E se chover?",
+        answer:
+            "Equipamento eletrônico vai sempre pra área coberta — tenda, salão ou varanda coberta. Se a sua festa é ao ar livre, avisa na hora do orçamento que a gente combina a proteção e, se for o caso, um plano de reagendamento antes de fechar.",
+    },
+    {
+        question: "Como funciona o sinal? E se eu precisar cancelar ou remarcar?",
+        answer:
+            "Pra reservar a data a gente costuma pedir um sinal, e o restante fica pra perto do evento — o valor e a forma são combinados no fechamento e ficam no contrato. Precisou remarcar? Fala com a gente o quanto antes que a gente tenta reagendar pra outra data. As condições de cancelamento a gente alinha por escrito antes de você pagar.",
+    },
+    {
+        question: "E se a festa passar do horário combinado? Tem hora extra?",
+        answer:
+            "Dá pra estender. Se o evento for mais longo do que o previsto, é só combinar com a equipe na hora — entra como adicional no acerto. Melhor ainda: já dá a margem do horário no orçamento que a gente calcula tudo de uma vez.",
+    },
+    {
+        question: "Meu evento é num andar de cima. Precisa de elevador? Sobe escada?",
+        answer:
+            "A gente precisa saber disso ANTES: alguns equipamentos são grandes e pesados. Manda se é térreo, se tem elevador ou se é escada, e o tamanho da porta e do elevador. Com isso a gente confirma o que passa no local e leva a equipe certa pra montar sem sufoco.",
+    },
+    {
+        question: "Os equipamentos são 110V ou 220V?",
+        answer:
+            "Depende do equipamento — a maioria roda em 110V ou 220V, e alguns precisam de tomada específica. A gente confirma a voltagem do seu local antes do evento e leva o que precisar (extensão, filtro de linha, adaptador) pra ligar tudo com segurança.",
+    },
+    {
+        question: "A que horas a equipe chega pra montar?",
+        answer:
+            "A equipe chega com antecedência pra montar e testar tudo antes de a festa começar — você não recebe convidado com a gente ainda montando. O horário exato a gente combina conforme a sua janela de montagem (antes do expediente, à noite, no fim de semana).",
+    },
+    {
+        // Garantia — copy §9.6, mesma redação do produto e da home.
+        question: "E se o equipamento der problema no meio da festa?",
+        answer:
+            "A gente resolve: troca o equipamento ou manda técnico no local, sem custo. Todo item sai testado da nossa base e vai com contrato — se algo falhar, o problema é nosso, não seu.",
+    },
 ];
 
 export default function ComoFuncionaPage() {
     return (
-        <main className="relative overflow-hidden">
-            {/* Decorações de fundo */}
-            <div className="pointer-events-none absolute inset-0 grid-tron opacity-30" aria-hidden />
-            <div className="pointer-events-none absolute -top-40 left-1/3 h-96 w-96 rounded-full bg-purple-500/15 blur-3xl" aria-hidden />
+        <main className="mx-auto w-full max-w-4xl px-4 py-16 md:px-6 md:py-20">
+            <nav className="mb-6 font-mono text-xs text-muted-foreground" aria-label="Trilha">
+                <Link href="/" className="hover:text-foreground">Início</Link>
+                <span className="mx-1.5" aria-hidden>/</span>
+                <span className="text-foreground">Como funciona</span>
+            </nav>
 
-            {/* ============= HERO ============= */}
-            <section className="relative mx-auto max-w-6xl px-4 pt-16 pb-16 md:pt-24 md:pb-20">
-                <p className="rise-in label-arcade text-cyan-400 mb-6">
-                    <span className="inline-block w-12 h-px bg-cyan-400 align-middle mr-3" />
-                    Manual do jogador · v1.0
-                </p>
+            <h1 className="font-display text-4xl font-extrabold leading-tight tracking-tight md:text-5xl">
+                Como funciona o aluguel
+            </h1>
 
-                <h1 className="rise-in font-display font-extrabold leading-[0.92] tracking-tight text-5xl sm:text-6xl md:text-7xl lg:text-8xl" style={{ animationDelay: '120ms' }}>
-                    Como funciona<br />
-                    <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent italic">
-                        o aluguel?
-                    </span>
-                </h1>
-
-                <p className="rise-in mt-8 font-body text-lg md:text-xl text-muted-foreground max-w-2xl" style={{ animationDelay: '240ms' }}>
-                    Seis passos simples — do primeiro orçamento até a retirada dos equipamentos.
-                    Sem letra miúda, sem complicação.
-                </p>
-            </section>
-
-            <div className="mx-auto max-w-6xl px-4">
-                <div className="divider-neon" />
+            <div className="mt-6">
+                <AnswerCapsule label="Em resumo">
+                    Alugar com a gente é simples: você chama no WhatsApp com a data e o bairro, a
+                    gente fecha o mix e o valor com contrato e nota fiscal, entrega e monta tudo
+                    antes da festa e busca depois. Se algo der defeito durante a locação, a gente
+                    troca ou manda técnico no local, sem custo. Desde 1993, em Osasco e toda a
+                    Grande São Paulo.
+                </AnswerCapsule>
             </div>
 
-            {/* ============= PASSOS ============= */}
-            <section className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
-                <ol className="space-y-2 md:space-y-0">
-                    {passos.map((p, i) => (
+            {/* ============= PASSOS (HowTo) ============= */}
+            <section className="mt-12">
+                <h2 className="mb-6 font-display text-2xl font-extrabold tracking-tight md:text-3xl">
+                    Do orçamento à retirada, em 4 passos
+                </h2>
+                <ol className="grid gap-4 sm:grid-cols-2">
+                    {PASSOS.map((p) => (
                         <li
                             key={p.num}
-                            className="rise-in group relative grid gap-4 border-t border-border/50 py-10 md:grid-cols-[140px_1fr] md:gap-12 md:py-12 transition-colors hover:border-purple-500/50"
-                            style={{ animationDelay: `${i * 80}ms` }}
+                            className="rounded-2xl border border-border/60 bg-card/40 p-5 md:p-6"
                         >
-                            <p className="numeral-huge !text-6xl md:!text-8xl transition-all group-hover:[-webkit-text-stroke-color:_rgba(168,85,247,0.9)]">
+                            <p className="font-mono text-2xl font-bold text-cyan-400 tabular-nums">
                                 {p.num}
                             </p>
-                            <div className="md:pt-3">
-                                <h2 className="font-display text-2xl md:text-3xl font-bold mb-3 transition-colors group-hover:text-purple-300">
-                                    {p.titulo}
-                                </h2>
-                                <p className="font-body text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-                                    {p.texto}
-                                </p>
-                            </div>
-                            <span className="hidden md:block absolute right-0 top-12 label-arcade text-muted-foreground/40 group-hover:text-cyan-400/70 transition-colors">
-                                STEP {String(i + 1).padStart(2, '0')}/{passos.length}
-                            </span>
+                            <h3 className="mt-2 font-display text-lg font-bold">{p.titulo}</h3>
+                            <p className="mt-1 font-body text-sm leading-relaxed text-muted-foreground md:text-base">
+                                {p.texto}
+                            </p>
                         </li>
                     ))}
-                    <li className="border-t border-border/50" />
                 </ol>
             </section>
 
-            {/* ============= BENEFÍCIOS ============= */}
-            <section className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
-                <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" aria-hidden />
-
-                <div className="relative">
-                    <p className="label-arcade text-pink-400 mb-3">⊹ O que está incluso</p>
-                    <h2 className="font-display font-extrabold text-4xl md:text-6xl tracking-tight leading-[0.95] mb-12">
-                        Tudo no pacote.<br />
-                        <span className="italic font-normal text-muted-foreground/80">Sem surpresas.</span>
-                    </h2>
-
-                    <div className="grid gap-px bg-border/40 sm:grid-cols-2 lg:grid-cols-3 rounded-2xl overflow-hidden border border-border/40">
-                        {beneficios.map((b, i) => (
-                            <div
-                                key={b.titulo}
-                                className="rise-in relative bg-background p-7 transition-all hover:bg-card/60 group"
-                                style={{ animationDelay: `${i * 60}ms` }}
-                            >
-                                <div className="flex items-center gap-2 mb-3">
-                                    <span className="font-mono text-sm font-bold text-purple-400">/{String(i + 1).padStart(2, '0')}</span>
-                                    <div className="h-px flex-1 bg-border/60 group-hover:bg-purple-500/40 transition-colors" />
-                                </div>
-                                <h3 className="font-display text-lg font-bold mb-2">{b.titulo}</h3>
-                                <p className="font-body text-sm text-muted-foreground leading-relaxed">{b.texto}</p>
-                            </div>
-                        ))}
-                    </div>
+            {/* ============= GARANTIA (destaque) ============= */}
+            <section className="mt-10">
+                <div className="rounded-2xl border border-green-500/30 bg-green-500/5 p-6 md:p-8">
+                    <p className="label-arcade text-green-400 mb-2">▸ Garantia</p>
+                    <p className="font-body text-base leading-relaxed text-foreground md:text-lg">
+                        Deu problema no meio da festa? A gente resolve: troca o equipamento ou
+                        manda técnico no local, sem custo. Todo item sai testado da nossa base e
+                        vai com contrato — se algo falhar, <strong>o problema é nosso, não seu.</strong>
+                    </p>
                 </div>
+            </section>
+
+            {/* ============= FAQ REAL DAS PERSONAS ============= */}
+            <section className="mt-14">
+                <h2 className="mb-6 font-display text-2xl font-extrabold tracking-tight md:text-3xl">
+                    As perguntas que todo mundo faz
+                </h2>
+                <FaqNative faqs={FAQ} />
             </section>
 
             {/* ============= CTA ============= */}
-            <section className="relative mx-auto max-w-6xl px-4 pb-24 md:pb-32">
-                <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/40 bg-gradient-to-br from-blue-950/50 via-purple-950/50 to-pink-950/50 p-10 md:p-14 text-center">
-                    <div className="absolute inset-0 dot-grid-dense opacity-30" aria-hidden />
-                    <div className="relative">
-                        <p className="label-arcade text-cyan-400 mb-4">▶ press start</p>
-                        <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight leading-[0.95] mb-4">
-                            Bora começar?
-                        </h2>
-                        <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
-                            Manda os detalhes do seu evento e a gente monta o pacote ideal pra você.
-                        </p>
-                        <div className="flex flex-col items-center gap-3">
-                            <WhatsAppCta surface="home" variant="primary">
-                                Pedir orçamento no WhatsApp
-                            </WhatsAppCta>
-                            <WhatsAppCtaMeta surface="home" />
-                        </div>
-                    </div>
+            <section className="mt-14 rounded-3xl border border-purple-500/30 bg-card/40 p-8 text-center md:p-12">
+                <h2 className="mx-auto max-w-xl font-display text-2xl font-extrabold tracking-tight md:text-4xl">
+                    Ficou alguma dúvida? Manda no WhatsApp
+                </h2>
+                <p className="mx-auto mt-3 max-w-lg font-body text-muted-foreground">
+                    A gente responde antes de você fechar qualquer coisa. Sem compromisso.
+                </p>
+                <div className="mt-6 flex flex-col items-center gap-4">
+                    <WhatsAppCta surface="home" variant="primary">
+                        Pedir orçamento no WhatsApp
+                    </WhatsAppCta>
+                    <WhatsAppCtaMeta surface="home" />
                 </div>
             </section>
+
+            {/* Schema: HowTo + FAQPage (via FaqNative) + BreadcrumbList */}
+            <JsonLd
+                data={[
+                    howToSchema({
+                        name: "Como funciona o aluguel de games para festas",
+                        description:
+                            "Passo a passo para alugar fliperama, videokê e games para festas e eventos em Osasco e Grande São Paulo.",
+                        steps: PASSOS.map((p) => ({ name: p.titulo, text: p.texto })),
+                    }),
+                    breadcrumbSchema([
+                        { name: "Início", url: "/" },
+                        { name: "Como funciona", url: "/como-funciona" },
+                    ]),
+                ]}
+            />
         </main>
     );
 }
