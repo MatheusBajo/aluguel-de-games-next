@@ -25,7 +25,7 @@ export interface CatalogItem {
     /** LQIP/cor dominante (data URI) — pipeline sharp da fase 1 */
     placeholder?: string
     // Propriedades admin (legado)
-    metadata?: any
+    metadata?: Record<string, unknown>
     path?: string
     images?: string[]
 }

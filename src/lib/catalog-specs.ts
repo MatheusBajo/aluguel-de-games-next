@@ -82,7 +82,7 @@ const DIM_KEYWORD_RE = /(alt(?:ura)?|larg(?:ura)?|comp(?:rimento)?|profund\w*)\s
  */
 export function dimensionFromImageName(imageName: string): string | null {
     // tira extensão + ruído comum de nome de arquivo
-    let s = imageName
+    const s = imageName
         .replace(/\.[a-z0-9]+$/i, '')
         .replace(/\s*-?\s*c[oó]pia\s*$/i, '')
         .replace(/\s*\(\d+\)\s*$/, '')

@@ -2,7 +2,7 @@
 
 declare global {
     interface Window {
-        dataLayer: any[];
+        dataLayer: unknown[];
     }
 }
 
@@ -11,7 +11,7 @@ declare global {
  * @param eventName - O nome do evento que será usado no acionador do GTM.
  * @param eventData - Um objeto com todos os parâmetros a serem enviados.
  */
-export function trackEvent(eventName: string, eventData: Record<string, any>) {
+export function trackEvent(eventName: string, eventData: Record<string, unknown>) {
     // Garante que o dataLayer exista no objeto window
     window.dataLayer = window.dataLayer || [];
 
@@ -30,7 +30,7 @@ export function trackEvent(eventName: string, eventData: Record<string, any>) {
  * @param surface - Superfície de conversão (home|category|product|empresas|kit|orcamento|festas|global).
  * @param additionalData - Parâmetros extras (ex.: product).
  */
-export function trackWhatsAppClick(surface: string, additionalData?: Record<string, any>) {
+export function trackWhatsAppClick(surface: string, additionalData?: Record<string, unknown>) {
     trackEvent('whatsapp_click', {
         surface,
         ...additionalData
@@ -40,7 +40,7 @@ export function trackWhatsAppClick(surface: string, additionalData?: Record<stri
 /**
  * Rastreia clique em link tel: (conversão de 1ª classe, mesma taxonomia).
  */
-export function trackTelClick(surface: string, additionalData?: Record<string, any>) {
+export function trackTelClick(surface: string, additionalData?: Record<string, unknown>) {
     trackEvent('tel_click', {
         surface,
         ...additionalData
@@ -70,21 +70,21 @@ export function trackProductView(product: {
  * Rastreia download/visualização do kit de aprovação B2B (taxonomia §8):
  * kit_pdf_download
  */
-export function trackKitDownload(additionalData?: Record<string, any>) {
+export function trackKitDownload(additionalData?: Record<string, unknown>) {
     trackEvent('kit_pdf_download', { surface: 'kit', ...additionalData });
 }
 
 /**
  * Rastreia envio do formulário corporativo (taxonomia §8): form_submit_b2b
  */
-export function trackFormSubmitB2b(additionalData?: Record<string, any>) {
+export function trackFormSubmitB2b(additionalData?: Record<string, unknown>) {
     trackEvent('form_submit_b2b', { surface: 'empresas', ...additionalData });
 }
 
 /**
  * Rastreia envio de formulário
  */
-export function trackFormSubmit(formName: string, formData?: Record<string, any>) {
+export function trackFormSubmit(formName: string, formData?: Record<string, unknown>) {
     trackEvent('form_submit', {
         form_name: formName,
         form_data: formData,

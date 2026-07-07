@@ -12,8 +12,6 @@ import { cn } from "@/lib/utils";
 const CLIENTES = ["Bradesco", "Spotify", "Arnold Classic", "Danilo Gentili"] as const;
 
 export function TrustStrip({ className }: { className?: string }) {
-    const anos = new Date().getFullYear() - 1993;
-
     return (
         <div
             className={cn(

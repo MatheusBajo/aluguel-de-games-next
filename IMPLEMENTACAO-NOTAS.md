@@ -379,3 +379,26 @@ na /como-funciona. Sitemap = 79 URLs, +/empresas/kit-aprovacao, zero acento/espa
   `components/sections/como-funciona/ComoFunciona.tsx` e `videos-e-imagens/Demonstra`
   não são mais referenciados pelas páginas novas.
 - Kit em .pdf real (build), specs dos 15 top, faixas de preço — dependem do dono.
+
+## Estágio 5 — Build verde + aceite + push (opus-4.8 / Fable 5)
+
+**Build:** `next build` verde — 86 páginas, export estático `Exporting (3/3)`, typecheck OK. `prebuild` limpa `.next`; sem `postbuild`/next-sitemap (sitemap é rota `app/sitemap.ts`, arquivo único `out/sitemap.xml`, 79 URLs).
+
+**Lint:** `next lint` = **0 erros**, 13 warnings pré-existentes (aceitáveis, registrados):
+- `@next/next/no-img-element` em CategoryGrid/HomeHero/ProofSection (uso deliberado de `<img>` no static export com AVIF+LQIP próprios; `next/image` optimizer não roda em export).
+- `react-hooks/exhaustive-deps` em FlyingEmojis (cleanup de ref) — comportamento intencional.
+- 1 `Unused eslint-disable` em `types/global.d.ts`.
+
+**Erros zerados nesta rodada:** removi `let`→`const` (catalog-specs), `catch(e)`→`catch`, var `tree` morta e `any`→tipos em catalog-tree.server / catalog.server, `any`→`unknown` em gtm-utils (7×), imports/vars não usados (TrustStrip `anos`, DynamicGradient `CSSProperties`, catalog-content `FAQ_CHUVA`).
+
+**Órfãos removidos** (0 importers, confirmado por grep): `components/sections/como-funciona/` (seção legada, NÃO a page), `components/sections/top-toys/` (+ data/css/product-modal), `components/sections/videos-e-imagens/Demonstra.tsx`. Isso limpou 4 dos erros de lint de brinde.
+
+**Aceite (out/ exportado) — item a item:**
+1. JSON-LD LocalBusiness+foundingDate na home: OK (`EntertainmentBusiness`, subclasse de LocalBusiness, mais específica) + `"foundingDate":"1993"`.
+2. FAQ em `<details>` no HTML cru: OK (home 6, como-funciona 7, quanto-custa 5, empresas 6, festas 5).
+3. robots.txt com bots de IA: OK (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, +1).
+4. sitemap único e válido: OK (`out/sitemap.xml`, urlset válido, 79 locs, sem acento/espaço).
+5. Zero contador fake (sales-utils/hash/reviewCount/ratingValue): OK (grep vazio no out/).
+6. llms.txt presente: OK (2248 bytes).
+
+**Fora da spec / riscos:** `CatalogList.server` mantido (1 importer real, não é órfão). Bloqueadores do dono seguem gated (e-mail corporativo, CNPJ no rodapé, GBP, seguro B2B, faixas de preço reais, specs dos 15 top, kit .pdf gerado) — todos no DONO-CHECKLIST.md. `EntertainmentBusiness` escolhido no lugar de `LocalBusiness` puro por ser mais preciso p/ locação de entretenimento (ainda é LocalBusiness na hierarquia schema.org, satisfaz rich-results).

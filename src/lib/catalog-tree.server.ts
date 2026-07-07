@@ -45,7 +45,7 @@ async function getCategoryMetadata(dirPath: string): Promise<CategoryMetadata> {
         // Tenta criar o arquivo
         try {
             await fs.writeFile(metaPath, JSON.stringify(defaultMeta, null, 2));
-        } catch (e) {
+        } catch {
             // Ignora erro se não conseguir criar
         }
 
@@ -55,8 +55,6 @@ async function getCategoryMetadata(dirPath: string): Promise<CategoryMetadata> {
 
 // Função para construir a árvore completa
 export async function buildCatalogTree(): Promise<TreeNode[]> {
-    const tree: TreeNode[] = [];
-
     async function processDirectory(dirPath: string, relativePath: string[] = []): Promise<TreeNode[]> {
         const items = await fs.readdir(dirPath, { withFileTypes: true });
         const nodes: TreeNode[] = [];
@@ -70,7 +68,7 @@ export async function buildCatalogTree(): Promise<TreeNode[]> {
                 // Verifica se é um produto (tem metadata.json)
                 const metadataPath = path.join(itemPath, 'metadata.json');
                 let isProduct = false;
-                let metadata: any;
+                let metadata: CategoryMetadata | ProductMetadata;
 
                 try {
                     const metaContent = await fs.readFile(metadataPath, 'utf8');

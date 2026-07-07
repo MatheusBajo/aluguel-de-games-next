@@ -52,12 +52,6 @@ const FAQ_ANTECEDENCIA: FaqEntry = {
         'Quanto antes, melhor: fins de semana e o fim do ano (novembro e dezembro) enchem primeiro. Mas, mesmo em cima da hora, manda a data que a gente vê o que dá para encaixar.',
 };
 
-const FAQ_CHUVA: FaqEntry = {
-    question: 'E se chover?',
-    answer:
-        'Equipamento eletrônico vai sempre para área coberta. Se a sua festa é ao ar livre, avisa na hora do orçamento que a gente combina a melhor forma de proteger tudo com você.',
-};
-
 /** FAQ da categoria (spec §4.8: 4-6 itens). */
 export function getCategoryFaq(): FaqEntry[] {
     return [
