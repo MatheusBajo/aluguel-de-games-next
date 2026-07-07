@@ -1,10 +1,13 @@
 // src/components/WhatsAppFloat.tsx
+//
+// Float de WhatsApp (desktop). SEM badge de notificação falsa (des-fabricação).
+// Anchor real com prefill — some em mobile quando a StickyBar global entrar (fase 1).
 "use client";
 
 import { trackWhatsAppClick } from "@/lib/gtm-utils";
+import { buildWhatsAppUrl } from "@/config/whatsapp.config";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
 
 export function WhatsAppFloat() {
     const [showTooltip, setShowTooltip] = useState(false);
@@ -26,15 +29,6 @@ export function WhatsAppFloat() {
         };
     }, []);
 
-    const handleClick = () => {
-        trackWhatsAppClick('floating_button', {
-            page_url: window.location.pathname,
-            page_title: document.title
-        });
-
-        window.open(WHATSAPP_CONFIG.link, '_blank');
-    };
-
     return (
         <div className="fixed bottom-4 right-4 z-50 lg:bottom-6 lg:right-6">
             <AnimatePresence>
@@ -54,9 +48,13 @@ export function WhatsAppFloat() {
                 )}
             </AnimatePresence>
 
-            <motion.button
-                onClick={handleClick}
-                className="relative group"
+            <motion.a
+                href={buildWhatsAppUrl("global")}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick("global", { placement: "float" })}
+                aria-label="Pedir orçamento no WhatsApp"
+                className="relative group block"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onMouseEnter={() => setShowTooltip(false)}
@@ -68,16 +66,12 @@ export function WhatsAppFloat() {
                 <div className="relative bg-green-600 hover:bg-green-700 rounded-full p-3 lg:p-4 shadow-lg transition-colors">
                     <img
                         src="/WhatsApp-logo-42377766.png"
-                        alt="WhatsApp"
+                        alt=""
+                        aria-hidden
                         className="w-8 h-8 lg:w-10 lg:h-10 object-contain"
                     />
                 </div>
-
-                {/* Badge de notificação */}
-                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
-                    1
-                </div>
-            </motion.button>
+            </motion.a>
         </div>
     );
 }

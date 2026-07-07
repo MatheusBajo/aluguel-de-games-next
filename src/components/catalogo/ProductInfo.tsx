@@ -3,12 +3,10 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FiShare2, FiHeart, FiMessageCircle } from "react-icons/fi";
-import { FaWhatsapp } from "react-icons/fa";
+import { FiShare2 } from "react-icons/fi";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
-import {trackWhatsAppClick} from "@/lib/gtm-utils";
-import { getWhatsAppLink } from '@/config/whatsapp.config';
+import { WhatsAppCta } from "@/components/cta/WhatsAppCta";
 
 interface ProductInfoProps {
     titulo: string;
@@ -31,25 +29,6 @@ export function ProductInfo({ titulo, descricao, categoria }: ProductInfoProps) 
         }
     };
 
-    // Função centralizada que usa o 'titulo' recebido via props
-    const handleWhatsAppRedirect = (tipo: 'orcamento' | 'pergunta') => {
-        const mensagemBase = tipo === 'orcamento'
-            ? `Olá! Gostaria de fazer um orçamento para o produto: ${titulo}.`
-            : `Olá! Tenho uma pergunta sobre o produto: ${titulo}.`;
-
-        const location = tipo === 'orcamento'
-            ? 'product_page_cta_orcamento'
-            : 'product_page_cta_pergunta';
-
-        const urlWhatsApp = getWhatsAppLink(mensagemBase);
-
-        window.open(urlWhatsApp, "_blank");
-
-        // AQUI ESTÁ O PULO DO GATO:
-        // Enviamos o 'titulo' como o valor do parâmetro 'product_name'
-        trackWhatsAppClick(location, { product_name: titulo });
-    };
-
     return (
         <motion.div
             initial={{ opacity: 0, x: 40 }}
@@ -66,11 +45,8 @@ export function ProductInfo({ titulo, descricao, categoria }: ProductInfoProps) 
                     {titulo}
                 </h1>
                 <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" onClick={handleShare}>
+                    <Button variant="ghost" size="icon" onClick={handleShare} aria-label="Compartilhar">
                         <FiShare2 className="h-4 w-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                        <FiHeart className="h-4 w-4" />
                     </Button>
                 </div>
             </div>
@@ -80,48 +56,45 @@ export function ProductInfo({ titulo, descricao, categoria }: ProductInfoProps) 
                 <ReactMarkdown>{descricao}</ReactMarkdown>
             </div>
 
-            {/* Features */}
+            {/* Fatos verificáveis (substituto honesto do contador/percentual) */}
             <div className="rounded-2xl border bg-muted/20 p-6">
-                <h3 className="mb-3 font-semibold">Características</h3>
+                <h3 className="mb-3 font-semibold">O que está incluso</h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>✓ Entrega e instalação incluídas</li>
-                    <li>✓ Suporte técnico</li>
-                    <li>✓ Equipamentos revisados</li>
-                    <li>✓ Garantia de funcionamento</li>
+                    <li>✓ Entrega e montagem incluídas</li>
+                    <li>✓ Equipamento testado antes do evento</li>
+                    <li>✓ Contrato e NF</li>
+                    <li>✓ Suporte técnico durante a locação</li>
                 </ul>
             </div>
 
+            {/* Preço honesto (sem faixa confirmada pelo dono, sem número) */}
+            <p className="text-sm text-muted-foreground">
+                O valor fechado depende de data e bairro — manda os dois no WhatsApp.
+            </p>
+
             {/* CTA */}
             <div className="flex flex-col gap-3">
-                <Button
-                    size="lg"
-                    className="transition-all h-12 duration-300 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white border-0 shadow-lg shadow-green-500/30 hover:shadow-green-500/50 flex items-center gap-2"
-                    onClick={() => handleWhatsAppRedirect('orcamento')}
+                <WhatsAppCta
+                    surface="product"
+                    product={titulo}
+                    variant="primary"
+                    withMeta
+                    metaAlign="left"
+                    className="w-full h-12"
+                    wrapperClassName="w-full"
                 >
-                    <FaWhatsapp className="text-xl" />
-                    <span>Fazer Orçamento</span>
-                </Button>
+                    Pedir orçamento deste item
+                </WhatsAppCta>
 
-                <Button variant="outline" size="lg" className="w-full gap-3" onClick={() => handleWhatsAppRedirect('pergunta')}>
-                    <FiMessageCircle className="h-5 w-5" />
-                    Fazer uma Pergunta
-                </Button>
-            </div>
-
-            {/* Trust Badges */}
-            <div className="flex items-center justify-around border-t pt-6 text-center">
-                <div>
-                    <p className="text-2xl font-bold text-primary">500+</p>
-                    <p className="text-xs text-muted-foreground">Eventos realizados</p>
-                </div>
-                <div>
-                    <p className="text-2xl font-bold text-primary">Orçamento via Whatsapp</p>
-                    <p className="text-xs text-muted-foreground">Resposta rápida</p>
-                </div>
-                <div>
-                    <p className="text-2xl font-bold text-primary">100%</p>
-                    <p className="text-xs text-muted-foreground">Satisfação</p>
-                </div>
+                <WhatsAppCta
+                    surface="product"
+                    product={titulo}
+                    message={`Oi! Tenho uma pergunta sobre o *${titulo}*.`}
+                    variant="outline"
+                    className="w-full"
+                >
+                    Fazer uma pergunta
+                </WhatsAppCta>
             </div>
         </motion.div>
     );

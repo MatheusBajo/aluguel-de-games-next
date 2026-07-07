@@ -1,9 +1,8 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
 import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
 import { Phone, Clock } from "@phosphor-icons/react/ssr";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WHATSAPP_CONFIG, getHoursLine } from "@/config/whatsapp.config";
+import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
 import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
@@ -59,11 +58,10 @@ export default function ContatoPage() {
 
                 <div className="grid gap-4 md:grid-cols-5">
                     {/* WhatsApp destacado */}
-                    <Link
-                        href={WHATSAPP_CONFIG.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rise-in group relative overflow-hidden rounded-3xl border-2 border-green-500/40 bg-gradient-to-br from-green-500/10 via-green-600/10 to-emerald-700/10 p-8 transition-all hover:scale-[1.02] hover:border-green-400 hover:shadow-xl hover:shadow-green-500/20 md:col-span-3"
+                    <WhatsAppCta
+                        surface="home"
+                        variant="unstyled"
+                        className="rise-in group relative overflow-hidden rounded-3xl border-2 border-green-500/40 bg-gradient-to-br from-green-500/10 via-green-600/10 to-emerald-700/10 p-8 transition-all hover:scale-[1.02] hover:border-green-400 hover:shadow-xl hover:shadow-green-500/20 md:col-span-3 block"
                     >
                         <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-green-500/20 blur-3xl" />
                         <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-green-400" />
@@ -87,8 +85,11 @@ export default function ContatoPage() {
                             <p className="font-body text-sm text-muted-foreground mt-3">
                                 Toque pra abrir o WhatsApp →
                             </p>
+                            <p className="font-body text-xs text-muted-foreground mt-2">
+                                {getHoursLine()}
+                            </p>
                         </div>
-                    </Link>
+                    </WhatsAppCta>
 
                     {/* Telefone / ligação */}
                     <a
@@ -165,24 +166,14 @@ export default function ContatoPage() {
                             <Clock className="h-5 w-5 text-purple-400" weight="bold" />
                             <p className="label-arcade text-purple-400">Horário comercial</p>
                         </div>
-                        <ul className="space-y-3 font-mono text-sm">
-                            <li className="flex justify-between border-b border-border/40 pb-2">
-                                <span className="text-muted-foreground">Segunda a Sexta</span>
-                                <span className="font-bold tabular-nums">08:30 — 18:00</span>
-                            </li>
-                            <li className="flex justify-between border-b border-border/40 pb-2">
-                                <span className="text-muted-foreground">Sábado</span>
-                                <span className="font-bold tabular-nums">08:00 — 12:30</span>
-                            </li>
-                            <li className="flex justify-between">
-                                <span className="text-muted-foreground">Domingo</span>
-                                <span className="font-bold text-muted-foreground">Fechado</span>
-                            </li>
-                        </ul>
+                        {/* Horário específico só entra com confirmação do dono
+                            [CONFIRMAR COM DONO: horário de atendimento seg-sex e sábado] */}
+                        <p className="font-body text-sm text-muted-foreground leading-relaxed">
+                            Atendemos em horário comercial. {getHoursLine()}
+                        </p>
                         <p className="font-body text-xs text-muted-foreground mt-6 leading-relaxed">
-                            Eventos acontecem em qualquer dia. Ficamos disponíveis por telefone
-                            durante o horário do evento caso algum equipamento precise de ajuste —
-                            não é suporte 24h, mas estamos alcançáveis se precisar.
+                            Eventos acontecem em qualquer dia. Ficamos alcançáveis por telefone
+                            durante o horário do evento caso algum equipamento precise de ajuste.
                         </p>
                     </div>
 
@@ -242,16 +233,12 @@ export default function ContatoPage() {
                             Bora conversar.
                         </span>
                     </h2>
-                    <Button
-                        asChild
-                        size="lg"
-                        className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                    >
-                        <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                            <FaWhatsapp className="mr-2 h-5 w-5" />
+                    <div className="flex flex-col items-center gap-3">
+                        <WhatsAppCta surface="home" variant="primary">
                             Iniciar conversa no WhatsApp
-                        </Link>
-                    </Button>
+                        </WhatsAppCta>
+                        <WhatsAppCtaMeta surface="home" />
+                    </div>
                 </div>
             </section>
         </main>

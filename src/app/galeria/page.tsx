@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
 import { Counter } from "@/components/ui/Counter";
 
 export const metadata: Metadata = {
@@ -55,9 +54,7 @@ export default function GaleriaPage() {
                 <div className="grid gap-8 md:grid-cols-[2fr_1fr] md:items-end">
                     <div>
                         <p className="rise-in label-arcade text-pink-400 mb-6 inline-flex items-center gap-2">
-                            <span className="badge-live text-pink-400">Live</span>
-                            <span className="text-muted-foreground/60">·</span>
-                            <span>Eventos reais</span>
+                            <span>★ Eventos reais</span>
                         </p>
 
                         <h1 className="rise-in font-display font-extrabold leading-[0.92] tracking-tight text-5xl sm:text-6xl md:text-7xl lg:text-8xl" style={{ animationDelay: '120ms' }}>
@@ -116,25 +113,27 @@ export default function GaleriaPage() {
                 </div>
             </section>
 
-            {/* ============= STATS ============= */}
+            {/* ============= PROVA (só número verificável + nomes reais) ============= */}
             <section className="relative mx-auto max-w-7xl px-4 py-16">
-                <div className="grid gap-px bg-border/40 grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden border border-border/40">
-                    {[
-                        { to: 500, suffix: "+", label: "Eventos" },
-                        { to: 33, suffix: "+", label: "Anos" },
-                        { to: 60, suffix: "+", label: "Equipamentos" },
-                        { to: 98, suffix: "%", label: "Satisfação" },
-                    ].map((s, i) => (
-                        <div key={s.label} className="rise-in bg-background p-6 text-center" style={{ animationDelay: `${i * 80}ms` }}>
-                            <Counter
-                                to={s.to}
-                                suffix={s.suffix}
-                                duration={2 + i * 0.2}
-                                className="font-display font-extrabold text-3xl md:text-5xl tracking-tight bg-gradient-to-br from-pink-400 to-blue-400 bg-clip-text text-transparent block"
-                            />
-                            <p className="label-arcade text-muted-foreground mt-2">{s.label}</p>
-                        </div>
-                    ))}
+                <div className="rounded-2xl overflow-hidden border border-border/40 bg-background p-8 md:p-10 text-center">
+                    <div className="rise-in">
+                        <Counter
+                            to={new Date().getFullYear() - 1993}
+                            duration={2.2}
+                            className="font-display font-extrabold text-4xl md:text-6xl tracking-tight bg-gradient-to-br from-pink-400 to-blue-400 bg-clip-text text-transparent block"
+                        />
+                        <p className="label-arcade text-muted-foreground mt-2">Anos alugando games (desde 1993)</p>
+                    </div>
+                    <div className="rise-in mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs md:text-sm" style={{ animationDelay: '120ms' }}>
+                        <span className="label-arcade text-muted-foreground/80">▸ já jogaram com a gente</span>
+                        <span className="font-mono font-bold text-foreground/80">Bradesco</span>
+                        <span className="text-muted-foreground/30">·</span>
+                        <span className="font-mono font-bold text-foreground/80">Spotify</span>
+                        <span className="text-muted-foreground/30">·</span>
+                        <span className="font-mono font-bold text-foreground/80">Arnold Classic</span>
+                        <span className="text-muted-foreground/30">·</span>
+                        <span className="font-mono font-bold text-foreground/80">Danilo Gentili</span>
+                    </div>
                 </div>
             </section>
 
@@ -151,20 +150,16 @@ export default function GaleriaPage() {
                     <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
                         Agende seu evento conosco e vire o próximo case da nossa galeria.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Button
-                            asChild
-                            size="lg"
-                            className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                        >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
-                                Pedir orçamento
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" variant="outline">
-                            <Link href="/catalogo">Ver catálogo completo</Link>
-                        </Button>
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <WhatsAppCta surface="home" variant="primary">
+                                Pedir orçamento no WhatsApp
+                            </WhatsAppCta>
+                            <Button asChild size="lg" variant="outline">
+                                <Link href="/catalogo">Ver catálogo completo</Link>
+                            </Button>
+                        </div>
+                        <WhatsAppCtaMeta surface="home" />
                     </div>
                 </div>
             </section>

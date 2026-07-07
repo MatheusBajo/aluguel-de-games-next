@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
 import { Counter } from "@/components/ui/Counter";
 
 export const metadata: Metadata = {
@@ -48,9 +47,9 @@ const linhaDoTempo = [
     },
     {
         ano: "Hoje",
-        titulo: "Mais de 60 atrações",
+        titulo: "Dezenas de atrações",
         texto:
-            "Atendemos toda a Grande São Paulo com a mesma paixão de 1993, agora com um catálogo gigantesco e equipe experiente em qualquer tipo de evento.",
+            "Atendemos toda a Grande São Paulo com a mesma paixão de 1993, agora com um catálogo de dezenas de atrações e equipe experiente em qualquer tipo de evento.",
     },
 ];
 
@@ -91,7 +90,7 @@ export default function SobrePage() {
                         Quando um fliperama ainda era a estrela das esquinas, decidimos levá-lo para
                         festas e eventos. <strong className="text-foreground font-semibold">{anos} anos depois</strong>, a missão segue a mesma:
                         criar momentos inesquecíveis com entretenimento de qualidade — agora também
-                        com VR, simuladores, consoles modernos e mais de 60 atrações no catálogo.
+                        com VR, simuladores, consoles modernos e dezenas de atrações no catálogo.
                     </p>
 
                     <div className="space-y-4 md:border-l md:border-purple-500/30 md:pl-8">
@@ -197,23 +196,23 @@ export default function SobrePage() {
                             A escala da diversão.
                         </h2>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                            {[
-                                { to: anos, suffix: "+", label: "Anos de mercado" },
-                                { to: 500, suffix: "+", label: "Eventos realizados" },
-                                { to: 60, suffix: "+", label: "Equipamentos" },
-                                { to: 98, suffix: "%", label: "Satisfação" },
-                            ].map((s, i) => (
-                                <div key={s.label} className="rise-in" style={{ animationDelay: `${i * 100}ms` }}>
-                                    <Counter
-                                        to={s.to}
-                                        suffix={s.suffix}
-                                        duration={2 + i * 0.2}
-                                        className="font-display font-extrabold text-4xl md:text-6xl tracking-tight bg-gradient-to-br from-blue-400 to-pink-400 bg-clip-text text-transparent block"
-                                    />
-                                    <p className="label-arcade text-muted-foreground mt-2">{s.label}</p>
-                                </div>
-                            ))}
+                        {/* Único número que o site publica sem confirmação do dono: anos desde 1993 */}
+                        <div className="grid gap-8 md:grid-cols-[auto_1fr] md:items-end">
+                            <div className="rise-in">
+                                <Counter
+                                    to={anos}
+                                    duration={2.2}
+                                    className="font-display font-extrabold text-5xl md:text-7xl tracking-tight bg-gradient-to-br from-blue-400 to-pink-400 bg-clip-text text-transparent block"
+                                />
+                                <p className="label-arcade text-muted-foreground mt-2">Anos de mercado (desde 1993)</p>
+                            </div>
+                            {/* Frase citável (verbatim, idêntica à da home — spec §9.3) */}
+                            <p className="rise-in font-body text-base md:text-lg text-muted-foreground max-w-xl" style={{ animationDelay: '120ms' }}>
+                                A Aluguel de Games loca fliperamas, videokês e games para festas em
+                                Osasco e Grande São Paulo desde 1993 — antes do primeiro PlayStation
+                                existir — com eventos realizados para Bradesco, Spotify, Arnold
+                                Classic e Danilo Gentili.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -232,20 +231,16 @@ export default function SobrePage() {
                     <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto mb-8">
                         Transformamos qualquer evento em uma história pra contar depois.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Button
-                            asChild
-                            size="lg"
-                            className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                        >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <WhatsAppCta surface="home" variant="primary">
                                 Pedir orçamento no WhatsApp
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" variant="outline">
-                            <Link href="/catalogo">Explorar catálogo</Link>
-                        </Button>
+                            </WhatsAppCta>
+                            <Button asChild size="lg" variant="outline">
+                                <Link href="/catalogo">Explorar catálogo</Link>
+                            </Button>
+                        </div>
+                        <WhatsAppCtaMeta surface="home" />
                     </div>
                 </div>
             </section>

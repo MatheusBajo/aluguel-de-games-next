@@ -1,6 +1,7 @@
 // src/app/catalogo/[...slug]/page.tsx
 import { notFound } from "next/navigation";
-import Script from "next/script";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, collectionPageSchema, productSchema } from "@/lib/schema";
 import { getCatalog, getCategoryItems, getItem } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
@@ -178,36 +179,29 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
             const baseUrl = getSiteUrl();
             const url = `${baseUrl}/catalogo/${slugArr.join('/')}/`;
 
-            // Schema CollectionPage para SEO
-            const collectionSchema = {
-                "@context": "https://schema.org",
-                "@type": "CollectionPage",
+            // Schemas server-side no HTML cru (CollectionPage + BreadcrumbList)
+            const collectionSchema = collectionPageSchema({
                 name: meta.title,
                 description: meta.description,
                 url,
-                isPartOf: {
-                    "@type": "WebSite",
-                    "@id": `${baseUrl}/#website`,
-                },
-                mainEntity: {
-                    "@type": "ItemList",
-                    numberOfItems: categoryItems.length,
-                    itemListElement: categoryItems.slice(0, 20).map((it, idx) => ({
-                        "@type": "ListItem",
-                        position: idx + 1,
-                        name: it.titulo,
-                        url: `${baseUrl}/catalogo/${segmentsToSlug(it.key.split('/')).join('/')}/`,
-                    })),
-                },
-            };
+                items: categoryItems.map((it) => ({
+                    name: it.titulo,
+                    url: `${baseUrl}/catalogo/${segmentsToSlug(it.key.split('/')).join('/')}/`,
+                })),
+            });
+            const crumbs = breadcrumbSchema([
+                { name: 'Home', url: '/' },
+                { name: 'Catálogo', url: '/catalogo/' },
+                ...slugArr.map((_, idx) => ({
+                    name: getCategoryMetadata(slugArr.slice(0, idx + 1)).breadcrumbName
+                        ?? slugArr[idx],
+                    url: `/catalogo/${slugArr.slice(0, idx + 1).join('/')}/`,
+                })),
+            ]);
 
             return (
                 <>
-                    <Script
-                        id="ld-collection"
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
-                    />
+                    <JsonLd data={[collectionSchema, crumbs]} />
                     <CategoryListing slug={slugArr} meta={meta} items={categoryItems} />
                 </>
             );
@@ -219,57 +213,35 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
     }
 
     const categoria = item.key.split("/")[0];
+    const categoriaSlug = segmentsToSlug([categoria])[0];
 
     // Usa a função centralizada para pegar a URL base
     const baseUrl = getSiteUrl();
-
-    // URL da imagem para o Schema
-    const imageUrl = item.imagens?.length
-        ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
-        : null;
+    const productUrl = `${baseUrl}/catalogo/${segmentsToSlug(item.key.split('/')).join('/')}/`;
 
     // Todas as imagens para o Schema
     const allImages = item.imagens?.map(
         (img) => `${baseUrl}${getImagePath(item.key, img)}`
     );
 
-    // Structured Data - Product para a página do equipamento
-    // Nota: aggregateRating removido propositalmente. Só adicionar quando houver
-    // reviews reais coletadas (via Google Reviews ou sistema próprio). Dados
-    // inventados podem gerar penalização por dados estruturados enganosos.
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
+    // Schemas server-side no HTML cru: Product+Offer LeaseOut + BreadcrumbList.
+    // aggregateRating continua fora — só com reviews reais (gate binário).
+    const structuredData = productSchema({
         name: item.titulo,
         description: item.descricao?.replace(/[*_#]/g, '').trim(),
-        image: allImages,
-        brand: {
-            "@type": "Organization",
-            name: "Aluguel de Games"
-        },
-        offers: {
-            "@type": "Offer",
-            priceCurrency: "BRL",
-            availability: "https://schema.org/InStock",
-            businessFunction: "http://purl.org/goodrelations/v1#LeaseOut",
-            seller: {
-                "@type": "EntertainmentBusiness",
-                "@id": `${baseUrl}/#organization`,
-                name: "Aluguel de Games"
-            }
-        }
-    };
+        images: allImages,
+        url: productUrl,
+    });
+    const crumbs = breadcrumbSchema([
+        { name: 'Home', url: '/' },
+        { name: 'Catálogo', url: '/catalogo/' },
+        { name: categoria, url: `/catalogo/${categoriaSlug}/` },
+        { name: item.titulo, url: productUrl },
+    ]);
 
     return (
         <>
-            {/* Structured Data */}
-            <Script
-                id="ld-product"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(structuredData),
-                }}
-            />
+            <JsonLd data={[structuredData, crumbs]} />
 
             <main className="relative mx-auto max-w-screen-2xl">
                 {/* Breadcrumb */}
@@ -288,7 +260,8 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                         </li>
                         <li>/</li>
                         <li>
-                            <Link href={`/catalogo#${encodeURIComponent(categoria)}`}>
+                            {/* Link real da categoria (antes: âncora morta /catalogo#Categoria) */}
+                            <Link href={`/catalogo/${categoriaSlug}/`}>
                                 {categoria}
                             </Link>
                         </li>

@@ -4,7 +4,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useCarousel } from "./carousel-landing";      // OK: mesmo diretório
 import { useTheme }   from "@/components/theme-provider";
-import ColorThief     from "colorthief";
+import ColorThiefImport from "colorthief";
+
+// Tipagem do pacote aponta pro build node (não-construtível);
+// no browser o default export é a classe — cast explícito.
+const ColorThief = ColorThiefImport as unknown as new () => {
+    getPalette: (img: HTMLImageElement, count: number) => [number, number, number][];
+};
 
 /* ▸ AJUSTES RÁPIDOS — edite só aqui ↓↓↓ -------------------------------- */
 const BLUR_LIGHT   = 60;   // px

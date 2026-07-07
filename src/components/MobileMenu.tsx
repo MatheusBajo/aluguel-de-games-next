@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronRight } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
 import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
-import { trackWhatsAppClick } from "@/lib/gtm-utils";
+import { trackTelClick } from "@/lib/gtm-utils";
+import { WhatsAppCta } from "@/components/cta/WhatsAppCta";
 
 const equipamentos = [
     { href: "/catalogo/jogos-eletronicos/fliperamas/", label: "Fliperamas", emoji: "🕹️" },
@@ -108,24 +107,14 @@ export default function MobileMenu() {
                 {/* Conteúdo do menu */}
                 <nav className="flex flex-col gap-6 p-4 pb-24">
                     {/* CTA WhatsApp */}
-                    <Button
-                        asChild
-                        size="lg"
-                        className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800"
+                    <WhatsAppCta
+                        surface="global"
+                        variant="primary"
+                        className="w-full"
+                        onNavigate={() => setOpen(false)}
                     >
-                        <Link
-                            href={WHATSAPP_CONFIG.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => {
-                                trackWhatsAppClick("mobile_menu_orcamento");
-                                setOpen(false);
-                            }}
-                        >
-                            <FaWhatsapp className="mr-2 h-5 w-5" />
-                            Fazer orçamento agora
-                        </Link>
-                    </Button>
+                        Pedir orçamento no WhatsApp
+                    </WhatsAppCta>
 
                     {/* Equipamentos */}
                     <div>
@@ -175,7 +164,15 @@ export default function MobileMenu() {
                         <p className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                             Contato
                         </p>
-                        <p className="font-medium">{WHATSAPP_CONFIG.displayNumber}</p>
+                        <p className="font-medium">
+                            <a
+                                href={`tel:${WHATSAPP_CONFIG.formattedNumber}`}
+                                onClick={() => trackTelClick("global")}
+                                className="hover:text-green-400 transition-colors tabular-nums"
+                            >
+                                {WHATSAPP_CONFIG.displayNumber}
+                            </a>
+                        </p>
                         <p className="text-xs text-muted-foreground">contato@alugueldegames.com.br</p>
                     </div>
                 </nav>

@@ -25,13 +25,24 @@ export function trackEvent(eventName: string, eventData: Record<string, any>) {
 }
 
 /**
- * Função específica para rastrear cliques de WhatsApp.
- * @param location - String que identifica o local do clique no site.
- * @param additionalData - Quaisquer outros dados a serem enviados.
+ * Rastreia clique em CTA de WhatsApp (taxonomia GA4 da spec §8):
+ * whatsapp_click{surface, product}
+ * @param surface - Superfície de conversão (home|category|product|empresas|kit|orcamento|festas|global).
+ * @param additionalData - Parâmetros extras (ex.: product).
  */
-export function trackWhatsAppClick(location: string, additionalData?: Record<string, any>) {
+export function trackWhatsAppClick(surface: string, additionalData?: Record<string, any>) {
     trackEvent('whatsapp_click', {
-        click_location: location,
+        surface,
+        ...additionalData
+    });
+}
+
+/**
+ * Rastreia clique em link tel: (conversão de 1ª classe, mesma taxonomia).
+ */
+export function trackTelClick(surface: string, additionalData?: Record<string, any>) {
+    trackEvent('tel_click', {
+        surface,
         ...additionalData
     });
 }

@@ -4,13 +4,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
-import { TrendingUp } from "lucide-react";
+import { Truck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { getImagePath } from "@/lib/image-utils";
 import { generateProductUrl } from "@/lib/slug-utils";
-import { getRentalCount, formatRentalCount } from "@/lib/sales-utils";
 
 interface CatalogCardProps {
     item: {
@@ -19,7 +18,6 @@ interface CatalogCardProps {
         descricao?: string;
         imagens?: string[];
         categoria?: string;
-        locacoes?: number;
     };
     index?: number;
 }
@@ -87,15 +85,12 @@ export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
                         {item.titulo}
                     </h3>
 
-                    {/* Locações - social proof real ao invés de rating */}
+                    {/* Fato real no lugar do contador fake (specs por produto entram na fase 4) */}
                     <div className="flex items-center gap-1.5">
-                        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-500/15 text-green-400 ring-1 ring-green-500/30">
-                            <TrendingUp className="h-3 w-3" strokeWidth={2.5} />
+                        <Truck className="h-3.5 w-3.5 text-gray-400 shrink-0" strokeWidth={2} />
+                        <span className="text-xs text-gray-400">
+                            Entrega e montagem incluídas
                         </span>
-                        <span className="text-xs font-semibold text-green-400 tabular-nums">
-                            {formatRentalCount(getRentalCount(item.key, { override: item.locacoes }))}
-                        </span>
-                        <span className="text-xs text-gray-500">locações</span>
                     </div>
                 </div>
             </Link>

@@ -1,8 +1,5 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
 
 export const metadata: Metadata = {
     title: "Como Funciona o Aluguel - Passo a Passo Simples",
@@ -169,16 +166,12 @@ export default function ComoFuncionaPage() {
                         <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
                             Manda os detalhes do seu evento e a gente monta o pacote ideal pra você.
                         </p>
-                        <Button
-                            asChild
-                            size="lg"
-                            className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                        >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
-                                Pedir meu orçamento
-                            </Link>
-                        </Button>
+                        <div className="flex flex-col items-center gap-3">
+                            <WhatsAppCta surface="home" variant="primary">
+                                Pedir orçamento no WhatsApp
+                            </WhatsAppCta>
+                            <WhatsAppCtaMeta surface="home" />
+                        </div>
                     </div>
                 </div>
             </section>

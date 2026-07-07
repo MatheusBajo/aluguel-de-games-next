@@ -4,11 +4,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { FaTrophy, FaShieldAlt, FaHeart, FaGamepad, FaWhatsapp } from "react-icons/fa";
+import { FaTrophy, FaShieldAlt, FaHeart, FaGamepad } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import Demonstra from "@/components/sections/videos-e-imagens/Demonstra";
-import { trackWhatsAppClick } from "@/lib/gtm-utils";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta } from "@/components/cta/WhatsAppCta";
 import { Counter } from "@/components/ui/Counter";
 
 const TopToys = dynamic(() => import("@/components/sections/top-toys/TopToys"), { ssr: false });
@@ -102,22 +101,16 @@ export default function Main() {
                         ))}
                     </div>
 
-                    {/* Stats inline */}
-                    <div className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-x-8 gap-y-4 text-sm">
-                        <span className="flex items-baseline gap-2">
-                            <Counter to={500} suffix="+" duration={2.5} className="font-display font-bold text-2xl md:text-3xl tabular-nums bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent" />
-                            <span className="label-arcade text-muted-foreground">Eventos</span>
-                        </span>
+                    {/* Prova com nomes reais (zero número inventado) */}
+                    <div className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-sm">
+                        <span className="label-arcade text-muted-foreground/80">▸ já jogaram com a gente</span>
+                        <span className="font-mono font-bold text-foreground/80">Bradesco</span>
                         <span className="text-muted-foreground/30">·</span>
-                        <span className="flex items-baseline gap-2">
-                            <Counter to={60} suffix="+" duration={2.2} className="font-display font-bold text-2xl md:text-3xl tabular-nums bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent" />
-                            <span className="label-arcade text-muted-foreground">Equipamentos</span>
-                        </span>
+                        <span className="font-mono font-bold text-foreground/80">Spotify</span>
                         <span className="text-muted-foreground/30">·</span>
-                        <span className="flex items-baseline gap-2">
-                            <Counter to={98} suffix="%" duration={2.3} className="font-display font-bold text-2xl md:text-3xl tabular-nums bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent" />
-                            <span className="label-arcade text-muted-foreground">Satisfação</span>
-                        </span>
+                        <span className="font-mono font-bold text-foreground/80">Arnold Classic</span>
+                        <span className="text-muted-foreground/30">·</span>
+                        <span className="font-mono font-bold text-foreground/80">Danilo Gentili</span>
                     </div>
 
                     {/* Link sutil */}
@@ -170,16 +163,16 @@ export default function Main() {
                             </div>
 
                             <div className="flex flex-col gap-3 lg:items-end">
-                                <Button
-                                    asChild
-                                    size="lg"
-                                    className="hero-cta-primary w-full lg:w-auto bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold text-base px-8 shadow-lg shadow-green-500/30"
+                                <WhatsAppCta
+                                    surface="home"
+                                    variant="primary"
+                                    withMeta
+                                    metaAlign="right"
+                                    className="hero-cta-primary w-full lg:w-auto"
+                                    wrapperClassName="w-full lg:w-auto items-center lg:items-end text-center lg:text-right"
                                 >
-                                    <Link href={WHATSAPP_CONFIG.link} onClick={() => trackWhatsAppClick("home_cta_final_orcamento")} target="_blank">
-                                        <FaWhatsapp className="mr-2 h-5 w-5" />
-                                        Pedir orçamento
-                                    </Link>
-                                </Button>
+                                    Pedir orçamento no WhatsApp
+                                </WhatsAppCta>
                                 <Button
                                     asChild
                                     variant="outline"
@@ -191,9 +184,6 @@ export default function Main() {
                                         Ver catálogo completo
                                     </Link>
                                 </Button>
-                                <p className="label-arcade text-muted-foreground/60 mt-2 text-center lg:text-right">
-                                    Resposta direto no WhatsApp
-                                </p>
                             </div>
                         </div>
                     </div>

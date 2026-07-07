@@ -1,8 +1,6 @@
 import "./top-toys.css";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import {useEffect, useRef, useState} from "react";
-import { TrendingUp } from "lucide-react";
-import { getRentalCount, formatRentalCount } from "@/lib/sales-utils";
 import topToysDataJson from "./data/topToysData_full_svg_all.json";
 import CarouselModal from "@/components/sections/top-toys/product-modal/CarouselModal";
 import {useModalHistory} from "@/hooks/useModalHistory";
@@ -341,12 +339,6 @@ export default function TopToys() {
                                                                                         {item.desc}
                                                                                     </p>
                                                                                 )}
-
-                                                                                <div className="flex items-center gap-1 md:text-[7pt] text-[5pt] font-bold text-green-400">
-                                                                                    <TrendingUp className="md:h-2.5 md:w-2.5 h-2 w-2" strokeWidth={2.5} />
-                                                                                    <span className="tabular-nums">{formatRentalCount(getRentalCount(item.id, parseInt(item.rank)))}</span>
-                                                                                    <span className="opacity-70 font-normal">locações</span>
-                                                                                </div>
                                                                             </div>
 
                                                                         </div>

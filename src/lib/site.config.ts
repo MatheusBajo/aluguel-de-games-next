@@ -8,7 +8,12 @@ import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
 export function getSiteUrl(): string {
     // 1. Variável de ambiente customizada (maior prioridade)
     if (process.env.NEXT_PUBLIC_SITE_URL) {
-        return process.env.NEXT_PUBLIC_SITE_URL;
+        // Host canônico é www (o .htaccess já faz 301 de não-www → www).
+        // Normaliza pra não emitir canonical/sitemap/JSON-LD no host errado.
+        return process.env.NEXT_PUBLIC_SITE_URL.replace(
+            /^https?:\/\/alugueldegames\.com\.br/,
+            'https://www.alugueldegames.com.br'
+        ).replace(/\/$/, '');
     }
 
     // 2. Para produção, usa o domínio final

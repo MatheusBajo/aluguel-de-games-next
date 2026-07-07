@@ -2,7 +2,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {ThemeProvider} from "@/components/theme-provider";
-import SchemaMarkup from "@/components/seo/SchemaMarkup";
+import JsonLd from "@/components/seo/JsonLd";
+import { localBusinessSchema, websiteSchema } from "@/lib/schema";
 import Script from "next/script";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
@@ -90,7 +91,8 @@ export default function RootLayout({
                 <Footer/>
             </div>
         </ThemeProvider>
-        <SchemaMarkup/>
+        {/* JSON-LD server-side no HTML cru (LocalBusiness + WebSite) */}
+        <JsonLd data={[localBusinessSchema(), websiteSchema()]} />
         </body>
         </html>
     );

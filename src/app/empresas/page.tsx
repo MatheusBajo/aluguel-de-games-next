@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
 
 export const metadata: Metadata = {
     title: "Aluguel de Games para Empresas - Eventos Corporativos em SP",
@@ -70,20 +69,16 @@ export default function EmpresasPage() {
                             lançamentos e ativações de marca em São Paulo. Estrutura B2B completa.
                         </p>
 
-                        <div className="rise-in mt-10 flex flex-col sm:flex-row gap-3" style={{ animationDelay: '360ms' }}>
-                            <Button
-                                asChild
-                                size="lg"
-                                className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                            >
-                                <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                    <FaWhatsapp className="mr-2 h-5 w-5" />
-                                    Falar com consultor
-                                </Link>
-                            </Button>
-                            <Button asChild size="lg" variant="outline">
-                                <Link href="/catalogo">Ver catálogo</Link>
-                            </Button>
+                        <div className="rise-in mt-10 flex flex-col gap-3" style={{ animationDelay: '360ms' }}>
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <WhatsAppCta surface="empresas" variant="primary">
+                                    Falar com consultor no WhatsApp
+                                </WhatsAppCta>
+                                <Button asChild size="lg" variant="outline">
+                                    <Link href="/catalogo">Ver catálogo</Link>
+                                </Button>
+                            </div>
+                            <WhatsAppCtaMeta surface="empresas" align="left" />
                         </div>
                     </div>
 
@@ -249,16 +244,9 @@ export default function EmpresasPage() {
                             </h3>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                            <Button
-                                asChild
-                                size="lg"
-                                className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-500 hover:to-green-600 font-semibold px-8 shadow-lg shadow-green-500/30"
-                            >
-                                <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                    <FaWhatsapp className="mr-2 h-5 w-5" />
-                                    Falar com consultor
-                                </Link>
-                            </Button>
+                            <WhatsAppCta surface="empresas" variant="primary">
+                                Falar com consultor no WhatsApp
+                            </WhatsAppCta>
                         </div>
                     </div>
                 </div>
@@ -369,24 +357,19 @@ export default function EmpresasPage() {
                                 Pronto para o<br />
                                 próximo evento?
                             </h2>
+                            {/* SLA de tempo só com assinatura do dono — default "horário comercial" (spec) */}
                             <p className="font-body text-base md:text-lg text-muted-foreground max-w-lg">
-                                Atendimento dedicado, proposta em até 1 dia útil, sem compromisso. Atendemos toda a Grande SP.
+                                Atendimento dedicado, resposta em horário comercial, sem compromisso. Atendemos toda a Grande SP.
                             </p>
                         </div>
                         <div className="flex flex-col gap-3 md:items-end">
-                            <Button
-                                asChild
-                                size="lg"
-                                className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold w-full md:w-auto"
-                            >
-                                <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                    <FaWhatsapp className="mr-2 h-5 w-5" />
-                                    Falar com consultor B2B
-                                </Link>
-                            </Button>
+                            <WhatsAppCta surface="empresas" variant="primary" className="w-full md:w-auto">
+                                Falar com consultor no WhatsApp
+                            </WhatsAppCta>
                             <Button asChild size="lg" variant="outline" className="w-full md:w-auto">
                                 <Link href="/contato">Outras formas de contato</Link>
                             </Button>
+                            <WhatsAppCtaMeta surface="empresas" align="right" className="items-center text-center md:items-end md:text-right" />
                             <p className="label-arcade text-muted-foreground/70 mt-2 text-right">
                                 NF · Contrato · Grande SP
                             </p>

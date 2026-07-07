@@ -5,12 +5,9 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiCheckCircle } from "react-icons/fi";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
+import { WhatsAppCta, WhatsAppCtaMeta } from "@/components/cta/WhatsAppCta";
 
 const steps = [
     {
@@ -303,25 +300,12 @@ export default function ComoFunciona() {
                         </p>
                     </div>
 
-                    <Button
-                        size="lg"
-                        className="group relative overflow-hidden bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-0 px-8"
-                        asChild
-                    >
-                        <Link href={WHATSAPP_CONFIG.link} target="_blank">
-                            <FaWhatsapp className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                            <span className="relative z-10">
-                                Fazer Orçamento via WhatsApp
-                            </span>
-                            <motion.div
-                                className="absolute inset-0 bg-white"
-                                initial={{ x: "-100%" }}
-                                whileHover={{ x: 0 }}
-                                transition={{ type: "tween" }}
-                                style={{ opacity: 0.1 }}
-                            />
-                        </Link>
-                    </Button>
+                    <div className="flex flex-col items-center gap-3">
+                        <WhatsAppCta surface="home" variant="primary">
+                            Pedir orçamento no WhatsApp
+                        </WhatsAppCta>
+                        <WhatsAppCtaMeta surface="home" />
+                    </div>
                 </motion.div>
             </div>
 
