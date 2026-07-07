@@ -4,7 +4,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useCarousel } from "./carousel-landing";      // OK: mesmo diretório
 import { useTheme }   from "@/components/theme-provider";
-import ColorThief     from "colorthief";
+import ColorThiefImport from "colorthief";
+
+// Cast: os types do pacote apontam pro build node, mas aqui roda o build browser
+const ColorThief = ColorThiefImport as unknown as new () => {
+    getPalette: (img: HTMLImageElement, count: number) => Array<[number, number, number]>;
+};
 
 /* ▸ AJUSTES RÁPIDOS — edite só aqui ↓↓↓ -------------------------------- */
 const BLUR_LIGHT   = 60;   // px

@@ -1,17 +1,18 @@
 // src/app/catalogo/[...slug]/page.tsx
 import { notFound } from "next/navigation";
-import Script from "next/script";
 import { getCatalog, getCategoryItems, getItem } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import { CategoryListing } from "@/components/catalogo/CategoryListing";
 import { getCategoryMetadata } from "@/lib/catalog-categories";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, collectionPageSchema, productSchema } from "@/lib/schema";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getImagePath } from "@/lib/image-utils";
 import { getSiteUrl } from "@/lib/site.config";
-import { segmentsToSlug } from "@/lib/slug-utils";
+import { segmentsToSlug, toSlug } from "@/lib/slug-utils";
 // Força geração estática
 export const dynamic = 'force-static';
 
@@ -175,39 +176,31 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
         if (categoryItems.length > 0) {
             const meta = getCategoryMetadata(slugArr);
-            const baseUrl = getSiteUrl();
-            const url = `${baseUrl}/catalogo/${slugArr.join('/')}/`;
 
-            // Schema CollectionPage para SEO
-            const collectionSchema = {
-                "@context": "https://schema.org",
-                "@type": "CollectionPage",
+            // JSON-LD server-side (script inline no HTML cru, nunca next/script)
+            const collectionSchema = collectionPageSchema({
                 name: meta.title,
                 description: meta.description,
-                url,
-                isPartOf: {
-                    "@type": "WebSite",
-                    "@id": `${baseUrl}/#website`,
-                },
-                mainEntity: {
-                    "@type": "ItemList",
-                    numberOfItems: categoryItems.length,
-                    itemListElement: categoryItems.slice(0, 20).map((it, idx) => ({
-                        "@type": "ListItem",
-                        position: idx + 1,
-                        name: it.titulo,
-                        url: `${baseUrl}/catalogo/${segmentsToSlug(it.key.split('/')).join('/')}/`,
-                    })),
-                },
-            };
+                url: `/catalogo/${slugArr.join('/')}/`,
+                items: categoryItems.slice(0, 20).map((it) => ({
+                    name: it.titulo,
+                    url: `/catalogo/${segmentsToSlug(it.key.split('/')).join('/')}/`,
+                })),
+            });
+
+            const crumbs = breadcrumbSchema([
+                { name: 'Home', url: '/' },
+                { name: 'Catálogo', url: '/catalogo/' },
+                ...slugArr.map((seg, i) => ({
+                    name: getCategoryMetadata(slugArr.slice(0, i + 1)).title,
+                    url: `/catalogo/${slugArr.slice(0, i + 1).join('/')}/`,
+                })),
+            ]);
 
             return (
                 <>
-                    <Script
-                        id="ld-collection"
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
-                    />
+                    <JsonLd data={collectionSchema} />
+                    <JsonLd data={crumbs} />
                     <CategoryListing slug={slugArr} meta={meta} items={categoryItems} />
                 </>
             );
@@ -219,57 +212,39 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
     }
 
     const categoria = item.key.split("/")[0];
+    const categoriaSlug = toSlug(categoria);
 
     // Usa a função centralizada para pegar a URL base
     const baseUrl = getSiteUrl();
-
-    // URL da imagem para o Schema
-    const imageUrl = item.imagens?.length
-        ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
-        : null;
 
     // Todas as imagens para o Schema
     const allImages = item.imagens?.map(
         (img) => `${baseUrl}${getImagePath(item.key, img)}`
     );
 
-    // Structured Data - Product para a página do equipamento
-    // Nota: aggregateRating removido propositalmente. Só adicionar quando houver
-    // reviews reais coletadas (via Google Reviews ou sistema próprio). Dados
-    // inventados podem gerar penalização por dados estruturados enganosos.
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
+    const productUrl = `/catalogo/${segmentsToSlug(item.key.split('/')).join('/')}/`;
+
+    // Structured Data server-side (script inline no HTML cru).
+    // Nota: aggregateRating removido propositalmente — só com reviews reais.
+    const structuredData = productSchema({
         name: item.titulo,
         description: item.descricao?.replace(/[*_#]/g, '').trim(),
-        image: allImages,
-        brand: {
-            "@type": "Organization",
-            name: "Aluguel de Games"
-        },
-        offers: {
-            "@type": "Offer",
-            priceCurrency: "BRL",
-            availability: "https://schema.org/InStock",
-            businessFunction: "http://purl.org/goodrelations/v1#LeaseOut",
-            seller: {
-                "@type": "EntertainmentBusiness",
-                "@id": `${baseUrl}/#organization`,
-                name: "Aluguel de Games"
-            }
-        }
-    };
+        images: allImages,
+        url: productUrl,
+    });
+
+    const crumbs = breadcrumbSchema([
+        { name: 'Home', url: '/' },
+        { name: 'Catálogo', url: '/catalogo/' },
+        { name: categoria, url: `/catalogo/${categoriaSlug}/` },
+        { name: item.titulo, url: productUrl },
+    ]);
 
     return (
         <>
             {/* Structured Data */}
-            <Script
-                id="ld-product"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(structuredData),
-                }}
-            />
+            <JsonLd data={structuredData} />
+            <JsonLd data={crumbs} />
 
             <main className="relative mx-auto max-w-screen-2xl">
                 {/* Breadcrumb */}
@@ -288,7 +263,7 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                         </li>
                         <li>/</li>
                         <li>
-                            <Link href={`/catalogo#${encodeURIComponent(categoria)}`}>
+                            <Link href={`/catalogo/${categoriaSlug}/`}>
                                 {categoria}
                             </Link>
                         </li>

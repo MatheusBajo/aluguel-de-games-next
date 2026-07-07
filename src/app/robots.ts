@@ -1,7 +1,27 @@
 // src/app/robots.ts
-export const dynamic    = "force-static";
+//
+// ÚNICA fonte de robots do site (public/robots.txt corrompido foi deletado
+// na fase 0). Libera explicitamente os crawlers de IA — cada bot com
+// directive própria (SPEC-FINAL-V2 §8 / brief gate 1.4: bot bloqueado ≈
+// −18-34% de citações naquele motor). Bloqueia só /studio/ (Sanity Studio,
+// desligado no app).
+export const dynamic = "force-static";
 export const revalidate = false;
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/site.config';
+
+const AI_BOTS = [
+    'GPTBot',
+    'OAI-SearchBot',
+    'ChatGPT-User',
+    'ClaudeBot',
+    'Claude-SearchBot',
+    'Claude-User',
+    'PerplexityBot',
+    'Perplexity-User',
+    'Google-Extended',
+    'Meta-ExternalAgent',
+];
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -9,19 +29,15 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: [
-                    '/api/',
-                    '/admin/',
-                    '/_next/',
-                    '/static/',
-                ],
+                disallow: ['/studio/'],
             },
-            {
-                userAgent: 'Googlebot',
+            ...AI_BOTS.map((bot) => ({
+                userAgent: bot,
                 allow: '/',
-            },
+                disallow: ['/studio/'],
+            })),
         ],
-        sitemap: 'https://www.alugueldegames.com.br/sitemap.xml',
-        host: 'https://www.alugueldegames.com.br',
+        sitemap: `${SITE_URL}/sitemap.xml`,
+        host: SITE_URL,
     };
 }

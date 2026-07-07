@@ -37,6 +37,27 @@ export function trackWhatsAppClick(location: string, additionalData?: Record<str
 }
 
 /**
+ * Taxonomia oficial GA4 (SPEC-FINAL-V2 §8): whatsapp_click{surface,product}.
+ * Usada pelo <WhatsAppCta>. Mantém click_location pra compat com triggers
+ * existentes no GTM.
+ */
+export function trackWhatsAppCta(surface: string, product?: string, location?: string) {
+    trackEvent('whatsapp_click', {
+        surface,
+        ...(product ? { product } : {}),
+        click_location: location ?? surface,
+    });
+}
+
+/** Taxonomia GA4: tel_click{surface}. Telefone é conversão de 1ª classe. */
+export function trackTelClick(surface: string, location?: string) {
+    trackEvent('tel_click', {
+        surface,
+        click_location: location ?? surface,
+    });
+}
+
+/**
  * Rastreia visualização de produto
  */
 export function trackProductView(product: {

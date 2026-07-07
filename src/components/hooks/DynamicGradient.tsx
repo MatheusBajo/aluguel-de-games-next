@@ -31,7 +31,10 @@ export function DynamicGradient({
 
         ;(async () => {
             try {
-                const ColorThiefClass = (await import("colorthief")).default
+                // Cast: os types do pacote apontam pro build node, mas aqui roda o build browser
+                const ColorThiefClass = (await import("colorthief")).default as unknown as new () => {
+                    getPalette: (img: HTMLImageElement, count: number) => Array<[number, number, number]>
+                }
                 const colorThief = new ColorThiefClass()
 
                 const img = new Image()

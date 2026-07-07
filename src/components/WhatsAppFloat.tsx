@@ -1,10 +1,13 @@
 // src/components/WhatsAppFloat.tsx
+//
+// Float de WhatsApp (desktop; no mobile será substituído pela StickyBar
+// global na fase 2). Badge "1" de notificação falsa REMOVIDA (fase 0,
+// brief gate 1.1). Anchor real via <WhatsAppCta> — link no HTML servido.
 "use client";
 
-import { trackWhatsAppClick } from "@/lib/gtm-utils";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
+import { WhatsAppCta } from "@/components/cta/WhatsAppCta";
 
 export function WhatsAppFloat() {
     const [showTooltip, setShowTooltip] = useState(false);
@@ -26,17 +29,11 @@ export function WhatsAppFloat() {
         };
     }, []);
 
-    const handleClick = () => {
-        trackWhatsAppClick('floating_button', {
-            page_url: window.location.pathname,
-            page_title: document.title
-        });
-
-        window.open(WHATSAPP_CONFIG.link, '_blank');
-    };
-
     return (
-        <div className="fixed bottom-4 right-4 z-50 lg:bottom-6 lg:right-6">
+        <div
+            className="fixed bottom-4 right-4 z-50 lg:bottom-6 lg:right-6"
+            onMouseEnter={() => setShowTooltip(false)}
+        >
             <AnimatePresence>
                 {showTooltip && (
                     <motion.div
@@ -54,30 +51,24 @@ export function WhatsAppFloat() {
                 )}
             </AnimatePresence>
 
-            <motion.button
-                onClick={handleClick}
-                className="relative group"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onMouseEnter={() => setShowTooltip(false)}
-            >
+            <div className="relative group">
                 {/* Pulse animation */}
-                <div className="absolute inset-0 bg-green-600 rounded-full animate-ping opacity-20" />
+                <div className="absolute inset-0 bg-green-600 rounded-full animate-ping opacity-20 pointer-events-none" />
 
-                {/* Button */}
-                <div className="relative bg-green-600 hover:bg-green-700 rounded-full p-3 lg:p-4 shadow-lg transition-colors">
+                <WhatsAppCta
+                    surface="generic"
+                    location="float"
+                    variant="icon"
+                    label="Falar no WhatsApp"
+                    className="relative p-3 lg:p-4 shadow-lg transition-transform hover:scale-110 active:scale-95"
+                >
                     <img
                         src="/WhatsApp-logo-42377766.png"
                         alt="WhatsApp"
                         className="w-8 h-8 lg:w-10 lg:h-10 object-contain"
                     />
-                </div>
-
-                {/* Badge de notificação */}
-                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
-                    1
-                </div>
-            </motion.button>
+                </WhatsAppCta>
+            </div>
         </div>
     );
 }

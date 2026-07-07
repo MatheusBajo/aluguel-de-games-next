@@ -13,8 +13,7 @@ import { AnimatedHeadline } from "@/components/ui/AnimatedHeadline";
 import { Counter } from "@/components/ui/Counter";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, PhoneSupportLine } from "@/components/cta/WhatsAppCta";
 
 const carouselItems = [
     { image: "/carousel/compressed/Martelo de força.webp", text: "Martelo de Força — Desafie seus limites" },
@@ -56,21 +55,20 @@ function StartCarousel() {
                 <header className="mb-6 md:mb-10 text-center md:text-left max-w-3xl md:mx-auto">
                     <p className="rise-in label-arcade text-cyan-400 mb-4 inline-flex items-center gap-2">
                         <span className="badge-live text-cyan-400">★</span>
-                        <span>Desde 1993 · Grande SP</span>
+                        <span>Desde 1993 · Osasco e Grande SP</span>
                     </p>
 
                     <AnimatedHeadline
                         delay={0.15}
                         className="font-display font-extrabold leading-[0.92] tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
                     >
-                        Aluguel de games{" "}
-                        <span className="text-muted-foreground/70 font-normal italic">pra sua festa</span><br />
-                        <span className="gradient-slide italic">ser inesquecível.</span>
+                        Aluguel de fliperama, videokê e games{" "}
+                        <span className="text-muted-foreground/70 font-normal italic">pra sua festa.</span><br />
+                        <span className="gradient-slide italic">Desde 1993.</span>
                     </AnimatedHeadline>
 
                     <p className="rise-in mt-5 font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto md:mx-0" style={{ animationDelay: '900ms' }}>
-                        Da nostalgia do fliperama à imersão da realidade virtual.
-                        Entrega, montagem e suporte disponível em toda a Grande SP.
+                        Entrega, montagem e suporte inclusos na Grande São Paulo.
                     </p>
                 </header>
 
@@ -114,60 +112,47 @@ function StartCarousel() {
                 </div>
 
                 {/* ============= CTAs (responsive, sempre dentro da tela) ============= */}
-                <div className="rise-in mt-8 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3" style={{ animationDelay: '380ms' }}>
-                    <Button
-                        asChild
-                        size="lg"
-                        className="hero-cta-primary w-full sm:w-auto bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold text-base px-8 shadow-lg shadow-green-500/30"
-                    >
-                        <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                            <FaWhatsapp className="mr-2 h-5 w-5" />
-                            Pedir orçamento
-                        </Link>
-                    </Button>
+                <div className="rise-in mt-8 md:mt-10 flex flex-col items-center gap-3" style={{ animationDelay: '380ms' }}>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+                        <WhatsAppCta
+                            surface="home"
+                            location="hero"
+                            label="Pedir orçamento no WhatsApp"
+                            className="hero-cta-primary w-full sm:w-auto"
+                        />
 
-                    <Button
-                        asChild
-                        size="lg"
-                        variant="outline"
-                        className="hero-cta-secondary w-full sm:w-auto font-semibold text-base px-8 border-2 hover:border-purple-500/60 hover:bg-purple-500/10"
-                    >
-                        <Link href="/catalogo">
-                            <span className="mr-2">🎮</span>
-                            Ver catálogo
-                        </Link>
-                    </Button>
+                        <Button
+                            asChild
+                            size="lg"
+                            variant="outline"
+                            className="hero-cta-secondary w-full sm:w-auto font-semibold text-base px-8 border-2 hover:border-purple-500/60 hover:bg-purple-500/10"
+                        >
+                            <Link href="/catalogo">
+                                <span className="mr-2">🎮</span>
+                                Ver catálogo
+                            </Link>
+                        </Button>
+                    </div>
+                    <PhoneSupportLine surface="home" location="hero" className="text-center" />
                 </div>
 
-                {/* Stats abaixo dos CTAs com counter animado */}
-                <div className="rise-in mt-10 md:mt-12 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-4 text-base md:text-xl text-muted-foreground" style={{ animationDelay: '900ms' }}>
-                    <span className="flex items-baseline gap-2">
-                        <Counter to={33} suffix="+" duration={2.2} className="font-display font-extrabold text-2xl md:text-4xl text-foreground tabular-nums" />
-                        <span className="font-medium">anos</span>
-                    </span>
-                    <span className="text-muted-foreground/30 text-2xl">·</span>
-                    <span className="flex items-baseline gap-2">
-                        <Counter to={500} suffix="+" duration={2.5} className="font-display font-extrabold text-2xl md:text-4xl text-foreground tabular-nums" />
-                        <span className="font-medium">eventos</span>
-                    </span>
-                    <span className="text-muted-foreground/30 text-2xl">·</span>
-                    <span className="flex items-baseline gap-2">
-                        <Counter to={60} suffix="+" duration={2.2} className="font-display font-extrabold text-2xl md:text-4xl text-foreground tabular-nums" />
-                        <span className="font-medium">equipamentos</span>
-                    </span>
+                {/* Único counter permitido: anos de mercado (derivado de 1993) */}
+                <div className="rise-in mt-10 md:mt-12 flex items-baseline justify-center gap-2 text-base md:text-xl text-muted-foreground" style={{ animationDelay: '900ms' }}>
+                    <Counter to={new Date().getFullYear() - 1993} duration={2.2} className="font-display font-extrabold text-2xl md:text-4xl text-foreground tabular-nums" />
+                    <span className="font-medium">anos alugando games pra festas e eventos</span>
                 </div>
 
-                {/* ============= TRUST BAR ============= */}
+                {/* ============= TRUST BAR (prova verificável, nomes reais) ============= */}
                 <div className="rise-in mt-12 md:mt-16 border-t border-b border-border/40 py-5" style={{ animationDelay: '1100ms' }}>
                     <div className="flex flex-wrap items-center justify-center gap-x-8 md:gap-x-12 gap-y-3 text-xs md:text-sm">
-                        <span className="label-arcade text-muted-foreground/60">▸ atendemos</span>
-                        <span className="font-mono font-bold text-foreground/80">Grandes empresas</span>
+                        <span className="label-arcade text-muted-foreground/60">▸ já jogaram com a gente</span>
+                        <span className="font-mono font-bold text-foreground/80">Bradesco</span>
                         <span className="text-muted-foreground/30">·</span>
-                        <span className="font-mono font-bold text-foreground/80">Personalidades públicas</span>
+                        <span className="font-mono font-bold text-foreground/80">Spotify</span>
                         <span className="text-muted-foreground/30">·</span>
-                        <span className="font-mono font-bold text-foreground/80">Festas particulares</span>
+                        <span className="font-mono font-bold text-foreground/80">Arnold Classic</span>
                         <span className="text-muted-foreground/30">·</span>
-                        <span className="font-mono font-bold text-foreground/80">Eventos corporativos</span>
+                        <span className="font-mono font-bold text-foreground/80">Danilo Gentili</span>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {CatalogSection} from "@/components/catalogo/CatalogSection";
 import {getCatalog} from "@/lib/catalog.server";
-import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
 
 /* ---------- SEO / Metadata ---------- */
 export const metadata: Metadata = {
@@ -38,9 +37,9 @@ export const metadata: Metadata = {
     publisher: 'Aluguel de Games',
     formatDetection: { email: false, address: false, telephone: false },
     openGraph: {
-        title: 'Aluguel de Games - Transforme seu Evento em Diversão',
+        title: 'Aluguel de Games - Fliperamas, Videokê e VR para Festas desde 1993',
         description:
-            'Locação de equipamentos de entretenimento para festas e eventos. Fliperamas, VR, Karaokê e muito mais! Entrega grátis em SP.',
+            'Locação de equipamentos de entretenimento para festas e eventos. Fliperamas, VR, Karaokê e muito mais. Entrega e montagem inclusas na Grande SP.',
         url: 'https://www.alugueldegames.com.br',
         siteName: 'Aluguel de Games',
         images: [
@@ -80,69 +79,9 @@ export const metadata: Metadata = {
     category: 'entretenimento',
 };
 
-/* ---------- JSON‑LD ---------- */
-const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'EntertainmentBusiness',
-    '@id': 'https://www.alugueldegames.com.br/#organization',
-    name: 'Aluguel de Games',
-    description:
-        'Desde 1993, especialistas em aluguel de fliperamas, videokês, realidade virtual, pinball, consoles e máquinas de dança para festas e eventos em São Paulo.',
-    url: 'https://www.alugueldegames.com.br',
-    foundingDate: '1993',
-    telephone: WHATSAPP_CONFIG.formattedNumber,
-    address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'São Paulo',
-        addressRegion: 'SP',
-        addressCountry: 'BR',
-    },
-    geo: { '@type': 'GeoCoordinates', latitude: -23.5505, longitude: -46.6333 },
-    openingHoursSpecification: [
-        {
-            '@type': 'OpeningHoursSpecification',
-            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-            opens: '09:00',
-            closes: '18:00',
-        },
-        {
-            '@type': 'OpeningHoursSpecification',
-            dayOfWeek: ['Saturday'],
-            opens: '09:00',
-            closes: '14:00',
-        },
-    ],
-    priceRange: '$$',
-    currenciesAccepted: 'BRL',
-    paymentAccepted: 'Dinheiro, Cartão de Crédito, Cartão de Débito, PIX',
-    image: 'https://www.alugueldegames.com.br/Logo-Aluguel-de-games.png',
-    logo: 'https://www.alugueldegames.com.br/carro-logo-aluguel-de-games.png',
-    areaServed: [
-        { '@type': 'City', name: 'São Paulo' },
-        { '@type': 'City', name: 'Guarulhos' },
-        { '@type': 'City', name: 'Santo André' },
-        { '@type': 'City', name: 'São Bernardo do Campo' },
-        { '@type': 'City', name: 'Osasco' },
-        { '@type': 'City', name: 'Barueri' },
-    ],
-    sameAs: [
-        WHATSAPP_CONFIG.link,
-        'https://instagram.com/alugueldegames',
-        'https://facebook.com/alugueldegames',
-    ],
-    hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'Equipamentos para Locação',
-        itemListElement: [
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Aluguel de Fliperama' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Aluguel de Videokê' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Aluguel de Realidade Virtual' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Aluguel de Pinball' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Aluguel de Máquinas de Dança' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Aluguel de Consoles (PS5, Xbox, Switch)' } },
-        ],
-    },
-};
+/* ---------- JSON-LD ----------
+ * O EntertainmentBusiness global agora vive no layout (src/app/layout.tsx →
+ * globalGraph() de src/lib/schema.ts), server-side, sem duplicação. */
 
 /* ---------- Página ---------- */
 export default async function Home() {
@@ -165,11 +104,6 @@ export default async function Home() {
 
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-
             <div className="flex flex-col items-center gap-16 md:gap-24 px-0 py-8">
                 <HomeShell />
 

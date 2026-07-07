@@ -1,8 +1,5 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta } from "@/components/cta/WhatsAppCta";
 
 export const metadata: Metadata = {
     title: "Como Funciona o Aluguel - Passo a Passo Simples",
@@ -63,8 +60,8 @@ const beneficios = [
     { titulo: "Cobertura na Grande SP", texto: "Capital, ABC, Alphaville, Guarulhos, Osasco e mais." },
     { titulo: "Montagem incluída", texto: "Nossa equipe cuida de tudo no local — você só aproveita." },
     { titulo: "Suporte durante o evento", texto: "Disponíveis por telefone pra qualquer ajuste nos equipamentos." },
-    { titulo: "60+ equipamentos", texto: "Maior variedade da Grande São Paulo." },
-    { titulo: "33+ anos de mercado", texto: "Tradição e confiança desde 1993." },
+    { titulo: "Catálogo variado", texto: "Fliperamas, videokês, VR, consoles, jogos de mesa e mais." },
+    { titulo: "Desde 1993", texto: "Mais de três décadas alugando games pra festas na Grande SP." },
 ];
 
 export default function ComoFuncionaPage() {
@@ -169,16 +166,12 @@ export default function ComoFuncionaPage() {
                         <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
                             Manda os detalhes do seu evento e a gente monta o pacote ideal pra você.
                         </p>
-                        <Button
-                            asChild
-                            size="lg"
-                            className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                        >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
-                                Pedir meu orçamento
-                            </Link>
-                        </Button>
+                        <WhatsAppCta
+                            surface="home"
+                            location="como_funciona_cta"
+                            label="Pedir orçamento no WhatsApp"
+                            withPhone
+                        />
                     </div>
                 </div>
             </section>

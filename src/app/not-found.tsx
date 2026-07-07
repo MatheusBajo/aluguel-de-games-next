@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Home } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
-import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
+import { WhatsAppCta } from '@/components/cta/WhatsAppCta';
 
 export const metadata: Metadata = {
     title: 'Página não encontrada',
@@ -316,16 +316,14 @@ export default function NotFound() {
                         className="nf-fade-up mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
                         style={{ animationDelay: '1350ms' }}
                     >
-                        <Button
-                            asChild
-                            size="lg"
-                            className="w-full border-2 border-green-400 bg-gradient-to-r from-green-600 to-green-700 font-black uppercase tracking-widest text-white transition-all hover:scale-105 hover:from-green-700 hover:to-green-800 hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] sm:w-auto"
+                        <WhatsAppCta
+                            surface="generic"
+                            location="404"
+                            className="w-full sm:w-auto border-2 border-green-400 font-black uppercase tracking-widest transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
                         >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
-                                Insert Coin · WhatsApp
-                            </Link>
-                        </Button>
+                            <FaWhatsapp className="mr-2 h-5 w-5" />
+                            Insert Coin · WhatsApp
+                        </WhatsAppCta>
 
                         <Button
                             asChild

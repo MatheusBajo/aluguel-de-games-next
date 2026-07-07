@@ -1,9 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
-import { Counter } from "@/components/ui/Counter";
+import { WhatsAppCta, PhoneSupportLine } from "@/components/cta/WhatsAppCta";
 
 export const metadata: Metadata = {
     title: "Galeria de Eventos - Veja Nossos Trabalhos",
@@ -116,25 +114,17 @@ export default function GaleriaPage() {
                 </div>
             </section>
 
-            {/* ============= STATS ============= */}
+            {/* ============= PROVA (nomes reais, sem contador fabricado) ============= */}
             <section className="relative mx-auto max-w-7xl px-4 py-16">
-                <div className="grid gap-px bg-border/40 grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden border border-border/40">
-                    {[
-                        { to: 500, suffix: "+", label: "Eventos" },
-                        { to: 33, suffix: "+", label: "Anos" },
-                        { to: 60, suffix: "+", label: "Equipamentos" },
-                        { to: 98, suffix: "%", label: "Satisfação" },
-                    ].map((s, i) => (
-                        <div key={s.label} className="rise-in bg-background p-6 text-center" style={{ animationDelay: `${i * 80}ms` }}>
-                            <Counter
-                                to={s.to}
-                                suffix={s.suffix}
-                                duration={2 + i * 0.2}
-                                className="font-display font-extrabold text-3xl md:text-5xl tracking-tight bg-gradient-to-br from-pink-400 to-blue-400 bg-clip-text text-transparent block"
-                            />
-                            <p className="label-arcade text-muted-foreground mt-2">{s.label}</p>
-                        </div>
-                    ))}
+                <div className="rounded-2xl border border-border/40 bg-card/30 p-8 text-center">
+                    <p className="font-body text-base md:text-lg text-muted-foreground">
+                        Desde <span className="font-display font-extrabold text-foreground">1993</span> em
+                        festas e eventos na Grande São Paulo — incluindo{" "}
+                        <span className="text-foreground font-semibold">Bradesco</span>,{" "}
+                        <span className="text-foreground font-semibold">Spotify</span>,{" "}
+                        <span className="text-foreground font-semibold">Arnold Classic</span> e o{" "}
+                        <span className="text-foreground font-semibold">aniversário do Danilo Gentili</span>.
+                    </p>
                 </div>
             </section>
 
@@ -151,20 +141,18 @@ export default function GaleriaPage() {
                     <p className="font-body text-muted-foreground max-w-xl mx-auto mb-8">
                         Agende seu evento conosco e vire o próximo case da nossa galeria.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Button
-                            asChild
-                            size="lg"
-                            className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                        >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
-                                Pedir orçamento
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" variant="outline">
-                            <Link href="/catalogo">Ver catálogo completo</Link>
-                        </Button>
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <WhatsAppCta
+                                surface="festas"
+                                location="galeria_cta"
+                                label="Pedir orçamento no WhatsApp"
+                            />
+                            <Button asChild size="lg" variant="outline">
+                                <Link href="/catalogo">Ver catálogo completo</Link>
+                            </Button>
+                        </div>
+                        <PhoneSupportLine surface="festas" location="galeria_cta" className="text-center" />
                     </div>
                 </div>
             </section>

@@ -7,7 +7,10 @@
     "dev": "next dev --turbo --hostname 0.0.0.0",
     "prebuild": "node -e \"require('fs').rmSync('.next', { recursive: true, force: true }); console.log('✓ .next limpo')\"",
     "build": "next build",
-    "postbuild": "next-sitemap",
+    "postbuild": "npm run audit:fake && npm run audit:sitemap && npm run audit:raw",
+    "audit:fake": "node scripts/audit.mjs fake",
+    "audit:sitemap": "node scripts/audit.mjs sitemap",
+    "audit:raw": "node scripts/audit.mjs raw",
     "start": "next start",
     "lint": "next lint",
     "clean": "node -e \"require('fs').rmSync('.next', { recursive: true, force: true }); require('fs').rmSync('out', { recursive: true, force: true }); console.log('✓ .next e out/ limpos')\""
@@ -68,7 +71,6 @@
     "@types/react-dropzone": "^4.2.2",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "next-sitemap": "^4.2.3",
     "tailwindcss": "^4.1.10",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"

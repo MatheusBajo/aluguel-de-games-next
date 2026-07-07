@@ -6,16 +6,12 @@
 
 import { DialogAntigo, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog-antigo";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { FaWhatsapp } from "react-icons/fa";
-import { TrendingUp } from "lucide-react";
 import FlyingEmojis from "@/components/hooks/FlyingEmojis";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { EmblaCarouselType } from "embla-carousel";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
-import { getRentalCount, formatRentalCount } from "@/lib/sales-utils";
+import { WhatsAppCta } from "@/components/cta/WhatsAppCta";
 
 export interface CarouselModalProps {
     open: boolean;
@@ -42,11 +38,6 @@ export function CarouselModal({
     const onSelect = (api: EmblaCarouselType, setIdx: (n: number) => void) => () => {
         const idx = api.selectedScrollSnap();
         setIdx(idx);
-    };
-
-    const buildWhatsAppLink = (productName: string) => {
-        const message = WHATSAPP_CONFIG.message.product(productName);
-        return `${WHATSAPP_CONFIG.link}?text=${encodeURIComponent(message)}`;
     };
 
     return (
@@ -82,8 +73,6 @@ export function CarouselModal({
                         <CarouselContent className="h-full w-full items-center">
                             {items.map((item, index) => {
                                 const rank = index + 1;
-                                const rentals = getRentalCount(item.id, rank);
-                                const formattedRentals = formatRentalCount(rentals);
                                 const isActive = index === currentIndex;
 
                                 return (
@@ -145,18 +134,6 @@ export function CarouselModal({
 
                                             {/* ============= BOTTOM CONTENT ============= */}
                                             <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 z-20 space-y-4">
-                                                {/* Tag livre + locações */}
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <span className="badge-live text-green-400 bg-green-500/10 border border-green-500/30 px-3 py-1.5 rounded-sm">
-                                                        Disponível
-                                                    </span>
-                                                    <span className="inline-flex items-center gap-2 bg-green-500/15 ring-1 ring-green-500/30 text-green-400 px-3 py-1.5 rounded-sm font-mono text-xs font-bold">
-                                                        <TrendingUp className="h-3.5 w-3.5" strokeWidth={2.5} />
-                                                        <span className="tabular-nums">{formattedRentals}</span>
-                                                        <span className="opacity-80">locações</span>
-                                                    </span>
-                                                </div>
-
                                                 {/* Título grande */}
                                                 <h3 className="font-display font-extrabold text-white text-3xl md:text-5xl leading-[1.05] tracking-tight">
                                                     {item.title}
@@ -174,14 +151,13 @@ export function CarouselModal({
 
                                                 {/* CTAs */}
                                                 <div className="flex flex-col sm:flex-row gap-3">
-                                                    <Button
-                                                        size="lg"
-                                                        className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-2 border-green-400/50 shadow-lg shadow-green-500/30 font-semibold uppercase tracking-wider text-sm flex items-center gap-2"
-                                                        onClick={() => window.open(buildWhatsAppLink(item.title), "_blank")}
-                                                    >
-                                                        <FaWhatsapp className="h-5 w-5" />
-                                                        <span>Pedir orçamento</span>
-                                                    </Button>
+                                                    <WhatsAppCta
+                                                        surface="product"
+                                                        product={item.title}
+                                                        location="top10_modal"
+                                                        label="Pedir orçamento"
+                                                        className="flex-1 border-2 border-green-400/50 uppercase tracking-wider text-sm"
+                                                    />
                                                 </div>
 
                                                 {/* Footer info */}

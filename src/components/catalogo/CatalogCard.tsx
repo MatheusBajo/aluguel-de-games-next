@@ -4,13 +4,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiImage } from "react-icons/fi";
-import { TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { getImagePath } from "@/lib/image-utils";
 import { generateProductUrl } from "@/lib/slug-utils";
-import { getRentalCount, formatRentalCount } from "@/lib/sales-utils";
 
 interface CatalogCardProps {
     item: {
@@ -19,7 +17,8 @@ interface CatalogCardProps {
         descricao?: string;
         imagens?: string[];
         categoria?: string;
-        locacoes?: number;
+        /** Linha de spec real ("2 jogadores · 1,8m · 220V") — vem do metadata (fase 1). */
+        specLine?: string;
     };
     index?: number;
 }
@@ -87,16 +86,10 @@ export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
                         {item.titulo}
                     </h3>
 
-                    {/* Locações - social proof real ao invés de rating */}
-                    <div className="flex items-center gap-1.5">
-                        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-green-500/15 text-green-400 ring-1 ring-green-500/30">
-                            <TrendingUp className="h-3 w-3" strokeWidth={2.5} />
-                        </span>
-                        <span className="text-xs font-semibold text-green-400 tabular-nums">
-                            {formatRentalCount(getRentalCount(item.key, { override: item.locacoes }))}
-                        </span>
-                        <span className="text-xs text-gray-500">locações</span>
-                    </div>
+                    {/* Prova honesta: spec real do produto ou fato verificável (gate 1.1) */}
+                    <p className="text-xs text-zinc-300">
+                        {item.specLine ?? "Entrega e montagem incluídas"}
+                    </p>
                 </div>
             </Link>
         </motion.div>

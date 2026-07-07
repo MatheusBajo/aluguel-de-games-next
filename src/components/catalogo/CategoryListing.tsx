@@ -2,8 +2,7 @@
 import Link from 'next/link';
 import { CatalogCard } from '@/components/catalogo/CatalogCard';
 import { Button } from '@/components/ui/button';
-import { FaWhatsapp } from 'react-icons/fa';
-import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
+import { WhatsAppCta, PhoneSupportLine } from '@/components/cta/WhatsAppCta';
 import type { CatalogItem } from '@/lib/catalog.server';
 import type { CategoryMetadata } from '@/lib/catalog-categories';
 import { CATEGORIES } from '@/lib/catalog-categories';
@@ -160,23 +159,17 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                             </div>
 
                             <div className="flex flex-col gap-3 md:items-end">
-                                <Button
-                                    asChild
-                                    size="lg"
-                                    className="w-full md:w-auto bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                                >
-                                    <Link
-                                        href={WHATSAPP_CONFIG.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <FaWhatsapp className="mr-2 h-5 w-5" />
-                                        Fazer orçamento
-                                    </Link>
-                                </Button>
+                                <WhatsAppCta
+                                    surface="category"
+                                    product={meta.title}
+                                    location="category_cta_final"
+                                    label="Pedir orçamento no WhatsApp"
+                                    className="w-full md:w-auto"
+                                />
                                 <Button asChild size="lg" variant="outline" className="w-full md:w-auto">
                                     <Link href="/catalogo">Ver catálogo completo</Link>
                                 </Button>
+                                <PhoneSupportLine surface="category" location="category_cta_final" className="md:text-right" />
                             </div>
                         </div>
                     </div>

@@ -10,8 +10,6 @@ export interface CatalogItem {
     descricao?: string
     imagens?: string[]
     ordem?: number
-    /** Número aproximado de locações. Se presente, sobrescreve o cálculo por hash. */
-    locacoes?: number
     // Propriedades admin
     metadata?: any
     path?: string

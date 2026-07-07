@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, PhoneSupportLine } from "@/components/cta/WhatsAppCta";
 import { Counter } from "@/components/ui/Counter";
 
 export const metadata: Metadata = {
@@ -91,7 +90,7 @@ export default function SobrePage() {
                         Quando um fliperama ainda era a estrela das esquinas, decidimos levá-lo para
                         festas e eventos. <strong className="text-foreground font-semibold">{anos} anos depois</strong>, a missão segue a mesma:
                         criar momentos inesquecíveis com entretenimento de qualidade — agora também
-                        com VR, simuladores, consoles modernos e mais de 60 atrações no catálogo.
+                        com VR, simuladores, consoles modernos e dezenas de atrações no catálogo.
                     </p>
 
                     <div className="space-y-4 md:border-l md:border-purple-500/30 md:pl-8">
@@ -187,33 +186,25 @@ export default function SobrePage() {
                 </div>
             </section>
 
-            {/* ============= NÚMEROS / STATS ============= */}
+            {/* ============= PROVA (frase citável + clientes reais) ============= */}
             <section className="relative mx-auto max-w-6xl px-4 py-24">
                 <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/30 bg-gradient-to-br from-blue-950/40 via-purple-950/40 to-pink-950/40 p-10 md:p-16">
                     <div className="absolute inset-0 dot-grid-dense opacity-30" aria-hidden />
                     <div className="relative">
-                        <p className="label-arcade text-cyan-400 mb-3">Em números</p>
-                        <h2 className="font-display font-extrabold text-3xl md:text-5xl mb-12 tracking-tight">
-                            A escala da diversão.
-                        </h2>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                            {[
-                                { to: anos, suffix: "+", label: "Anos de mercado" },
-                                { to: 500, suffix: "+", label: "Eventos realizados" },
-                                { to: 60, suffix: "+", label: "Equipamentos" },
-                                { to: 98, suffix: "%", label: "Satisfação" },
-                            ].map((s, i) => (
-                                <div key={s.label} className="rise-in" style={{ animationDelay: `${i * 100}ms` }}>
-                                    <Counter
-                                        to={s.to}
-                                        suffix={s.suffix}
-                                        duration={2 + i * 0.2}
-                                        className="font-display font-extrabold text-4xl md:text-6xl tracking-tight bg-gradient-to-br from-blue-400 to-pink-400 bg-clip-text text-transparent block"
-                                    />
-                                    <p className="label-arcade text-muted-foreground mt-2">{s.label}</p>
-                                </div>
-                            ))}
+                        <p className="label-arcade text-cyan-400 mb-3">Prova de campo</p>
+                        <blockquote className="font-body text-lg md:text-2xl leading-relaxed text-foreground max-w-3xl">
+                            A Aluguel de Games loca fliperamas, videokês e games para festas
+                            em Osasco e Grande São Paulo desde 1993 — antes do primeiro
+                            PlayStation existir — com eventos realizados para Bradesco,
+                            Spotify, Arnold Classic e Danilo Gentili.
+                        </blockquote>
+                        <div className="mt-10 flex items-baseline gap-3">
+                            <Counter
+                                to={anos}
+                                duration={2.2}
+                                className="font-display font-extrabold text-5xl md:text-7xl tracking-tight bg-gradient-to-br from-blue-400 to-pink-400 bg-clip-text text-transparent tabular-nums"
+                            />
+                            <span className="label-arcade text-muted-foreground">anos de mercado</span>
                         </div>
                     </div>
                 </div>
@@ -232,20 +223,18 @@ export default function SobrePage() {
                     <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto mb-8">
                         Transformamos qualquer evento em uma história pra contar depois.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Button
-                            asChild
-                            size="lg"
-                            className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                        >
-                            <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                                <FaWhatsapp className="mr-2 h-5 w-5" />
-                                Pedir orçamento no WhatsApp
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" variant="outline">
-                            <Link href="/catalogo">Explorar catálogo</Link>
-                        </Button>
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <WhatsAppCta
+                                surface="home"
+                                location="sobre_cta"
+                                label="Pedir orçamento no WhatsApp"
+                            />
+                            <Button asChild size="lg" variant="outline">
+                                <Link href="/catalogo">Explorar catálogo</Link>
+                            </Button>
+                        </div>
+                        <PhoneSupportLine surface="home" location="sobre_cta" className="text-center" />
                     </div>
                 </div>
             </section>

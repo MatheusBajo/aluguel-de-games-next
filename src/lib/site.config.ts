@@ -2,13 +2,27 @@
 import { WHATSAPP_CONFIG } from '@/config/whatsapp.config';
 
 /**
+ * Host canônico do site. O .htaccess da Hostinger faz 301 de tudo pra www —
+ * canonical/sitemap/robots/schema DEVEM usar este host (host www unificado,
+ * brief §1.3).
+ */
+export const SITE_URL = 'https://www.alugueldegames.com.br';
+
+/**
  * Retorna a URL base do site
  * Funciona tanto em produção quanto nos previews do Vercel
  */
 export function getSiteUrl(): string {
-    // 1. Variável de ambiente customizada (maior prioridade)
+    // 1. Variável de ambiente customizada (maior prioridade).
+    //    Normaliza o domínio de produção pro host canônico www — o env local
+    //    aponta pra alugueldegames.com.br sem www, o que geraria canonical
+    //    divergente do 301 do .htaccess.
     if (process.env.NEXT_PUBLIC_SITE_URL) {
-        return process.env.NEXT_PUBLIC_SITE_URL;
+        const url = process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
+        if (/^https?:\/\/(www\.)?alugueldegames\.com\.br$/.test(url)) {
+            return SITE_URL;
+        }
+        return url;
     }
 
     // 2. Para produção, usa o domínio final

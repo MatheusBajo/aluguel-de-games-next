@@ -1,9 +1,8 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
 import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
 import { Phone, Clock } from "@phosphor-icons/react/ssr";
 import { WHATSAPP_CONFIG } from "@/config/whatsapp.config";
+import { WhatsAppCta, TelLink } from "@/components/cta/WhatsAppCta";
 import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
@@ -32,9 +31,8 @@ export default function ContatoPage() {
             {/* ============= HERO ============= */}
             <section className="relative mx-auto max-w-5xl px-4 pt-16 pb-12 md:pt-24 md:pb-16">
                 <p className="rise-in label-arcade text-green-400 mb-6 inline-flex items-center gap-2">
-                    <span className="badge-live text-green-400">Online</span>
-                    <span className="text-muted-foreground/60">·</span>
-                    <span>Pronto pra atender</span>
+                    <span className="badge-live text-green-400">★</span>
+                    <span>Desde 1993 · resposta em horário comercial</span>
                 </p>
 
                 <h1 className="rise-in font-display font-extrabold leading-[0.92] tracking-tight text-5xl sm:text-6xl md:text-7xl lg:text-8xl" style={{ animationDelay: '120ms' }}>
@@ -59,11 +57,11 @@ export default function ContatoPage() {
 
                 <div className="grid gap-4 md:grid-cols-5">
                     {/* WhatsApp destacado */}
-                    <Link
-                        href={WHATSAPP_CONFIG.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rise-in group relative overflow-hidden rounded-3xl border-2 border-green-500/40 bg-gradient-to-br from-green-500/10 via-green-600/10 to-emerald-700/10 p-8 transition-all hover:scale-[1.02] hover:border-green-400 hover:shadow-xl hover:shadow-green-500/20 md:col-span-3"
+                    <WhatsAppCta
+                        surface="home"
+                        location="contato_card"
+                        variant="unstyled"
+                        className="rise-in group relative overflow-hidden rounded-3xl border-2 border-green-500/40 bg-gradient-to-br from-green-500/10 via-green-600/10 to-emerald-700/10 p-8 transition-all hover:scale-[1.02] hover:border-green-400 hover:shadow-xl hover:shadow-green-500/20 md:col-span-3 block"
                     >
                         <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-green-500/20 blur-3xl" />
                         <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-green-400" />
@@ -85,16 +83,16 @@ export default function ContatoPage() {
                                 {WHATSAPP_CONFIG.displayNumber}
                             </p>
                             <p className="font-body text-sm text-muted-foreground mt-3">
-                                Toque pra abrir o WhatsApp →
+                                Toque pra abrir o WhatsApp com a mensagem pronta →
                             </p>
                         </div>
-                    </Link>
+                    </WhatsAppCta>
 
                     {/* Telefone / ligação */}
-                    <a
-                        href={`tel:${WHATSAPP_CONFIG.formattedNumber}`}
-                        className="rise-in group relative overflow-hidden rounded-3xl border border-border/60 bg-card/40 p-7 transition-all hover:border-purple-500/50 hover:bg-card/70 md:col-span-2"
-                        style={{ animationDelay: '100ms' }}
+                    <TelLink
+                        surface="home"
+                        location="contato_card_tel"
+                        className="rise-in group relative overflow-hidden rounded-3xl border border-border/60 bg-card/40 p-7 transition-all hover:border-purple-500/50 hover:bg-card/70 md:col-span-2 block"
                     >
                         <p className="label-arcade text-purple-400 mb-4">☎ Ligação</p>
                         <div className="flex items-center gap-3 mb-3">
@@ -107,7 +105,7 @@ export default function ContatoPage() {
                         <p className="font-body text-xs text-muted-foreground mt-3">
                             Dentro do horário comercial
                         </p>
-                    </a>
+                    </TelLink>
                 </div>
             </section>
 
@@ -242,16 +240,12 @@ export default function ContatoPage() {
                             Bora conversar.
                         </span>
                     </h2>
-                    <Button
-                        asChild
-                        size="lg"
-                        className="bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 font-semibold"
-                    >
-                        <Link href={WHATSAPP_CONFIG.link} target="_blank" rel="noopener noreferrer">
-                            <FaWhatsapp className="mr-2 h-5 w-5" />
-                            Iniciar conversa no WhatsApp
-                        </Link>
-                    </Button>
+                    <WhatsAppCta
+                        surface="home"
+                        location="contato_cta_final"
+                        label="Iniciar conversa no WhatsApp"
+                        withPhone
+                    />
                 </div>
             </section>
         </main>
