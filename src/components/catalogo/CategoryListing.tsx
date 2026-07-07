@@ -1,11 +1,21 @@
 // src/components/catalogo/CategoryListing.tsx
+//
+// Categoria-LP (SPEC-FINAL-V2 §4 "Categoria-LP"): H1 keyword → capsule → CTA
+// dual acima da dobra → grid (foto primeiro, spec real no card) → tabela
+// comparativa (só com ≥3 produtos com dado) → preço honesto → FAQ própria
+// (FAQPage) → CTA final. Sticky bar cobre a página toda (global no layout).
+// SERVER component — capsule/specs/FAQ no HTML cru (SEO/GEO).
 import Link from 'next/link';
 import { CatalogCard } from '@/components/catalogo/CatalogCard';
 import { Button } from '@/components/ui/button';
 import { WhatsAppCta, PhoneSupportLine } from '@/components/cta/WhatsAppCta';
+import FaqNative from '@/components/seo/FaqNative';
 import type { CatalogItem } from '@/lib/catalog.server';
 import type { CategoryMetadata } from '@/lib/catalog-categories';
 import { CATEGORIES } from '@/lib/catalog-categories';
+import { specLineFor, buildSpecRows } from '@/lib/product-specs';
+import { categoryFaq } from '@/lib/product-content';
+import { generateProductUrl } from '@/lib/slug-utils';
 
 interface CategoryListingProps {
     /** Slug da categoria atual (ex: ['jogos-eletronicos', 'fliperamas']) */
@@ -14,6 +24,12 @@ interface CategoryListingProps {
     meta: CategoryMetadata;
     /** Produtos pertencentes a essa categoria */
     items: CatalogItem[];
+}
+
+/** Dimensões (montado) de cada item, pra tabela comparativa (só com dado). */
+function dimRowFor(item: CatalogItem): string | null {
+    const row = buildSpecRows(item).find((r) => r.label === 'Dimensões (montado)');
+    return row?.value ?? null;
 }
 
 export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
@@ -34,6 +50,14 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
     // Categoria atual (último segmento) pra label
     const categoryLabel = breadcrumbs[breadcrumbs.length - 1]?.name ?? 'Categoria';
 
+    // Itens com dimensão real → tabela comparativa só com ≥3 (§4 categoria).
+    const comparable = items
+        .map((it) => ({ it, dim: dimRowFor(it) }))
+        .filter((x): x is { it: CatalogItem; dim: string } => x.dim !== null);
+    const showComparison = comparable.length >= 3;
+
+    const faq = categoryFaq(categoryLabel);
+
     return (
         <main className="relative overflow-hidden">
             {/* Decorações */}
@@ -47,15 +71,11 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                 <nav aria-label="Breadcrumb" className="pt-6 pb-4">
                     <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 label-arcade text-muted-foreground/70">
                         <li>
-                            <Link href="/" className="hover:text-foreground transition-colors">
-                                HOME
-                            </Link>
+                            <Link href="/" className="hover:text-foreground transition-colors">HOME</Link>
                         </li>
                         <li aria-hidden className="text-muted-foreground/40">/</li>
                         <li>
-                            <Link href="/catalogo" className="hover:text-foreground transition-colors">
-                                CATÁLOGO
-                            </Link>
+                            <Link href="/catalogo" className="hover:text-foreground transition-colors">CATÁLOGO</Link>
                         </li>
                         {breadcrumbs.map((crumb, i) => {
                             const isLast = i === breadcrumbs.length - 1;
@@ -78,7 +98,7 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                 </nav>
 
                 {/* ============= HERO DA CATEGORIA ============= */}
-                <header className="relative py-8 md:py-14 mb-10 md:mb-16">
+                <header className="relative py-8 md:py-12 mb-8 md:mb-12">
                     <div className="grid lg:grid-cols-[2fr_1fr] gap-8 lg:gap-16 items-end">
                         <div>
                             <p className="rise-in label-arcade text-cyan-400 mb-4 inline-flex items-center gap-2">
@@ -92,12 +112,25 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                                 </span>
                             </h1>
 
+                            {/* Answer capsule (primeiro texto corrido, extraível) */}
                             <p className="rise-in mt-6 font-body text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed" style={{ animationDelay: '220ms' }}>
                                 {meta.description}
                             </p>
+
+                            {/* CTA dual ACIMA DA DOBRA (§4 categoria) */}
+                            <div className="rise-in mt-7 flex flex-col gap-3 sm:flex-row sm:items-center" style={{ animationDelay: '320ms' }}>
+                                <WhatsAppCta
+                                    surface="category"
+                                    product={meta.title}
+                                    location="category_hero"
+                                    label="Pedir orçamento no WhatsApp"
+                                    className="w-full sm:w-auto"
+                                />
+                                <PhoneSupportLine surface="category" location="category_hero" />
+                            </div>
                         </div>
 
-                        {/* Counter de equipamentos grandão */}
+                        {/* Counter de equipamentos (contagem real do catálogo) */}
                         <div className="rise-in lg:border-l lg:border-purple-500/30 lg:pl-8 flex lg:block items-baseline gap-4" style={{ animationDelay: '340ms' }}>
                             <span className="numeral-huge-filled !text-6xl md:!text-7xl lg:!text-8xl block tabular-nums">
                                 {String(items.length).padStart(2, '0')}
@@ -116,7 +149,11 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                 {items.length > 0 ? (
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
                         {items.map((item, i) => (
-                            <CatalogCard key={item.key} item={item} index={i} />
+                            <CatalogCard
+                                key={item.key}
+                                item={{ ...item, specLine: specLineFor(item) ?? undefined }}
+                                index={i}
+                            />
                         ))}
                     </div>
                 ) : (
@@ -131,13 +168,77 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                     </div>
                 )}
 
+                {/* ============= TABELA COMPARATIVA (só com ≥3 c/ dado) ============= */}
+                {showComparison && (
+                    <section aria-label="Comparativo de dimensões" className="mt-14 md:mt-16">
+                        <h2 className="mb-4 font-display text-xl font-bold tracking-tight md:text-2xl">
+                            Compare as dimensões
+                        </h2>
+                        <div className="overflow-x-auto rounded-2xl border border-border/60 bg-[var(--color-surface-fact)]/50">
+                            <table className="w-full border-collapse text-sm">
+                                <thead>
+                                    <tr className="border-b border-border/60 text-left">
+                                        <th className="px-4 py-3 font-body font-semibold text-muted-foreground">Equipamento</th>
+                                        <th className="px-4 py-3 text-right font-body font-semibold text-muted-foreground">Dimensões (montado)*</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {comparable.map(({ it, dim }) => (
+                                        <tr key={it.key} className="border-b border-border/40 last:border-0">
+                                            <td className="px-4 py-3">
+                                                <Link href={`${generateProductUrl(it.key)}/`} className="font-medium text-foreground hover:text-purple-400 transition-colors">
+                                                    {it.titulo}
+                                                </Link>
+                                            </td>
+                                            <td className="px-4 py-3 text-right font-mono text-[var(--color-fact)] tabular-nums">{dim}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <p className="mt-2 text-xs text-muted-foreground/70">
+                            * Medidas aproximadas. Confirme no WhatsApp antes do evento (porta, elevador, espaço).
+                        </p>
+                    </section>
+                )}
+
+                {/* ============= PREÇO HONESTO (zero número) ============= */}
+                <section aria-label="Quanto custa" className="mt-14 md:mt-16 rounded-2xl border border-border/60 bg-card/30 p-6 md:p-8">
+                    <h2 className="font-display text-xl font-bold tracking-tight md:text-2xl">
+                        Quanto custa alugar {categoryLabel.toLowerCase()}?
+                    </h2>
+                    <p className="mt-3 max-w-2xl font-body text-sm md:text-base text-zinc-300 leading-relaxed">
+                        O valor depende de três coisas: o equipamento, a data do evento e o bairro da entrega.
+                        Alugando mais de um item junto, o combo sai melhor. Manda os detalhes no WhatsApp que a
+                        gente responde com o orçamento fechado da sua festa.
+                    </p>
+                    <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <WhatsAppCta
+                            surface="category"
+                            product={meta.title}
+                            location="category_preco"
+                            label="Pedir o valor da minha festa"
+                            className="w-full sm:w-auto"
+                        />
+                        <Link href="/quanto-custa" className="text-sm font-semibold text-foreground underline underline-offset-4 hover:text-green-400">
+                            Entenda o orçamento →
+                        </Link>
+                    </div>
+                </section>
+
+                {/* ============= FAQ DA CATEGORIA (+ FAQPage) ============= */}
+                <section aria-label="Perguntas frequentes" className="mt-14 md:mt-16">
+                    <h2 className="mb-6 text-center font-display text-2xl font-extrabold tracking-tight md:text-3xl">
+                        Perguntas frequentes
+                    </h2>
+                    <FaqNative items={faq} withSchema />
+                </section>
+
                 {/* ============= CTA FINAL ============= */}
                 <section className="relative mt-16 md:mt-20">
                     <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/40 bg-gradient-to-br from-blue-950/50 via-purple-950/50 to-pink-950/50 p-8 md:p-12">
-                        {/* Decorações */}
                         <div className="absolute inset-0 dot-grid-dense opacity-25" aria-hidden />
                         <div className="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full bg-pink-500/20 blur-3xl" />
-                        {/* Corner brackets */}
                         <span className="pointer-events-none absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-cyan-400/60" />
                         <span className="pointer-events-none absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-cyan-400/60" />
                         <span className="pointer-events-none absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-cyan-400/60" />
@@ -148,13 +249,11 @@ export function CategoryListing({ slug, meta, items }: CategoryListingProps) {
                                 <p className="label-arcade text-cyan-400 mb-3">→ Não achou o que queria?</p>
                                 <h2 className="font-display font-extrabold text-2xl md:text-4xl tracking-tight leading-[0.95] mb-4">
                                     A gente tem<br />
-                                    <span className="italic font-normal text-muted-foreground/80">
-                                        muito mais no catálogo.
-                                    </span>
+                                    <span className="italic font-normal text-muted-foreground/80">muito mais no catálogo.</span>
                                 </h2>
                                 <p className="font-body text-muted-foreground text-sm md:text-base max-w-lg">
-                                    Fale com a gente no WhatsApp — montamos o pacote ideal
-                                    pro seu evento com tudo que você precisar.
+                                    Fale com a gente no WhatsApp — montamos o pacote ideal pro seu evento com tudo
+                                    que você precisar.
                                 </p>
                             </div>
 

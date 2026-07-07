@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CatalogCard } from "./CatalogCard";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,10 @@ interface CatalogSectionProps {
         titulo: string;
         descricao?: string;
         imagens?: string[];
+        specLine?: string;
     }[];
+    /** Link da subcategoria: o heading vira link pra LP quando presente. */
+    href?: string;
     initialLimit?: number;
     initialLimitMobile?: number;
     headingLevel?: "h3" | "h4";
@@ -26,6 +30,7 @@ interface CatalogSectionProps {
 export function CatalogSection({
                                    categoria,
                                    items,
+                                   href,
                                    initialLimit = 12,
                                    initialLimitMobile = 6,
                                    headingLevel = "h3",
@@ -45,18 +50,23 @@ export function CatalogSection({
     const lim = isMobile ? initialLimitMobile : initialLimit;
     const display = showAll ? items : items.slice(0, lim);
 
-    // Renderização condicional do heading sem usar JSX.IntrinsicElements
+    // Renderização condicional do heading sem usar JSX.IntrinsicElements.
+    // Com `href`, o título vira LINK pra LP da subcategoria (§2/§3.4).
     const renderHeading = () => {
-        const content = (
-            <>
+        const cls = "text-xl md:text-2xl font-bold text-gray-100";
+        const content = href ? (
+            <Link href={href} className="group inline-flex items-baseline gap-1.5 transition-colors hover:text-purple-300">
                 {categoria}
-            </>
+                <span aria-hidden className="text-sm text-purple-400/60 transition-transform group-hover:translate-x-0.5">→</span>
+            </Link>
+        ) : (
+            categoria
         );
 
         if (headingLevel === "h4") {
-            return <h4 className="text-xl md:text-2xl font-bold text-gray-100">{content}</h4>;
+            return <h4 className={cls}>{content}</h4>;
         }
-        return <h3 className="text-xl md:text-2xl font-bold text-gray-100">{content}</h3>;
+        return <h3 className={cls}>{content}</h3>;
     };
 
     return (

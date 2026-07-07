@@ -1,6 +1,21 @@
 // src/components/catalogo/Catalogo.tsx
+//
+// Hub do catálogo (SPEC-FINAL-V2 §2): SEM busca (proibição do brief), headings
+// de categoria viram LINKS pras LPs, ordem curada. Answer capsule no topo
+// (texto corrido extraível). SERVER component — zero JS aqui.
 import CatalogList from "@/app/catalogo/CatalogList.server";
-import { motion } from "framer-motion";
+import { WhatsAppCta, PhoneSupportLine } from "@/components/cta/WhatsAppCta";
+
+// Ordem curada das categorias nível-1 (NFC — casada com o nome real da pasta
+// dentro do CatalogList, que normaliza os dois lados).
+const CURATED_ORDER = [
+    "Jogos Eletrônicos",
+    "Videokês",
+    "Realidade Virtual",
+    "Jogos de Mesa",
+    "Piscinas, Infláveis, Cama Elástica, Infantil",
+    "Projetores & Extras",
+];
 
 export default async function Catalogo() {
     return (
@@ -12,24 +27,30 @@ export default async function Catalogo() {
             </div>
 
             {/* Header */}
-            <div className="mb-12 text-center">
-                <h1 className="mb-4 text-5xl font-bold tracking-tight">
-                    Nosso Catálogo
+            <div className="mb-10 text-center">
+                <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
+                    Catálogo de aluguel para festas e eventos
                 </h1>
-                <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-                    Explore nossa coleção completa de jogos e equipamentos para tornar seu evento inesquecível
+                {/* Answer capsule (texto corrido extraível — SEO/GEO) */}
+                <p className="mx-auto max-w-3xl text-base md:text-lg text-muted-foreground leading-relaxed">
+                    Fliperamas, videokês, PS5, realidade virtual, pinball, máquinas de dança, jogos de
+                    mesa e brinquedos infláveis para alugar em Osasco e toda a Grande São Paulo. A gente
+                    entrega montado e testado, com contrato e nota fiscal. Escolhe abaixo e pede o
+                    orçamento pelo WhatsApp. Desde 1993.
                 </p>
+
+                <div className="mt-6 flex flex-col items-center gap-2">
+                    <WhatsAppCta
+                        surface="category"
+                        location="catalog_hub"
+                        label="Pedir orçamento no WhatsApp"
+                    />
+                    <PhoneSupportLine surface="category" location="catalog_hub" className="text-center" />
+                </div>
             </div>
 
             {/* Catalog */}
-            <CatalogList
-                order={[
-                    "Jogos Eletrônicos",
-                    "Videokês",
-                    "Jogos de Mesa",
-                    "Consoles",
-                ]}
-            />
+            <CatalogList order={CURATED_ORDER} />
         </main>
     );
 }

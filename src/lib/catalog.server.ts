@@ -4,12 +4,53 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { segmentsToSlug } from './slug-utils'
 
+/**
+ * Ficha técnica estruturada (SPEC-FINAL-V2 §4.6). Fonte curada = planilha do
+ * dono (DONO-CHECKLIST.md). Campo ausente = linha NÃO renderiza (§1.3): nunca
+ * "consulte" em cascata. Dimensões que hoje vivem em NOME DE ARQUIVO de foto
+ * são extraídas automaticamente por product-specs.ts como fallback honesto.
+ */
+export interface ProductSpecs {
+    /** "A 1,95 m × L 0,75 m × C 0,40 m" (montado). */
+    dimensoesMontado?: string
+    /** Dimensões fechado/transporte. */
+    dimensoesFechado?: string
+    /** Passa em porta de 80 cm? */
+    passaPorta80?: boolean
+    /** Cabe no elevador? */
+    elevador?: boolean
+    /** Tomada: "110V", "220V", "110V/220V", "Bivolt", "Não usa energia". */
+    voltagem?: string
+    /** Consumo aproximado. */
+    consumo?: string
+    /** Nº de jogadores ("1 a 2"). */
+    jogadores?: string
+    /** Idade recomendada ("Livre", "6+"). */
+    idade?: string
+    /** Espaço mínimo de operação. */
+    espacoMinimo?: string
+    /** Peso aproximado. */
+    peso?: string
+}
+
 export interface CatalogItem {
     key: string
     titulo: string
     descricao?: string
     imagens?: string[]
     ordem?: number
+    /** Ficha técnica curada pelo dono (opcional; §4.6). */
+    specs?: ProductSpecs
+    /** FAQ do item (opcional; §4.9). Sem isso usa o default honesto. */
+    faq?: { question: string; answer: string }[]
+    /** Answer capsule do produto (opcional; §4.4). */
+    capsule?: string
+    /** Badges honestos ("mais pedido"/"novo") — só com assinatura do dono. */
+    badges?: string[]
+    /** Override de ocasião (§3.4) — curadoria do dono. */
+    ocasioes?: ('infantil' | 'adulta' | 'empresa')[]
+    /** Contador legado do metadata (NÃO exibido — proibição §11). */
+    locacoes?: number
     // Propriedades admin
     metadata?: any
     path?: string

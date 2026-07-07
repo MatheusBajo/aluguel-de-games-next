@@ -1,9 +1,12 @@
 // src/app/catalogo/CatalogList.server.tsx
+import Link from "next/link";
 import { getCatalog } from "@/lib/catalog.server";
 import { CatalogSection } from "@/components/catalogo/CatalogSection";
+import { specLineFor } from "@/lib/product-specs";
+import { segmentsToSlug, toSlug } from "@/lib/slug-utils";
 
 interface Props {
-    /** ordem manual das categorias nível‑1 */
+    /** ordem manual das categorias nível‑1 (casada por NFC) */
     order?: string[];
     /** itens por categoria (desktop) */
     limitPerCat?: number;
@@ -13,14 +16,20 @@ interface Props {
     maxCats?: number;
 }
 
+/** NFC: pastas do macOS vêm em NFD; a ordem curada é escrita em NFC. */
+const nfc = (s: string) => s.normalize("NFC");
+
 export default async function CatalogList({
                                               order,
                                               limitPerCat = 12,
                                               limitPerCatMobile = 6,
                                               maxCats,
                                           }: Props) {
-    /* 1 ─ carrega todo o catálogo */
-    const items = await getCatalog();
+    /* 1 ─ carrega todo o catálogo (enriquece com spec real p/ o card) */
+    const items = (await getCatalog()).map((it) => ({
+        ...it,
+        specLine: specLineFor(it) ?? undefined,
+    }));
 
     /* 2 ─ agrupa por categoria de nível‑1 */
     const lvl1: Record<string, typeof items> = {};
@@ -29,10 +38,18 @@ export default async function CatalogList({
         (lvl1[cat] ||= []).push(it);
     }
 
-    /* 3 ─ define a ordem + aplica o corte de categorias */
-    let lvl1Keys = order
-        ? [...order, ...Object.keys(lvl1).filter((k) => !order.includes(k))]
-        : Object.keys(lvl1);
+    /* 3 ─ ordem curada casada por NFC (corrige categorias sumindo por NFD) */
+    const actualKeys = Object.keys(lvl1);
+    let lvl1Keys: string[];
+    if (order) {
+        const ordered = order
+            .map((o) => actualKeys.find((k) => nfc(k) === nfc(o)))
+            .filter((k): k is string => !!k);
+        const rest = actualKeys.filter((k) => !ordered.includes(k));
+        lvl1Keys = [...ordered, ...rest];
+    } else {
+        lvl1Keys = actualKeys;
+    }
 
     // mantém só categorias existentes
     lvl1Keys = lvl1Keys.filter((k) => lvl1[k]?.length);
@@ -47,6 +64,8 @@ export default async function CatalogList({
             {lvl1Keys.map((cat) => {
                 const lvl1Items = lvl1[cat];
                 if (!lvl1Items) return null;
+
+                const catHref = `/catalogo/${toSlug(cat)}/`;
 
                 /* 4 ─ agrupa subcategorias (nível‑2) */
                 const lvl2: Record<string, typeof lvl1Items> = {};
@@ -67,7 +86,7 @@ export default async function CatalogList({
                     <div key={cat} className="relative">
                         {/* Container da categoria principal */}
                         <div className="relative overflow-hidden rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800/50">
-                            {/* Header compacto */}
+                            {/* Header compacto — heading é LINK pra LP da categoria */}
                             <div className="relative overflow-hidden bg-gradient-to-r from-gray-900 via-purple-900/50 to-gray-900 p-6 md:p-8">
                                 {/* Pattern overlay */}
                                 <div className="absolute inset-0 opacity-10">
@@ -81,13 +100,16 @@ export default async function CatalogList({
                                     />
                                 </div>
 
-                                <div className="relative">
-                                    <h2 className="text-3xl md:text-4xl font-bold text-white">
-                                        {cat}
-                                    </h2>
-                                    <p className="mt-1 text-gray-400 text-sm">
-                                        {lvl1Items.length} produtos disponíveis
-                                    </p>
+                                <div className="relative flex items-end justify-between gap-4">
+                                    <Link href={catHref} className="group">
+                                        <h2 className="text-3xl md:text-4xl font-bold text-white transition-colors group-hover:text-purple-300">
+                                            {cat}
+                                            <span className="ml-2 inline-block text-purple-400/60 transition-transform group-hover:translate-x-1">→</span>
+                                        </h2>
+                                        <p className="mt-1 text-gray-400 text-sm">
+                                            {lvl1Items.length} {lvl1Items.length === 1 ? "produto" : "produtos"} · ver categoria
+                                        </p>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -102,6 +124,7 @@ export default async function CatalogList({
                                     >
                                         <CatalogSection
                                             categoria={sub}
+                                            href={`/catalogo/${segmentsToSlug([cat, sub]).join("/")}/`}
                                             items={subItems}
                                             headingLevel="h3"
                                             initialLimit={limitPerCat}

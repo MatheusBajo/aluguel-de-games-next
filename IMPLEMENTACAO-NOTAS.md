@@ -220,3 +220,101 @@ Build: `npm run build` verde (export estático, 83 páginas) + 3 audits verdes
 (fake/sitemap/raw). Gates verificados no HTML: H1 sem opacity:0, capsule +
 telefone + "1993", slide1 eager/fetchPriority + LQIP inline, 5 `<details>` +
 FAQPage, 3 fileiras povoadas (56 cards), trust strip, quanto-custa, sticky bar.
+
+---
+
+## Estágio 3 — CATÁLOGO + PÁGINA DE PRODUTO (SPEC-FINAL-V2 §4) — redesign-v2-fable
+
+### Página de produto (padrão-ouro §4) — `[...slug]/page.tsx` reescrita
+- **H1/título transacional:** `Aluguel de {Produto} para Festas e Eventos`
+  (H1 no HTML cru); `<title>` = `...em SP | Aluguel de Games` (absolute, não
+  duplica o template do layout). `productHeading()` centraliza.
+- **Answer capsule (§4.4):** `productCapsule()` (server, HTML cru, 40-60
+  palavras factuais) — override por `capsule` no metadata.json.
+- **Galeria touch (§4.2):** `ProductGallery` reescrita — scroll-snap CSS
+  NATIVA (swipe no toque), controles SEMPRE visíveis no mobile (não mais
+  `opacity-0 group-hover` = a crítica do opus-4.8 era "no touch o controle
+  some"), dots de posição, tap na foto = lightbox, teclado (setas/esc).
+  Framer-motion saiu da galeria (mais leve). 1ª img `priority`.
+- **Bloco de decisão (§4.5):** `ProductInfo` agora é SERVER component (só o
+  `ShareButton` é client) → 3 fatos + garantia colada (§9.6, sem `[CONFIRMAR]`
+  vazando pro texto) + preço estado-SEM (1 linha honesta + link /quanto-custa,
+  sem card celebrando ausência) + CTA verde `Pedir orçamento deste item`
+  (prefill do produto) + CTA outline dúvida + telefone/fora-do-horário.
+- **Ficha técnica (§4.6):** `SpecsTable` (server) — chips + `<table>`
+  machine-readable (`<th scope="row">`). Fonte: `specs{}` curado OU dimensões
+  extraídas do NOME DE ARQUIVO das fotos (§4.6). Ficha vazia NÃO renderiza.
+- **Chips "vai bem em" (§4.7):** derivados da ocasião do item → /festas /empresas.
+- **Incluso + descrição (§4.8):** `ProductDescription` (server, markdown).
+- **FAQ do item (§4.9):** `FaqNative` + `productFaq()` (4 perguntas honestas,
+  FAQPage 1:1); override por `faq[]` no metadata.
+- **Relacionados (§4.10):** `RelatedProducts` reescrito — por OCASIÃO
+  compartilhada + mesma categoria (nunca "quem alugou também" = dado que não
+  temos). Cards com spec real.
+- **JSON-LD server (§4):** Product + Offer LeaseOut + `additionalProperty`
+  (só specs reais) + FAQPage + BreadcrumbList (migalha completa, todos os
+  níveis). Sem aggregateRating.
+- **Sticky bar do produto (§4.11):** `StickyProductProvider` no layout +
+  `SetStickyProduct` na página → a UMA barra global assume o prefill DO
+  produto no mobile (nomeia o item). Float continua desktop-only.
+
+### Extração de dimensões do nome de arquivo (`src/lib/product-specs.ts`)
+- Parser conservador com detecção de orientação (número-antes vs eixo-antes)
+  + faixa sã [0,10 m; 6,0 m]. Validado contra os 54 produtos: **19 ganham
+  "Dimensões (montado)" reais** (o dono já mediu e escreveu no nome do arquivo,
+  §4.6); os 35 sem medida legível não renderizam linha (§1.3). Zero fabricação.
+- Mesma fonte alimenta a linha de spec dos cards (`specLineFor`) e a tabela
+  comparativa da categoria.
+
+### Categoria-LP (§4 categoria) — `CategoryListing` estendida
+- Capsule (a `meta.description` vira o texto-resposta) + **CTA dual acima da
+  dobra** + grid com spec real no card + **tabela comparativa de dimensões**
+  (só com ≥3 produtos com dado; senão omite) + **bloco de preço honesto**
+  (zero número) + **FAQ própria** (`categoryFaq`, FAQPage) + CTA final.
+  CollectionPage + ItemList + FAQPage + BreadcrumbList.
+
+### Hub `/catalogo` (§2) + agrupamento
+- Copy "inesquecível" (rejeitada no veredito) REMOVIDA; nova copy transacional
+  + answer capsule + CTA.
+- **Headings viram LINKS:** h2 da categoria nível-1 → LP; h3 da subcategoria →
+  LP (prop `href` nova no `CatalogSection`).
+- **NFC:** as pastas do macOS vêm em NFD; `CatalogList` normaliza os dois lados
+  antes de casar a ordem curada (bug antigo: categoria com acento sumia porque
+  a ordem estava em NFC e a chave em NFD). SEM busca (proibição do brief).
+- "Pasta X" (só `category.json`, zero produto) não aparece — walk() só coleta
+  quem tem `metadata.json`.
+
+### Decisões / ambiguidades resolvidas (sem perguntar, pelo espírito do brief)
+1. **"+ Adicionar ao orçamento" (carrinho, §4.5) adiado:** QuoteCart/Drawer é
+   fase 2 da spec (ainda não existe). Em vez de um botão que não faz nada, a
+   ação secundária do produto é `Tirar uma dúvida no WhatsApp` (honesto e
+   funcional). Registrado como pendência.
+2. **Consoles ganharam ocasião (infantil + adulta):** o mapa default do §3.4
+   não citava Consoles → PS5/Xbox/Wii ficavam sem "vai bem em" e fora de TODA
+   fileira da home. PS5 em festa (infantil e adulta) é fato, não invenção;
+   estendi o fallback de `occasions.ts`. Override do dono continua valendo.
+3. **Preço sempre no estado-SEM:** nenhum produto tem preço assinado (gate
+   1.6) → todo produto/categoria usa a linha honesta + /quanto-custa. O estado
+   COM já está codado, liga sozinho quando o dono preencher.
+4. **Título do produto:** usei a forma transacional pedida no estágio
+   (`...para Festas e Eventos`) em vez do `Aluguel de {Produto}` cru do §4.3
+   (mais keyword/intenção; o resto do §4.3 — badge + linha de spec — ficou).
+
+### Pendências (fora do escopo deste estágio)
+- **Specs curados dos 15 top** (planilha do dono, checklist item 7): hoje só
+  as dimensões auto-derivadas aparecem; voltagem, jogadores, idade, peso,
+  passa-porta/elevador só entram quando o dono preencher `specs{}`.
+- **LQIP por imagem do produto:** a galeria usa `priority` na 1ª + bg neutro;
+  placeholder base64 por foto = fase 6.
+- **QuoteCart/Drawer (carrinho → wa.me multi-item):** fase 2.
+- **/festas, /quanto-custa:** ainda 404 (nascem no estágio de páginas); os
+  links de produto/categoria já apontam pro destino final (forward-compat).
+- Órfão novo deixado de propósito: `CatalogGrouped.server.tsx` (não importado).
+
+Build: `npm run build` verde (83 páginas) + 3 audits verdes (fake/sitemap/raw).
+Gates conferidos no HTML exportado — produto (PS5): H1 transacional, capsule,
+ficha `<th scope="row">` com dimensão real, Product+additionalProperty+LeaseOut,
+FAQPage + 4 `<details>`, BreadcrumbList, telefone + wa.me, garantia, vai-bem-em.
+Categoria (pinballs): capsule, CTA acima da dobra, tabela comparativa (3 itens),
+bloco de preço, FAQPage, CollectionPage. Produto sem medida (Karaoke): ficha
+omitida (§1.3). Hub: headings-link + ordem curada NFC.

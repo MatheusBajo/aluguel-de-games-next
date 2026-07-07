@@ -34,8 +34,13 @@ function occasionsFromCategory(key: string): Occasion[] {
         out.add('infantil');
     }
 
-    // Adulta / retrô: jogos de mesa, videokês e fliperamas.
-    if (top.includes('jogosdemesa') || top.includes('videoke') || sub.includes('fliperama')) {
+    // Infantil: consoles também (PS/Xbox/Wii fazem sucesso em festa de criança).
+    if (sub.includes('console')) {
+        out.add('infantil');
+    }
+
+    // Adulta / retrô: jogos de mesa, videokês, fliperamas e consoles.
+    if (top.includes('jogosdemesa') || top.includes('videoke') || sub.includes('fliperama') || sub.includes('console')) {
         out.add('adulta');
     }
 

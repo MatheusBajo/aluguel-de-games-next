@@ -29,6 +29,13 @@ o dev aplica.
 7. [ ] **Specs dos 15 produtos top** (planilha: dimensões montado/fechado,
    passa em porta de 80cm?, elevador?, tomada 110/220, consumo, nº de
    jogadores, idade recomendada, espaço mínimo, peso).
+   → JÁ FEITO automático: **19 produtos** têm "Dimensões (montado)" no site,
+   extraídas do NOME DO ARQUIVO das fotos (ex.: PS5, pinballs, air games,
+   simuladores). Falta você confirmar essas medidas e preencher o RESTO
+   (voltagem, jogadores, idade, peso, passa-porta/elevador) — cada campo que
+   você mandar vira uma linha nova na ficha; campo em branco não aparece.
+   Também dá pra sobrescrever a resposta-resumo (`capsule`) e o FAQ de um
+   produto específico, se quiser texto próprio.
 8. [ ] **Faixas de preço por categoria** ("a partir de R$" SÓ com seu
    compromisso escrito; sem isso o site segue com a versão honesta sem faixa).
 9. [ ] **Ranking do Top 10** — ordenar 1x os mais pedidos de verdade.

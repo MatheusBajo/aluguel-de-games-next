@@ -4,10 +4,8 @@
 // UMA barra só: WhatsApp (prefill da página atual) + Ligar. Substitui o float
 // no mobile (o float vira desktop-only) — nunca duas barras flutuantes juntas
 // (proibição §11). Na HOME aparece só após 400px de scroll; nas demais rotas
-// aparece de cara. Context-aware: a `surface` sai do pathname.
-// NOTA: nomear o PRODUTO no prefill (rota de produto) fica pro estágio do
-// produto, que tem o nome em mãos; aqui a rota de catálogo usa prefill de
-// categoria (genérico honesto).
+// aparece de cara. Context-aware: a `surface` sai do pathname; na rota de
+// PRODUTO, o nome do item entra no prefill via StickyProductContext (§4.11).
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,6 +14,7 @@ import { FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 import { BUSINESS } from "@/config/business.config";
 import { getWaHref, type WaSurface } from "@/config/whatsapp.config";
 import { trackTelClick, trackWhatsAppCta } from "@/lib/gtm-utils";
+import { useStickyProduct } from "@/components/sticky/StickyProduct";
 
 function surfaceFor(pathname: string): WaSurface {
     if (pathname === "/") return "home";
@@ -41,8 +40,10 @@ export default function StickyBar() {
         return () => window.removeEventListener("scroll", onScroll);
     }, [isHome]);
 
-    const surface = surfaceFor(pathname);
-    const href = getWaHref(surface);
+    // Rota de produto: assume o prefill DO produto (nomeia o item).
+    const { product } = useStickyProduct();
+    const surface: WaSurface = product ? "product" : surfaceFor(pathname);
+    const href = getWaHref(surface, product);
 
     return (
         <div
@@ -56,7 +57,7 @@ export default function StickyBar() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackWhatsAppCta(surface, undefined, "sticky_bar")}
+                    onClick={() => trackWhatsAppCta(surface, product, "sticky_bar")}
                     className="flex flex-[2] items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-green-500/30"
                 >
                     <FaWhatsapp className="h-5 w-5" />

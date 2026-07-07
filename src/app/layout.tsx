@@ -7,6 +7,7 @@ import { globalGraph } from "@/lib/schema";
 import Script from "next/script";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import StickyBar from "@/components/StickyBar";
+import { StickyProductProvider } from "@/components/sticky/StickyProduct";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -85,17 +86,21 @@ export default function RootLayout({
         <ThemeProvider
             defaultTheme="dark"
         >
-            <div>
-                <Header/>
-                {children}
-                {/* Float = DESKTOP only; no mobile quem atende é a StickyBar
-                    (nunca duas barras flutuantes juntas — §11). */}
-                <div className="hidden md:block">
-                    <WhatsAppFloat />
+            {/* Provider do contexto de produto: a StickyBar global usa o
+                prefill DO produto quando a rota é de produto (§4.11). */}
+            <StickyProductProvider>
+                <div>
+                    <Header/>
+                    {children}
+                    {/* Float = DESKTOP only; no mobile quem atende é a StickyBar
+                        (nunca duas barras flutuantes juntas — §11). */}
+                    <div className="hidden md:block">
+                        <WhatsAppFloat />
+                    </div>
+                    <StickyBar />
+                    <Footer/>
                 </div>
-                <StickyBar />
-                <Footer/>
-            </div>
+            </StickyProductProvider>
         </ThemeProvider>
         {/* JSON-LD global server-side: EntertainmentBusiness (foundingDate
             1993, areaServed, hasMap qdo confirmado) + WebSite. HTML cru. */}

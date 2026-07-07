@@ -3,16 +3,22 @@ import { notFound } from "next/navigation";
 import { getCatalog, getCategoryItems, getItem } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
+import ProductDescription from "@/components/catalogo/ProductDescription";
+import SpecsTable from "@/components/catalogo/SpecsTable";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
 import { CategoryListing } from "@/components/catalogo/CategoryListing";
+import FaqNative from "@/components/seo/FaqNative";
+import { SetStickyProduct } from "@/components/sticky/StickyProduct";
 import { getCategoryMetadata } from "@/lib/catalog-categories";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, collectionPageSchema, productSchema } from "@/lib/schema";
+import { specAdditionalProperties } from "@/lib/product-specs";
+import { productFaq } from "@/lib/product-content";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getImagePath } from "@/lib/image-utils";
 import { getSiteUrl } from "@/lib/site.config";
-import { segmentsToSlug, toSlug } from "@/lib/slug-utils";
+import { segmentsToSlug } from "@/lib/slug-utils";
 // Força geração estática
 export const dynamic = 'force-static';
 
@@ -22,6 +28,11 @@ type Params = { slug: string[] }
 
 export type CatalogPageProps = {
     params: Promise<Params>
+}
+
+/** H1/título transacional do produto (SPEC-FINAL-V2 §4.3 + estágio 3). */
+function productHeading(titulo: string): string {
+    return `Aluguel de ${titulo} para Festas e Eventos`;
 }
 
 export async function generateStaticParams() {
@@ -96,28 +107,32 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
     // URL do produto
     const url = `${baseUrl}/catalogo/${slugArr
         .map(encodeURIComponent)
-        .join("/")}`;
+        .join("/")}/`;
 
     // URL da imagem - usa path relativo para funcionar em qualquer domínio
     const imageUrl = item.imagens?.length
         ? `${baseUrl}${getImagePath(item.key, item.imagens[0])}`
         : `${baseUrl}/Logo-Aluguel-de-games.png`;
 
-    // Descrição limpa (remove markdown)
-    const cleanDescription = item.descricao
+    // Descrição limpa (remove markdown); fallback transacional honesto.
+    const cleanDescription = (item.descricao
         ?.replace(/[*_#]/g, '')
         ?.replace(/\n/g, ' ')
         ?.trim()
-        ?.slice(0, 155) || `Alugue ${item.titulo} para seu evento. Entrega e instalação grátis!`;
+        ?.slice(0, 155)) ||
+        `Alugue ${item.titulo} para festas e eventos em Osasco e Grande São Paulo. Entrega, montagem e suporte inclusos. Desde 1993.`;
+
+    const heading = productHeading(item.titulo);
 
     return {
-        title: `${item.titulo} - Aluguel de Games`,
+        // Título transacional controlado (evita duplicar o template do layout).
+        title: { absolute: `${heading} em SP | Aluguel de Games` },
         description: cleanDescription,
         alternates: {
             canonical: url
         },
         openGraph: {
-            title: item.titulo,
+            title: heading,
             description: cleanDescription,
             url,
             siteName: 'Aluguel de Games',
@@ -135,7 +150,7 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
         },
         twitter: {
             card: 'summary_large_image',
-            title: item.titulo,
+            title: heading,
             description: cleanDescription,
             images: [imageUrl],
             creator: '@alugueldegames',
@@ -211,10 +226,26 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
         notFound();
     }
 
-    const categoria = item.key.split("/")[0];
-    const categoriaSlug = toSlug(categoria);
+    const segs = item.key.split("/");
+    const slugSegs = segmentsToSlug(segs);
+    const heading = productHeading(item.titulo);
 
-    // Usa a função centralizada para pegar a URL base
+    // Categoria imediata (pai) — rótulo do badge + link.
+    const parentSlugArr = slugSegs.slice(0, -1);
+    const parentSlug = parentSlugArr.join("/");
+    const parentMeta = getCategoryMetadata(parentSlugArr);
+    const parentName = parentMeta.breadcrumbName ?? segs[segs.length - 2] ?? segs[0];
+
+    // Migalhas completas (todas as categorias intermediárias).
+    const categoryCrumbs = segs.slice(0, -1).map((seg, i) => {
+        const prefix = slugSegs.slice(0, i + 1);
+        const m = getCategoryMetadata(prefix);
+        return {
+            name: m.breadcrumbName ?? seg,
+            href: `/catalogo/${prefix.join("/")}/`,
+        };
+    });
+
     const baseUrl = getSiteUrl();
 
     // Todas as imagens para o Schema
@@ -222,23 +253,28 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
         (img) => `${baseUrl}${getImagePath(item.key, img)}`
     );
 
-    const productUrl = `/catalogo/${segmentsToSlug(item.key.split('/')).join('/')}/`;
+    const productUrl = `/catalogo/${slugSegs.join('/')}/`;
 
     // Structured Data server-side (script inline no HTML cru).
-    // Nota: aggregateRating removido propositalmente — só com reviews reais.
+    // Product + Offer LeaseOut + additionalProperty (specs reais); sem
+    // aggregateRating (só com reviews reais — proibição §11).
     const structuredData = productSchema({
         name: item.titulo,
-        description: item.descricao?.replace(/[*_#]/g, '').trim(),
+        description: (item.descricao?.replace(/[*_#]/g, '').trim()) ||
+            `Aluguel de ${item.titulo} para festas e eventos em Osasco e Grande São Paulo. Desde 1993.`,
         images: allImages,
         url: productUrl,
+        properties: specAdditionalProperties(item),
     });
 
     const crumbs = breadcrumbSchema([
         { name: 'Home', url: '/' },
         { name: 'Catálogo', url: '/catalogo/' },
-        { name: categoria, url: `/catalogo/${categoriaSlug}/` },
+        ...categoryCrumbs.map((c) => ({ name: c.name, url: c.href })),
         { name: item.titulo, url: productUrl },
     ]);
+
+    const faq = productFaq(item);
 
     return (
         <>
@@ -246,51 +282,73 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
             <JsonLd data={structuredData} />
             <JsonLd data={crumbs} />
 
-            <main className="relative mx-auto max-w-screen-2xl">
+            {/* StickyBar global assume o prefill do produto no mobile (§4.11) */}
+            <SetStickyProduct name={item.titulo} />
+
+            <main className="relative mx-auto max-w-screen-xl px-4 pb-20 md:px-6">
                 {/* Breadcrumb */}
-                <nav className="px-4 py-4 text-sm">
-                    <ol className="flex items-center gap-2 text-muted-foreground">
+                <nav aria-label="Breadcrumb" className="py-4 text-sm">
+                    <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
                         <li>
-                            <Link href="/">
-                                Home
-                            </Link>
+                            <Link href="/" className="transition-colors hover:text-foreground">Home</Link>
                         </li>
-                        <li>/</li>
+                        <li aria-hidden className="text-muted-foreground/40">/</li>
                         <li>
-                            <Link href="/catalogo">
-                                Catálogo
-                            </Link>
+                            <Link href="/catalogo/" className="transition-colors hover:text-foreground">Catálogo</Link>
                         </li>
-                        <li>/</li>
-                        <li>
-                            <Link href={`/catalogo/${categoriaSlug}/`}>
-                                {categoria}
-                            </Link>
-                        </li>
-                        <li>/</li>
-                        <li className="text-foreground font-medium">{item.titulo}</li>
+                        {categoryCrumbs.map((c) => (
+                            <span key={c.href} className="contents">
+                                <li aria-hidden className="text-muted-foreground/40">/</li>
+                                <li>
+                                    <Link href={c.href} className="transition-colors hover:text-foreground">{c.name}</Link>
+                                </li>
+                            </span>
+                        ))}
+                        <li aria-hidden className="text-muted-foreground/40">/</li>
+                        <li className="font-medium text-foreground">{item.titulo}</li>
                     </ol>
                 </nav>
 
-                {/* Product Content */}
-                <div className="grid gap-8 px-4 pb-16 lg:grid-cols-2">
-                    {/* Gallery */}
-                    <ProductGallery
-                        images={item.imagens || []}
-                        title={item.titulo}
-                        itemKey={item.key}
-                    />
+                {/* Galeria + decisão */}
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
+                    <div className="lg:sticky lg:top-24 lg:self-start">
+                        <ProductGallery
+                            images={item.imagens || []}
+                            title={item.titulo}
+                            itemKey={item.key}
+                        />
+                    </div>
 
-                    {/* Info */}
                     <ProductInfo
-                        titulo={item.titulo}
-                        descricao={item.descricao || ""}
-                        categoria={categoria}
+                        item={item}
+                        categoria={parentName}
+                        categoriaSlug={parentSlug}
+                        heading={heading}
                     />
                 </div>
 
-                {/* Related Products */}
-                <RelatedProducts categoria={categoria} currentKey={item.key} />
+                {/* Ficha técnica (omite se não há dado real) */}
+                <div className="mt-12">
+                    <SpecsTable item={item} />
+                </div>
+
+                {/* Incluso + descrição */}
+                <div className="mt-12">
+                    <ProductDescription descricao={item.descricao} />
+                </div>
+
+                {/* FAQ do item (+ FAQPage 1:1) */}
+                <section aria-label="Perguntas frequentes" className="mt-14">
+                    <h2 className="mb-6 text-center font-display text-2xl font-extrabold tracking-tight md:text-3xl">
+                        Perguntas frequentes
+                    </h2>
+                    <FaqNative items={faq} withSchema />
+                </section>
+
+                {/* Relacionados por ocasião */}
+                <div className="mt-16">
+                    <RelatedProducts item={item} />
+                </div>
             </main>
         </>
     );
