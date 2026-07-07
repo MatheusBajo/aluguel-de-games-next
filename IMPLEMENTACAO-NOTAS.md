@@ -426,3 +426,42 @@ telefone, BreadcrumbList); /festas (#infantil/#adulto, cards reais, 6 FAQ,
 BreadcrumbList); /empresas (H1 transacional, e-mail visível, linha 151-250,
 Service + FAQPage, kit link); /empresas/kit-aprovacao (noindex, cronograma, fora
 do sitemap); /como-funciona (HowTo, 7 FAQ + FAQPage); /sobre (zero pilares/60).
+
+## Estágio 5 — Build verde + aceite + push (2026-07-08)
+
+Build `next build` VERDE: 86 páginas, static export em `out/`. Postbuild
+verde: audit:fake (191 arquivos limpos), audit:sitemap (78 URLs ASCII, rotas
+obrigatórias presentes), audit:raw (telefone/1993/wa.me no HTML cru).
+
+Lint (`next lint`): ESLint decoplado do build via `eslint.ignoreDuringBuilds:
+true` no next.config, então não quebra o export. Erros reportados — TODOS
+pré-existentes do snapshot opus-4.8 (commit c954342), confirmado por git blame
+linha a linha:
+- `gtm-utils.ts` L5/14/32/98 (`any` em dataLayer/Record) — funções ORIGINAIS
+  (trackEvent/trackWhatsAppClick/trackFormSubmit); as 4 funções que o redesign
+  adicionou (trackWhatsAppCta/trackTelClick/trackKitPdfDownload/trackFormSubmitB2B)
+  são lint-clean.
+- `catalog.server.ts` L55 (`metadata?: any`) — campo admin pré-existente.
+- `catalog-tree.server.ts` (unused e/tree + any), `AnimatedHeadline.tsx` (any×2),
+  `global.d.ts` (warning) — todos c954342.
+Zero erro de lint NOVO introduzido pelo redesign. Warnings pré-existentes
+(no-img-element em componentes de mídia) mantidos. Decisão: NÃO tocar código
+legado do snapshot (fora de escopo + risco de churn sem retorno; export não é
+afetado). Fica como dívida técnica registrada, não bloqueia launch.
+
+Checklist de aceite no `out/` exportado (todos PASSOU):
+- JSON-LD LocalBusiness com `foundingDate":"1993"` no HTML da home. ✓
+- FAQ em `<details>` no HTML cru (index.html + páginas de produto). ✓
+- robots.txt com bots de IA: GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot,
+  Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User, Google-Extended. ✓
+- Sitemap único e válido: `out/sitemap.xml`, 78 `<url>`, zero `studio`. ✓
+- Zero contador fake: sales-utils/salesHash/locacoesHash/fakeCount = 0 ocorrências
+  no `out/`; fonte `src/lib/sales-utils*` removida. (Os hits de `Math.random` são
+  só vendor/framework — finisher-header.es5.min.js + chunks React, não app.) ✓
+- llms.txt presente (`out/llms.txt`, 2KB, com 1993 + clientes reais + contato). ✓
+
+Fora da spec / riscos: (1) dívida de lint legado acima; (2) `[CONFIRMAR COM DONO]`
+ainda abertos em DONO-CHECKLIST.md (dados legais do kit, agenda nov/dez, seguro,
+faturamento/NF, e-mail comercial, dimensionamento exato) — placeholders honestos,
+nenhum número fabricado; (3) fases pós-launch: QuoteCart multi-item, /regiao/*,
+/galeria álbuns nomeados, kit PDF binário.
