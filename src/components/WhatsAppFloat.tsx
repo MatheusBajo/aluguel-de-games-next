@@ -1,7 +1,8 @@
 // src/components/WhatsAppFloat.tsx
 //
-// Float de WhatsApp (desktop). SEM badge de notificação falsa (des-fabricação).
-// Anchor real com prefill — some em mobile quando a StickyBar global entrar (fase 1).
+// Float de WhatsApp — SÓ DESKTOP (≥768px). SEM badge de notificação falsa.
+// No mobile quem assume é a StickyBar global (spec §3): existe UMA barra por
+// viewport, nunca duas flutuando ao mesmo tempo.
 "use client";
 
 import { trackWhatsAppClick } from "@/lib/gtm-utils";
@@ -30,7 +31,7 @@ export function WhatsAppFloat() {
     }, []);
 
     return (
-        <div className="fixed bottom-4 right-4 z-50 lg:bottom-6 lg:right-6">
+        <div className="fixed bottom-4 right-4 z-50 hidden md:block lg:bottom-6 lg:right-6">
             <AnimatePresence>
                 {showTooltip && (
                     <motion.div

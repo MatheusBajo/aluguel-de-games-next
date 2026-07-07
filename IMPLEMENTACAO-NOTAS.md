@@ -57,3 +57,91 @@ Registro de decisões e ambiguidades resolvidas por estágio. Spec: `docs/redesi
 - Fase 1: QuoteCart + StickyBar global (aí WhatsAppFloat sai do mobile) + tokens/pipeline LQIP.
 - DONO-CHECKLIST.md (spec §1.8) ainda não criado — criar quando as perguntas das fases 2-5 estiverem consolidadas (CNPJ, horário, GBP, endereço, garantia já estão marcadas no código).
 - OG image 1200×630 real por template = fase 6.
+
+---
+
+## Estágio 2 — Home (8 dobras) + navegação · 2026-07-08
+
+### O que foi feito
+Home reconstruída do zero (`src/app/page.tsx`) na ordem fixa da spec §3 (o que tem →
+quanto custa → como orçar → como funciona → prova → FAQ → CTA). Server component:
+todo conteúdo no HTML cru; só QuoteWidget e StickyBar são ilhas client.
+
+- **D1 Hero estático** (`src/components/home/HomeHero.tsx`): foto real como LCP via `<img>`
+  ELEMENT (nunca CSS bg), `fetchPriority="high"` (o export serializa `fetchPriority` camelCase —
+  atributo HTML é case-insensitive, o browser honra como `fetchpriority`), `width/height`
+  fixos (sem CLS), scrim duplo pra legibilidade. **SEM carrossel** (o StartCarousel morreu).
+  Badge "★ Desde 1993 · Osasco e Grande SP" · **H1 exato** "Aluguel de fliperama, videokê e
+  games para festas" · sub · CTA dual (verde WhatsApp + ghost `<a href="#o-que-tem">` que
+  funciona sem JS) · tel + linha fora-do-horário server-rendered.
+- **D1.5 TrustStrip** (`src/components/content/TrustStrip.tsx`): "Desde 1993" + clientes reais
+  nomeados. Item "★ Google" só renderiza com `GBP_URL` (fallback §1.3). "milhares de eventos"
+  omitido até o dono dar o número.
+- **D2**: `AnswerCapsule` (§9.1, 1º texto corrido, HTML cru) + `CategoryGrid` (2×4, foto do 1º
+  produto real + **contagem REAL de itens** do metadata) + chips por ocasião (→ /festas,
+  /festas#adulto, /empresas).
+- **D3 PriceBlock** (`src/components/home/PriceBlock.tsx`): ABERTA, HTML cru, **versão B**
+  (4 fatores + "combos saem melhor", zero número) + link /quanto-custa + CTA verde.
+- **D4 QuoteWidget** (client): chips multi-select + data(obrigatória)/bairro/convidados →
+  wa.me multi-linha. **Degrada sem JS**: o CTA é um `<a>` cujo href já vem do server com o
+  prefill base (verificado no export). GA4 `orcamento_add`/`orcamento_send`.
+- **D5 HowItWorks**: 4 passos scroll-snap mobile + **garantia** (§9.6, redação final [CONFIRMAR]).
+- **D6 ProofSection**: fotos NOMEADAS só onde a foto é real (Bradesco/Braland, Danilo Gentili);
+  demais slides = fotos reais com legenda descritiva honesta (nunca rotular foto genérica com
+  nome de cliente). Numeral 1993 outline + frase citável §9.3 (verbatim = /sobre) + único
+  counter permitido (anos, estático) + botão Google gated em `GBP_URL`.
+- **D7 FaqNative** (`src/components/content/FaqNative.tsx`): 6× `<details>/<summary>` nativo +
+  **FAQPage JSON-LD emitido pelo próprio componente** (espelho 1:1, não tem como divergir).
+- **D8**: CTA final + `WhatsAppCtaMeta`.
+- **StickyBar global mobile** (`src/components/orcamento/StickyBar.tsx`): `md:hidden`, WhatsApp
+  (prefill derivado da rota) + Ligar; na home aparece após 400px de scroll, nas demais sempre.
+  `WhatsAppFloat` agora `hidden md:block` (desktop-only) — mata o conflito de duas barras.
+
+### Decisões / ambiguidades resolvidas
+1. **Tokens §7**: a spec propõe `--color-bg/surface/ink/...`, mas o globals.css ainda roda os
+   tokens oklch do tema atual. Introduzir um sistema paralelo no meio do estágio = risco de
+   inconsistência entre páginas. Mapeei a INTENÇÃO de cor da spec nas classes Tailwind que o
+   site já usa: WhatsApp verde exclusivo (green-600/700), links/foco cyan-400, labels pink-400,
+   decoração purple-500, preço/fato amber (yellow-400). Piso 12px respeitado (mín. `text-xs`).
+2. **Foto do hero**: escolhi `da066c60...webp` (1283×849, alta resolução) em vez da foto do
+   Danilo (340×231, LCP ruim). Mostra fliperamas + pinballs num evento real = message match do
+   H1. Legenda honesta descreve a cena, sem inventar cliente. Danilo/Bradesco entram na prova (D6)
+   com as fotos reais deles.
+3. **Imagens da vitrine**: `getImagePath` cru (sem encodeURI), igual ao CatalogCard que já
+   funciona em produção (next/image unoptimized = mesmo caminho). NFD/NFC: a contagem/filtro por
+   categoria usa SLUG (`segmentsToSlug`), não a key crua — o macOS devolve nomes em NFD e o
+   prefix-match na key crua falhava (bug pego e evitado).
+4. **/quanto-custa e /festas criadas (lean)**: a home linka pra elas (D3, chips D2) e são
+   NUNCA-CORTA; deixar link morto na página mestre é pior que antecipar 2 páginas enxutas. Versão
+   completa (tabela de preço, faixas, mix por ocasião com produtos/fotos, bodas/60-70-80) fica
+   na fase 5. Ambas com AnswerCapsule + FAQ (FAQPage) + breadcrumb + CTA. Adicionadas ao sitemap
+   (78 URLs agora).
+5. **Tel no hero sem GA**: o tel do scrim é anchor server (sem onClick) pra manter o hero
+   estático (LCP). Todos os outros tel (meta, sticky bar) rastreiam. Cobrir o do hero com um
+   trigger `tel:` global no GTM (mesma pendência aberta no estágio 1).
+6. **DONO-CHECKLIST.md criado** em `docs/redesign-2026-07-07/` (spec §1.8) consolidando os
+   [CONFIRMAR] dos estágios 1-2.
+
+### Limpeza de mortos
+Deletados (100% home-only, verificado por grep): `HomeShell.tsx`, `StartCarousel.tsx`,
+`Main.tsx`, `AnimatedCarouselText.tsx`, `ui/AnimatedHeadline.tsx`. `Counter` mantido (usado em
+/sobre e /galeria). `Demonstra` e `TopToys` (+CarouselModal/JSON/CSS) ficaram ÓRFÃOS (só o Main
+os usava) — não deletei pra não expandir o raio de quebra no meio do estágio; candidatos a
+remoção numa limpeza dedicada (TopToys = "Top 10 mais alugados", ranking não verificável, não
+entra em nenhuma página nova).
+
+### Verificação
+`npm run build` verde (85 páginas, +2 vs estágio 1). `audit:fake` passa. Raw-HTML do export
+conferido por grep: home tem telefone, answer capsule, 6 `<details>`, "Quanto custa", `<img>` do
+hero com `fetchPriority`, FAQPage; /festas e /quanto-custa idem (details + FAQPage + telefone).
+Sitemap = 78 URLs, zero acento/espaço, com /quanto-custa e /festas. Sem dev server (proibido);
+verificação por build + inspeção do HTML servido.
+
+### Pendências pro próximo estágio
+- Fase 3: template categoria-LP + 7 instâncias (a home já linka as categorias certas).
+- QuoteCart/QuoteDrawer GLOBAL com localStorage (fase 1 da spec) — o QuoteWidget da home é
+  self-contained (state local, sem carrinho persistente). Integrar quando o carrinho global nascer.
+- StickyBar em página de produto precisa do prefill com nome do produto (surface `product`) —
+  hoje /catalogo/* usa surface `category`. Enriquecer na fase 4.
+- `audit:raw` / `audit:sitemap` como scripts de CI = fase 6 (a checagem foi feita à mão aqui).
+- Órfãos Demonstra/TopToys: limpar em passada dedicada.

@@ -6,6 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { localBusinessSchema, websiteSchema } from "@/lib/schema";
 import Script from "next/script";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { StickyBar } from "@/components/orcamento/StickyBar";
 import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -88,6 +89,7 @@ export default function RootLayout({
                 <Header/>
                 {children}
                 <WhatsAppFloat />
+                <StickyBar />
                 <Footer/>
             </div>
         </ThemeProvider>
