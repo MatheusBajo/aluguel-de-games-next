@@ -1,0 +1,198 @@
+# ============================================================================
+# .htaccess — Aluguel de Games (Next.js static export servido pela Hostinger)
+# ============================================================================
+# A Hostinger usa LiteSpeed (compatível com Apache .htaccess).
+# Esse arquivo cobre: redirects (HTTPS + www), GZIP, cache, segurança e MIMEs.
+# Ordem das regras importa — não reorganize sem testar.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# 1) REWRITES — força HTTPS + força www (canônico)
+# ----------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1.1 — Força HTTPS (qualquer http://... vai virar https://...)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # 1.2 — Força www (alugueldegames.com.br -> www.alugueldegames.com.br)
+    # Resolve o problema de "conteúdo duplicado" no Google.
+    RewriteCond %{HTTP_HOST} ^alugueldegames\.com\.br$ [NC]
+    RewriteRule ^(.*)$ https://www.alugueldegames.com.br/$1 [L,R=301]
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 2) REDIRECTS — URLs antigas / campanhas Google Ads → páginas atuais
+# ----------------------------------------------------------------------------
+# Preserva SEO juice e garante que ads antigos continuam funcionando.
+# Todas 301 (permanente) para transferir autoridade.
+<IfModule mod_rewrite.c>
+    # Categorias top-level (slugs curtos que podem estar em campanhas)
+    RewriteRule ^fliperama/?$ /catalogo/jogos-eletronicos/fliperamas/ [R=301,L]
+    RewriteRule ^fliperamas/?$ /catalogo/jogos-eletronicos/fliperamas/ [R=301,L]
+    RewriteRule ^videoke/?$ /catalogo/videokes/ [R=301,L]
+    RewriteRule ^videokes/?$ /catalogo/videokes/ [R=301,L]
+    RewriteRule ^karaoke/?$ /catalogo/videokes/ [R=301,L]
+    RewriteRule ^vr/?$ /catalogo/realidade-virtual/ [R=301,L]
+    RewriteRule ^realidade-virtual/?$ /catalogo/realidade-virtual/ [R=301,L]
+    RewriteRule ^consoles/?$ /catalogo/jogos-eletronicos/consoles/ [R=301,L]
+    RewriteRule ^console/?$ /catalogo/jogos-eletronicos/consoles/ [R=301,L]
+    RewriteRule ^pinballs?/?$ /catalogo/jogos-eletronicos/pinballs/ [R=301,L]
+    RewriteRule ^maquinas?/?$ /catalogo/jogos-eletronicos/maquinas/ [R=301,L]
+    RewriteRule ^simuladores?/?$ /catalogo/jogos-eletronicos/simuladores/ [R=301,L]
+    RewriteRule ^playstation/?$ /catalogo/jogos-eletronicos/consoles/playstation/ [R=301,L]
+    RewriteRule ^ps5/?$ /catalogo/jogos-eletronicos/consoles/playstation/playstation-5/ [R=301,L]
+    RewriteRule ^xbox/?$ /catalogo/jogos-eletronicos/consoles/xbox/ [R=301,L]
+    RewriteRule ^nintendo/?$ /catalogo/jogos-eletronicos/consoles/nintendo/ [R=301,L]
+    RewriteRule ^jogos-de-mesa/?$ /catalogo/jogos-de-mesa/ [R=301,L]
+    RewriteRule ^infantil/?$ /catalogo/piscinas-inflaveis-cama-elastica-infantil/ [R=301,L]
+    RewriteRule ^inflaveis/?$ /catalogo/piscinas-inflaveis-cama-elastica-infantil/ [R=301,L]
+
+    # Páginas institucionais que podem ter URLs antigas / shortcuts
+    RewriteRule ^orcamento/?$ https://wa.me/5511965261000 [R=301,L]
+    RewriteRule ^whatsapp/?$ https://wa.me/5511965261000 [R=301,L]
+    RewriteRule ^empresa/?$ /empresas/ [R=301,L]
+    RewriteRule ^corporativo/?$ /empresas/ [R=301,L]
+    RewriteRule ^b2b/?$ /empresas/ [R=301,L]
+    RewriteRule ^quem-somos/?$ /sobre/ [R=301,L]
+    RewriteRule ^sobre-nos/?$ /sobre/ [R=301,L]
+
+    # NOTA: o site atual em produção JÁ usa slugs (fliperama-11000, jogos-eletronicos
+    # etc.) — URLs antigas com espaços/acentos já retornavam 404 antes desse deploy.
+    # Por isso não há redirects produto-a-produto aqui.
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 3) ERRORDOCUMENT — usa o 404 customizado do Next.js
+# ----------------------------------------------------------------------------
+# Next.js com trailingSlash gera /404/index.html
+ErrorDocument 404 /404/index.html
+
+# ----------------------------------------------------------------------------
+# 3) MIME TYPES MODERNOS — necessário pra WebP, AVIF, WOFF2 serem servidos certo
+# ----------------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType image/webp .webp
+    AddType image/avif .avif
+    AddType image/svg+xml .svg
+    AddType font/woff2 .woff2
+    AddType font/woff .woff
+    AddType application/manifest+json .webmanifest
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 4) COMPRESSÃO — GZIP em texto/JS/CSS/JSON/SVG (não recomprime imagens)
+# ----------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE text/javascript application/javascript
+    AddOutputFilterByType DEFLATE application/json application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml image/x-icon
+    AddOutputFilterByType DEFLATE font/ttf font/otf font/woff font/woff2
+    AddOutputFilterByType DEFLATE application/font-woff application/font-woff2
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 5) CACHE — Expires headers
+# ----------------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # HTML — cache curto (1h) com revalidate; assim mudanças aparecem rápido
+    ExpiresByType text/html "access plus 1 hour"
+
+    # CSS, JS — Next.js renomeia com hash a cada build, então pode cachear longo
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+
+    # Imagens — cache longo
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # Fontes — cache longo
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+
+    # Manifests e robots — cache curto
+    ExpiresByType application/manifest+json "access plus 1 day"
+    ExpiresByType text/xml "access plus 1 hour"
+
+    # Default (qualquer outra coisa)
+    ExpiresDefault "access plus 1 month"
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 6) CACHE-CONTROL — controle granular
+# ----------------------------------------------------------------------------
+<IfModule mod_headers.c>
+
+    # 6.1 — Assets do Next.js dentro de /_next/static/ usam hash no nome,
+    # então NUNCA mudam de conteúdo. Cache "immutable" por 1 ano.
+    <FilesMatch "\.(js|css|woff2|woff|ttf|otf)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # 6.2 — Imagens e ícones: cache longo
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|ico|svg)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    # 6.3 — HTML: cache curto, mas com revalidate (Google usa esse cabeçalho)
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+
+    # 6.4 — Sitemap e robots: sem cache forte
+    <FilesMatch "(sitemap\.xml|robots\.txt|manifest\.webmanifest)$">
+        Header set Cache-Control "public, max-age=3600"
+    </FilesMatch>
+
+    # ------------------------------------------------------------------------
+    # 7) HEADERS DE SEGURANÇA
+    # ------------------------------------------------------------------------
+    # Impede sniffing de MIME (browsers não tentam adivinhar tipo do arquivo)
+    Header set X-Content-Type-Options "nosniff"
+
+    # Impede que o site seja embedado em iframes de outros domínios (anti-clickjacking)
+    Header set X-Frame-Options "SAMEORIGIN"
+
+    # Controla qual referer é enviado em links externos
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Limita features do browser (privacidade)
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+    # Habilita prefetch DNS (acelera resolução de domínios externos como WhatsApp, GTM)
+    Header set X-DNS-Prefetch-Control "on"
+
+    # Remove ETag (vamos usar só Cache-Control + Expires, evita validação dupla)
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# ----------------------------------------------------------------------------
+# 8) PROTEÇÃO DE ARQUIVOS SENSÍVEIS
+# ----------------------------------------------------------------------------
+# Bloqueia acesso a arquivos de config / dot-files / metadata.json do catálogo
+<FilesMatch "^\.(htaccess|htpasswd|env|git|DS_Store)">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "metadata\.json$">
+    Require all denied
+</FilesMatch>
+
+# ----------------------------------------------------------------------------
+# 9) ENCODING padrão UTF-8
+# ----------------------------------------------------------------------------
+AddDefaultCharset UTF-8

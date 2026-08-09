@@ -7,11 +7,20 @@ const StartCarousel = dynamic(() => import('@/components/StartCarousel'), {
 })
 const Main = dynamic(() => import('@/components/Main'), { ssr: false })
 
-export default function HomeShell() {
+interface HomeShellProps {
+    totalEquipamentos: number
+    totalCategorias: number
+}
+
+export default function HomeShell({ totalEquipamentos, totalCategorias }: HomeShellProps) {
+
     return (
         <>
             <StartCarousel />
-            <Main />
+            <Main
+                totalEquipamentos={totalEquipamentos}
+                totalCategorias={totalCategorias}
+            />
         </>
     )
 }

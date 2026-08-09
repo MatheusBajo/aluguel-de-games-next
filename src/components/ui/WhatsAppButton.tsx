@@ -24,7 +24,7 @@ export const WhatsAppButton = forwardRef<HTMLButtonElement, WhatsAppButtonProps>
          variant = "default",
          size = "default",
          showIcon = true,
-         phoneNumber = "+551142377766",
+         phoneNumber = "+5511965261000",
          className,
          onClick,
          ...props

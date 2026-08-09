@@ -62,7 +62,7 @@ export default async function Catalogo() {
                     para seu evento. Vamos encontrar a solução perfeita!
                 </p>
                 <a
-                    href="https://wa.me/+551142377766"
+                    href="https://wa.me/+5511965261000"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base"

@@ -88,7 +88,7 @@ const jsonLd = {
     description:
         'Aluguel de equipamentos de entretenimento para festas e eventos',
     url: 'https://www.alugueldegames.com.br',
-    telephone: '+551142377766',
+    telephone: '+5511965261000',
     address: {
         '@type': 'PostalAddress',
         addressLocality: 'São Paulo',
@@ -100,14 +100,15 @@ const jsonLd = {
     priceRange: '$$',
     image: 'public/Logo-Aluguel-de-games.png',
     sameAs: [
-        'https://wa.me/+551142377766',
+        'https://wa.me/+5511965261000',
         'https://instagram.com/alugueldegames',
     ],
-    aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        reviewCount: '127',
-    },
+    // REMOVIDO: aggregateRating 4.9 com 127 avaliações — inventado, ninguém
+    // avaliou. Review auto-declarado em LocalBusiness/Organization é
+    // EXPLICITAMENTE inelegível pela doc do Google e a violação pode virar
+    // AÇÃO MANUAL no Search Console. Avaliação real da empresa vive no Google
+    // Business Profile, que já aparece no knowledge panel e no Maps.
+    // Não recolocar: se um dia houver avaliação de verdade, ela vem do GBP.
 };
 
 /* ---------- Página ---------- */
@@ -137,7 +138,10 @@ export default async function Home() {
             />
 
             <div className="flex flex-col items-center gap-12 px-0 py-8">
-                <HomeShell />
+                <HomeShell
+                    totalEquipamentos={items.length}
+                    totalCategorias={new Set(items.map((i) => i.key.split('/')[0])).size}
+                />
 
                 {/* Título + subtítulo */}
                 <div className="text-center max-w-2xl">

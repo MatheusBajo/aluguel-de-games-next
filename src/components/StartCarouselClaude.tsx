@@ -193,7 +193,7 @@ export default function StartCarouselClaude() {
                         {/* CTAs - Stack em mobile */}
                         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                             <Button asChild size="default" variant="cta" className="group w-full sm:w-auto">
-                                <Link href="https://wa.me/+551142377766" target="_blank">
+                                <Link href="https://wa.me/+5511965261000" target="_blank">
                                     <FaWhatsapp className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                                     Orçamento Grátis
                                 </Link>

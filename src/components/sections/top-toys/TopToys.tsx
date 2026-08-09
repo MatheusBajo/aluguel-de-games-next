@@ -1,7 +1,6 @@
 import "./top-toys.css";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import {useEffect, useRef, useState} from "react";
-import {StarRating} from "@/components/util/StarRating";
 import topToysDataJson from "./data/topToysData_full_svg_all.json";
 import CarouselModal from "@/components/sections/top-toys/product-modal/CarouselModal";
 import {useModalHistory} from "@/hooks/useModalHistory";
@@ -14,7 +13,6 @@ interface TopToysItem {
     rank: string;
     title: string;
     desc?: string;
-    rate?: number;
     href: string;
     imgSrc: string;
     svgViewBox: string;
@@ -341,12 +339,9 @@ export default function TopToys() {
                                                                                     </p>
                                                                                 )}
 
-                                                                                {item.rate !== undefined && (
-                                                                                    <div
-                                                                                        className="flex items-center gap-[2px] md:text-[7pt] text-[5pt] font-bold">
-                                                                                        <StarRating value={item.rate}/>
-                                                                                    </div>
-                                                                                )}
+                                                                                {/* REMOVIDO: StarRating vindo de item.rate — as notas eram uma
+                                                                                    escada inventada (4.8, 4.9, 4.7 … 4.0). A POSIÇÃO no ranking
+                                                                                    já é a prova social, e essa é real. */}
                                                                             </div>
 
                                                                         </div>
@@ -399,12 +394,11 @@ export default function TopToys() {
                 <CarouselModal
                     open={openModal}
                     onOpenChange={setOpenModal}
-                    items={sortedData.map(({ id, title, desc, imgSrc, rate, confeti }) => ({
+                    items={sortedData.map(({ id, title, desc, imgSrc, confeti }) => ({
                         id,
                         title,
                         desc,
                         imgSrc,
-                        rate,
                         confeti,
                     }))}
                     initialIndex={selectedIndex}

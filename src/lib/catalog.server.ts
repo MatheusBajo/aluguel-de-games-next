@@ -35,13 +35,32 @@ async function walk(
         const abs = path.join(dir, e.name)
         const meta = path.join(abs, 'metadata.json')
 
+        // ⚠️ NÃO REMOVER O normalize('NFC').
+        //
+        // O macOS devolve nome de arquivo em NFD (decomposto: "a" + acento
+        // combinante), enquanto o Windows devolve NFC (precomposto: "á"). São
+        // bytes diferentes para o MESMO nome: "Máquinas" tem 9 bytes em NFC e
+        // 10 em NFD, e `nfd === "Máquinas"` é **false**.
+        //
+        // O site foi construído no PC (Windows), onde tudo batia. Ao buildar no
+        // Mac, toda comparação contra literal acentuado passou a falhar em
+        // silêncio: `sub === "Máquinas"` em src/app/page.tsx devolvia false e a
+        // seção Máquinas sumia da home E da página de categoria — sem erro
+        // nenhum no build, com as páginas de produto ainda existindo. Bug mudo,
+        // do tipo que só aparece com o site no ar.
+        //
+        // Normalizando aqui, na única porta de entrada do disco, a `key` fica
+        // NFC sempre e o resto do código pode comparar com literal normalmente,
+        // rodando em Mac, Windows ou no CI.
+        const nome = e.name.normalize('NFC')
+
         try {
             const raw = await fs.readFile(meta, 'utf8')
             const data = JSON.parse(raw) as Omit<CatalogItem, 'key'>
-            out.push({ ...data, key: [...seg, e.name].join('/') })
+            out.push({ ...data, key: [...seg, nome].join('/') })
             if (limit && out.length >= limit) return
         } catch {
-            await walk(abs, [...seg, e.name], out, limit)
+            await walk(abs, [...seg, nome], out, limit)
         }
     }
 }

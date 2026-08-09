@@ -304,7 +304,7 @@ export default function ComoFunciona() {
                         className="group relative overflow-hidden bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-0 px-8"
                         asChild
                     >
-                        <Link href="https://wa.me/+551142377766" target="_blank">
+                        <Link href="https://wa.me/+5511965261000" target="_blank">
                             <FaWhatsapp className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                             <span className="relative z-10">
                                 Fazer Orçamento via WhatsApp

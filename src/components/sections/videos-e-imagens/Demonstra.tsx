@@ -255,7 +255,7 @@ export default function Demonstra() {
                     </p>
 
                     <a
-                        href="https://wa.me/+551142377766"
+                        href="https://wa.me/+5511965261000"
                         target="_blank"
                         onClick={() => trackWhatsAppClick('home_cta_demonstracao')}
                         rel="noopener noreferrer"

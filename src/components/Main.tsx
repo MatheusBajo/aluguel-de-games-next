@@ -15,7 +15,14 @@ import {trackWhatsAppClick} from "@/lib/gtm-utils";
 const TopToys      = dynamic(() => import("@/components/sections/top-toys/TopToys"),      { ssr: false });
 const ComoFunciona = dynamic(() => import("@/components/sections/como-funciona/ComoFunciona"), { ssr: false });
 
-export default function Main() {
+interface MainProps {
+    /** Contagem real do catálogo, medida no servidor em src/app/page.tsx. */
+    totalEquipamentos: number;
+    totalCategorias: number;
+}
+
+export default function Main({ totalEquipamentos, totalCategorias }: MainProps) {
+
 
     const fadeInUp = {
         initial: { opacity: 0, y: 20 },
@@ -194,17 +201,22 @@ export default function Main() {
                             <div className="text-3xl md:text-4xl font-bold text-primary">{anosDeAtuacao}+ anos</div>
                             <p className="text-sm text-muted-foreground mt-1">Desde 1993 entregando alegria</p>
                         </div>
+                        {/* Saíram "500+ Eventos Realizados", "98% Satisfação" e "24/7 Suporte":
+                            nenhum dos três foi medido e nenhum se prova. Alegação não
+                            comprovável é reprovação por Deturpação no Google Ads e o CDC
+                            art. 36 exige que o anunciante tenha os dados em mãos. Os de
+                            agora saem de contagem real do catálogo, feita no build. */}
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-primary">500+</div>
-                            <p className="text-sm text-muted-foreground mt-1">Eventos Realizados</p>
+                            <div className="text-3xl md:text-4xl font-bold text-primary">{totalEquipamentos}</div>
+                            <p className="text-sm text-muted-foreground mt-1">Equipamentos no catálogo</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-primary">98%</div>
-                            <p className="text-sm text-muted-foreground mt-1">Satisfação</p>
+                            <div className="text-3xl md:text-4xl font-bold text-primary">{totalCategorias}</div>
+                            <p className="text-sm text-muted-foreground mt-1">Categorias</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-3xl md:text-4xl font-bold text-primary">24/7</div>
-                            <p className="text-sm text-muted-foreground mt-1">Suporte</p>
+                            <div className="text-3xl md:text-4xl font-bold text-primary">Grande SP</div>
+                            <p className="text-sm text-muted-foreground mt-1">Osasco e região</p>
                         </div>
                     </motion.div>
                 </div>
@@ -325,7 +337,7 @@ export default function Main() {
                                         variant="ctaZap"
                                         asChild
                                     >
-                                        <Link href="https://wa.me/+551142377766" onClick={() => trackWhatsAppClick('home_cta_final_orcamento')} target="_blank">
+                                        <Link href="https://wa.me/+5511965261000" onClick={() => trackWhatsAppClick('home_cta_final_orcamento')} target="_blank">
                                 <span className="relative z-10 flex items-center gap-2">
                                     <FaWhatsapp className="h-5 w-5" />
                                     Fazer Orçamento Agora
