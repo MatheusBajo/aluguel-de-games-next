@@ -17,7 +17,7 @@ export default function Footer() {
                     <div className="flex items-center gap-2">
                         <img
                             className="h-6 dark:invert select-none"
-                            src="/carro-logo-aluguel-de-games.png"
+                            src="/carro-logo-aluguel-de-games.webp"
                             alt="Logo Aluguel de Games"
                         />
                         <span className="font-bold text-lg uppercase">

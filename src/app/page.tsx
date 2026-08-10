@@ -44,7 +44,15 @@ export const metadata: Metadata = {
         siteName: 'Aluguel de Games',
         images: [
             {
-                url: '/Logo-Aluguel-de-games.png',
+                // ⚠️ Antes apontava pro Logo-Aluguel-de-games.png, que é 1000x1000
+                // (QUADRADO) mas era declarado como 1200x630. WhatsApp e Facebook
+                // confiam na dimensão DECLARADA pra reservar o espaço do card: com
+                // a proporção errada o preview sai cortado ou com faixa vazia. E o
+                // WhatsApp é o canal de conversão deste negócio — essa é literalmente
+                // a imagem que aparece toda vez que alguém encaminha o link.
+                // og-aluguel-de-games.jpg é 1200x630 de verdade, 59 KB (o teto
+                // prático do WhatsApp é ~300 KB).
+                url: '/og-aluguel-de-games.jpg',
                 width: 1200,
                 height: 630,
                 alt: 'Aluguel de Games - Equipamentos de Entretenimento para Festas',

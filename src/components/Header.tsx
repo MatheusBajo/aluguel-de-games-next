@@ -45,7 +45,7 @@ export default function Header() {
                     >
                         <img
                             className="h-5 dark:invert"
-                            src="/carro-logo-aluguel-de-games.png"
+                            src="/carro-logo-aluguel-de-games.webp"
                             alt="Logo Aluguel de Games"
                         />
                         <span className="text-lg font-bold uppercase block lg:block md:hidden sm:block select-none">

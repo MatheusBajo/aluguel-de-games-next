@@ -102,14 +102,14 @@ export default function Main({ totalEquipamentos, totalCategorias }: MainProps) 
                             {/* wrapper exclusivo do logo */}
                             <div className="relative inline-block group">
                                 <DynamicGradient
-                                    imageUrl="/carro-logo-aluguel-de-games.png"
+                                    imageUrl="/carro-logo-aluguel-de-games.webp"
                                     className="pointer-events-none"
                                     typeOfGradient={"radial"}
                                     blur={"50px"}
                                 />
 
                                 <img
-                                    src="/carro-logo-aluguel-de-games.png"
+                                    src="/carro-logo-aluguel-de-games.webp"
                                     alt="Logo Aluguel de Games"
                                     className="relative z-10 h-32 md:h-40 select-none dark:invert"
                                 />
