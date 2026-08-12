@@ -28,12 +28,18 @@ name: Deploy para Hostinger
 
 on:
   push:
-    branches: [main, motor-novo]
+    branches: [main]      # só main. Branch de trabalho não derruba o site do pai.
     paths-ignore:
-      - '**.md'          # mexer em documentação não precisa refazer deploy
+      - '**.md'           # mexer em documentação não precisa refazer deploy
       - '.gitignore'
       - 'docs/**'
-  workflow_dispatch:      # botão manual na aba Actions
+
+  workflow_dispatch:      # botão "Run workflow" na aba Actions
+    inputs:
+      dry_run:
+        description: 'Ensaio: conecta, autentica e LISTA o que faria, sem escrever nada no servidor'
+        type: boolean
+        default: true     # padrão SEGURO. Publicar de verdade exige desmarcar.
 
 # Um deploy por vez. Se você der dois pushes seguidos, o antigo é cancelado e
 # só o mais novo sobe — senão dois uploads simultâneos se atropelam e o site
@@ -181,6 +187,10 @@ jobs:
           # em FTP_SERVER — aí o certificado bate e dá pra usar "strict".
           security: loose
 
+          # Push na main = deploy de verdade. No botão manual, respeita a
+          # caixinha "dry_run", que vem MARCADA por padrão.
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+
           local-dir: ./out/
           # "./" porque a conta de deploy JÁ está presa em .../public_html.
           # Se um dia usar a conta mestra, aqui teria que virar
@@ -198,7 +208,9 @@ jobs:
       # Confere o site DE VERDADE, pela internet. Se alguma URL não voltar 200,
       # o job fica vermelho e você recebe e-mail do GitHub.
       # ---------------------------------------------------------------------
+      # Em ensaio não faz sentido conferir produção: nada mudou lá.
       - name: Conferir o site no ar
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         run: |
           set -uo pipefail
           sleep 20   # o LiteSpeed leva um tempinho pra soltar o cache
@@ -249,6 +261,11 @@ jobs:
             echo "- Commit: \`${GITHUB_SHA:0:7}\`"
             echo "- Resultado: ${{ job.status }}"
             echo "- Site: https://www.alugueldegames.com.br"
+            if [ "${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}" = "true" ]; then
+              echo ""
+              echo "> **ENSAIO (dry-run).** Nada foi escrito no servidor."
+              echo "> Para publicar de verdade, rode de novo DESMARCANDO a caixinha dry_run."
+            fi
             echo ""
             echo "Se falhou ANTES do upload, o site no ar não foi tocado."
           } >> "$GITHUB_STEP_SUMMARY"
