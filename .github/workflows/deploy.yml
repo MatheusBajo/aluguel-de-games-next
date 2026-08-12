@@ -165,7 +165,22 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps          # FTP com TLS na porta 21. Se a Hostinger recusar, troque para: ftp
+          protocol: ftps          # FTP com TLS explícito na porta 21 (testado: o servidor responde "234 AUTH SSL successful")
+          port: 21
+          timeout: 60000          # 60s: o primeiro envio manda ~100 MB e o padrão de 30s é curto
+
+          # ⚠️ NÃO troque para "strict" sem ler isto.
+          # O certificado que a Hostinger apresenta nessa porta é CN=*.hstgr.io,
+          # mas a gente conecta em ftp.alugueldegames.com.br. Testado com curl:
+          #     subjectAltName does not match host name ftp.alugueldegames.com.br
+          # Com "strict" o deploy falha no handshake, todas as vezes.
+          # "loose" mantém a conexão CRIPTOGRAFADA (o TLS acontece normalmente),
+          # só não exige que o nome do certificado bata com o host.
+          # Upgrade possível: se o hPanel mostrar o hostname do servidor no
+          # formato srvNNNN.hstgr.io (Plano de hospedagem → detalhes), use ELE
+          # em FTP_SERVER — aí o certificado bate e dá pra usar "strict".
+          security: loose
+
           local-dir: ./out/
           # "./" porque a conta de deploy JÁ está presa em .../public_html.
           # Se um dia usar a conta mestra, aqui teria que virar
