@@ -16,7 +16,6 @@
 # next.js
 /.next/
 /out/
-/public/Organizado/
 
 # production
 /build
@@ -48,16 +47,10 @@ Thumbs.db
 # credenciais de deploy (nunca commitar)
 .env.deploy
 
-# ⚠️ public/Organizado NÃO vai pro git — leia antes de reverter.
-# As 529 fotos do catálogo estavam versionadas como PONTEIRO Git LFS de 131
-# bytes (o git-lfs não está instalado e o .gitattributes registra que os
-# objetos LFS se perderam na migração Windows→Mac). Ou seja: o que estava no
-# git não eram as fotos, eram ponteiros mortos.
-#
-# O perigo real: qualquer `git switch` para uma branch que rastreie essa pasta
-# SOBRESCREVE as fotos boas do disco com os ponteiros — foi o que aconteceu em
-# 10/ago/2026 (526 de 529 imagens perdidas, recuperadas de out/).
-#
-# As fotos de verdade (543 MB) vivem AQUI no disco e no servidor da Hostinger.
-# Não existe terceira cópia: faça backup dessa pasta antes de mexer em branch.
-public/Organizado/
+# public/Organizado VOLTOU pro git em 12/ago/2026, depois da compressão.
+# Motivo: sem a mídia no repositório o GitHub Actions não consegue buildar o
+# site. Agora cabe (56 MB, maior arquivo 6,7 MB) porque os 467 MB de vídeo de
+# manual/tutorial que o site NÃO usa saíram pra ../aluguel-midia-original/ e
+# as fotos foram redimensionadas pra no máximo 1600px.
+# ⚠️ O filtro LFS foi removido do .gitattributes: se voltar, vira ponteiro
+# quebrado de novo. Leia o .gitattributes antes de mexer.
