@@ -10,9 +10,16 @@
 #
 # ANTES DE USAR, cadastre os 3 secrets em:
 #   GitHub → repositório → Settings → Secrets and variables → Actions → New
-#     FTP_SERVER    ex: ftp.alugueldegames.com.br
-#     FTP_USERNAME  ex: u123456789.alugueldegames
-#     FTP_PASSWORD  a senha da conta FTP (hPanel → Arquivos → Contas FTP)
+#     FTP_SERVER    82.25.113.224
+#     FTP_USERNAME  o usuário da conta de deploy criada no hPanel
+#     FTP_PASSWORD  a senha dessa conta
+#
+# ⚠️ Use uma conta FTP DEDICADA, criada em hPanel → Arquivos → Contas FTP →
+# "Criar uma nova conta FTP", com o Diretório apontando para
+#     /home/u205011338/domains/alugueldegames.com.br/public_html
+# NÃO use a conta mestra (u205011338): ela enxerga a conta inteira, com os 2
+# sites. Uma conta escopada só nessa pasta limita o estrago se o secret vazar,
+# e faz o server-dir abaixo poder ser simplesmente "./".
 #
 # ⚠️ NUNCA escreva senha aqui neste arquivo. Este repositório é PÚBLICO.
 # =============================================================================
@@ -158,9 +165,12 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
+          protocol: ftps          # FTP com TLS na porta 21. Se a Hostinger recusar, troque para: ftp
           local-dir: ./out/
-          server-dir: ./public_html/
+          # "./" porque a conta de deploy JÁ está presa em .../public_html.
+          # Se um dia usar a conta mestra, aqui teria que virar
+          # ./domains/alugueldegames.com.br/public_html/
+          server-dir: ./
           dangerous-clean-slate: false
           exclude: |
             **/.git*
