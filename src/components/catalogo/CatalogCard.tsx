@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FiImage, FiStar } from "react-icons/fi";
+import { FiImage } from "react-icons/fi";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -85,23 +85,13 @@ export function CatalogCard({ item, index = 0 }: CatalogCardProps) {
                         {item.titulo}
                     </h3>
 
-                    {/* Rating compacto */}
-                    <div className="flex items-center gap-1">
-                        <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                                <FiStar
-                                    key={i}
-                                    className={cn(
-                                        "h-2.5 w-2.5",
-                                        i < 4
-                                            ? "fill-yellow-500 text-yellow-500"
-                                            : "text-gray-600"
-                                    )}
-                                />
-                            ))}
-                        </div>
-                        <span className="text-xs text-gray-500">4.8</span>
-                    </div>
+                    {/* REMOVIDO: bloco de "rating" com 4 estrelas e a nota 4.8 CRAVADAS,
+                        idênticas em todos os produtos — ninguém avaliou nada. Além de
+                        falso, review auto-declarado é inelegível pelo Google e pode virar
+                        ação manual, e alegação não comprovável é reprovação por
+                        Deturpação no Google Ads (a conta que traz o tráfego pago daqui).
+                        Prova social honesta deste site: as avaliações reais no Google
+                        Business Profile e a ordem do "top 10 mais alugados". */}
                 </div>
             </Link>
         </motion.div>

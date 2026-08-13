@@ -43,7 +43,7 @@ export function ProductInfo({ titulo, descricao, categoria }: ProductInfoProps) 
 
         // Codifica a mensagem para ser segura na URL (trata espaços, etc.)
         const mensagemCodificada = encodeURIComponent(mensagemBase);
-        const urlWhatsApp = `https://wa.me/+551142377766?text=${mensagemCodificada}`;
+        const urlWhatsApp = `https://wa.me/+5511965261000?text=${mensagemCodificada}`;
 
         // Abre a URL em uma nova aba
         window.open(urlWhatsApp, "_blank");
@@ -132,19 +132,22 @@ export function ProductInfo({ titulo, descricao, categoria }: ProductInfoProps) 
                 </Button>
             </div>
 
-            {/* Trust Badges */}
+            {/* Trust badges — SÓ FATO COMPROVÁVEL. Saíram "500+ Eventos realizados"
+                e "100% Satisfação" (ninguém contou, ninguém mediu) e o "24h Resposta
+                rápida", que promete um SLA que a família não tem como garantir num
+                WhatsApp. Os de agora o dono prova com a data do CNPJ e a operação. */}
             <div className="flex items-center justify-around border-t pt-6 text-center">
                 <div>
-                    <p className="text-2xl font-bold text-primary">500+</p>
-                    <p className="text-xs text-muted-foreground">Eventos realizados</p>
+                    <p className="text-2xl font-bold text-primary">Desde 1993</p>
+                    <p className="text-xs text-muted-foreground">33 anos de estrada</p>
                 </div>
                 <div>
-                    <p className="text-2xl font-bold text-primary">24h</p>
-                    <p className="text-xs text-muted-foreground">Resposta rápida</p>
+                    <p className="text-2xl font-bold text-primary">WhatsApp</p>
+                    <p className="text-xs text-muted-foreground">Resposta no horário comercial</p>
                 </div>
                 <div>
-                    <p className="text-2xl font-bold text-primary">100%</p>
-                    <p className="text-xs text-muted-foreground">Satisfação</p>
+                    <p className="text-2xl font-bold text-primary">Grande SP</p>
+                    <p className="text-xs text-muted-foreground">Osasco e região</p>
                 </div>
             </div>
         </motion.div>

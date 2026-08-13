@@ -16,7 +16,6 @@
 # next.js
 /.next/
 /out/
-/public/Organizado/
 
 # production
 /build
@@ -44,3 +43,14 @@ next-env.d.ts
 *.mov
 *.avi
 Thumbs.db
+
+# credenciais de deploy (nunca commitar)
+.env.deploy
+
+# public/Organizado VOLTOU pro git em 12/ago/2026, depois da compressão.
+# Motivo: sem a mídia no repositório o GitHub Actions não consegue buildar o
+# site. Agora cabe (56 MB, maior arquivo 6,7 MB) porque os 467 MB de vídeo de
+# manual/tutorial que o site NÃO usa saíram pra ../aluguel-midia-original/ e
+# as fotos foram redimensionadas pra no máximo 1600px.
+# ⚠️ O filtro LFS foi removido do .gitattributes: se voltar, vira ponteiro
+# quebrado de novo. Leia o .gitattributes antes de mexer.

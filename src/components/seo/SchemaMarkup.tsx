@@ -15,7 +15,7 @@ export default function SchemaMarkup() {
         },
         contactPoint: {
             '@type': 'ContactPoint',
-            telephone: '+55-11-4237-7766',
+            telephone: '+55-11-96526-1000',
             contactType: 'customer service',
             areaServed: 'BR',
             availableLanguage: 'Portuguese'
@@ -23,7 +23,7 @@ export default function SchemaMarkup() {
         sameAs: [
             'https://instagram.com/alugueldegames',
             'https://facebook.com/alugueldegames',
-            'https://wa.me/+551142377766'
+            'https://wa.me/+5511965261000'
         ]
     };
 

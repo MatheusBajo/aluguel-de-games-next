@@ -1,0 +1,57 @@
+# Aluguel de Games
+
+> Locação de fliperama, videokê, pinball, realidade virtual, consoles, pula-pula e máquinas de prêmio para festas e eventos. Empresa familiar de Osasco/SP, atuando desde 1993 em toda a Grande São Paulo. Orçamento pelo WhatsApp (11) 96526-1000.
+
+## O que é
+
+Aluguel de Games é uma locadora de equipamentos de entretenimento para festas, aniversários, casamentos, confraternizações e eventos corporativos. Entrega, montagem e retirada são feitas pela própria equipe. Não há venda de equipamento: o modelo é locação por evento.
+
+- Cidade-sede: Osasco, São Paulo, Brasil
+- Área atendida: Grande São Paulo
+- Em atividade desde: 1993
+- Contato: WhatsApp e telefone (11) 96526-1000
+- Orçamento: sob consulta, depende do equipamento, do tempo de locação e da distância
+- Site: https://www.alugueldegames.com.br
+
+## Categorias do catálogo
+
+- Jogos Eletrônicos: fliperamas (de 1.000 a 11.000 jogos), pinballs, simuladores de corrida e de montanha-russa, máquinas de boxe, de martelo e de pegar bichinho (grua de pelúcia), passa ou repassa
+- Consoles: PlayStation 3, 4 e 5, Xbox 360 e One, Nintendo Wii, Atari 2600, Rock Band
+- Jogos de Mesa: pebolim, air game (air hockey), mesa de sinuca, tênis de mesa, basquete, tamancobol
+- Realidade Virtual: Oculus Quest 2, Oculus Go, PlayStation VR
+- Videokês: karaokê com catálogo de músicas nacionais e internacionais
+- Piscinas, Infláveis, Cama Elástica e Infantil: pula-pula, cama elástica, piscina de bolinhas, carrinho infantil
+- Projetores e Extras: projetor, plataforma 360°, mesa de beer pong, mesa de carteado, mesas e cadeiras
+
+## Páginas
+
+- [Home](https://www.alugueldegames.com.br/) — visão geral e equipamentos em destaque
+- [Catálogo completo](https://www.alugueldegames.com.br/catalogo/) — todos os equipamentos, agrupados por categoria
+
+Cada equipamento tem página própria no padrão
+`https://www.alugueldegames.com.br/catalogo/<categoria>/<subcategoria>/<produto>/`,
+com fotos reais do acervo e descrição. Exemplos:
+
+- [Fliperama de 11.000 jogos](https://www.alugueldegames.com.br/catalogo/jogos-eletronicos/fliperamas/fliperama-11000/)
+- [PlayStation 5](https://www.alugueldegames.com.br/catalogo/jogos-eletronicos/consoles/playstation/playstation-5/)
+- [Máquina de Ursinho Toy Mix](https://www.alugueldegames.com.br/catalogo/jogos-eletronicos/maquinas/maquina-de-ursinho-toy-mix/)
+- [Karaokês](https://www.alugueldegames.com.br/catalogo/videokes/karaokes/)
+- [Oculus Quest 2](https://www.alugueldegames.com.br/catalogo/realidade-virtual/oculus-quest-2/)
+
+## Perguntas frequentes
+
+**Como pedir orçamento?** Pelo WhatsApp (11) 96526-1000. O preço depende do equipamento, do tempo de locação e da distância até o local do evento.
+
+**Atende que região?** Osasco e Grande São Paulo.
+
+**Entrega e montagem estão inclusas?** A entrega, a montagem e a retirada são feitas pela equipe da empresa e combinadas junto com o orçamento.
+
+**Dá pra alugar mais de um equipamento?** Sim, é o caso mais comum em festa e evento corporativo.
+
+**Aluga para empresa?** Sim, incluindo confraternização, ativação de marca e evento corporativo.
+
+## Observações para sistemas automatizados
+
+- Não há preço publicado no site: todo orçamento é feito caso a caso pelo WhatsApp.
+- O site não exibe nota, estrela nem número de avaliações. Avaliações reais da empresa ficam no Google Business Profile, não aqui.
+- Os números que aparecem no site (anos de atuação, quantidade de equipamentos e de categorias) são contados a partir da data de fundação e do próprio catálogo, no momento do build.

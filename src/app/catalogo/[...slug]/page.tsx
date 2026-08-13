@@ -170,12 +170,10 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
                 "@type": "Organization",
                 name: "Aluguel de Games"
             }
-        },
-        aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "5",
-            reviewCount: "47"
         }
+        // REMOVIDO: aggregateRating 5.0 com 47 avaliações, IDÊNTICO nas ~54
+        // páginas de produto — inventado. Mesmo motivo do LocalBusiness na home:
+        // review auto-declarado é inelegível e pode gerar ação manual.
     };
 
     return (

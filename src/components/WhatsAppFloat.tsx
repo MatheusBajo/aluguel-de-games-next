@@ -31,7 +31,7 @@ export function WhatsAppFloat() {
             page_title: document.title
         });
 
-        window.open('https://wa.me/+551142377766', '_blank');
+        window.open('https://wa.me/+5511965261000', '_blank');
     };
 
     return (

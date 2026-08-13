@@ -45,7 +45,7 @@ export default function Header() {
                     >
                         <img
                             className="h-5 dark:invert"
-                            src="/carro-logo-aluguel-de-games.png"
+                            src="/carro-logo-aluguel-de-games.webp"
                             alt="Logo Aluguel de Games"
                         />
                         <span className="text-lg font-bold uppercase block lg:block md:hidden sm:block select-none">
@@ -202,7 +202,7 @@ export default function Header() {
                             <NavigationMenuItem>
                                 <NavigationMenuLink asChild>
                                     <Link
-                                        href="https://wa.me/+551142377766"
+                                        href="https://wa.me/+5511965261000"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         onClick={() => trackWhatsAppClick('header_menu_orcamento')}
@@ -233,7 +233,7 @@ export default function Header() {
                     <ul className="flex items-center gap-0.5">
                         <li>
                             <a
-                                href="https://wa.me/+551142377766"
+                                href="https://wa.me/+5511965261000"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => trackWhatsAppClick('header_icon')}

@@ -19,6 +19,18 @@ export const metadata: Metadata = {
         locale: "pt_BR",
         url: "https://www.alugueldegames.com.br/",
         siteName: "Aluguel de Games",
+        // Fallback de preview de link pra TODA rota que não define a sua própria
+        // (a /catalogo/, por exemplo, não tinha og:image nenhuma — e ela é destino
+        // natural de sitelink do Google Ads). No Next 15 a rota que declara
+        // `images` sobrescreve; quem não declara herda esta.
+        images: [
+            {
+                url: "https://www.alugueldegames.com.br/og-aluguel-de-games.jpg",
+                width: 1200,
+                height: 630,
+                alt: "Aluguel de Games — fliperama, videokê e games pra festa em Osasco e Grande SP",
+            },
+        ],
     },
     icons: {
         icon: "/Logo-Aluguel-de-games.ico",

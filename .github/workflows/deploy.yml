@@ -1,0 +1,271 @@
+# =============================================================================
+# Deploy automático: GitHub → build → Hostinger
+# =============================================================================
+# Dispara quando você dá push, ou manualmente pelo botão "Run workflow" na aba
+# Actions do GitHub.
+#
+# O que ele faz: builda o site, roda as MESMAS travas de segurança do
+# deploy.sh, sobe só o que mudou por FTP, e depois confere se o site respondeu
+# 200 nas URLs principais. Se qualquer trava falhar, ele NÃO sobe nada.
+#
+# ANTES DE USAR, cadastre os 3 secrets em:
+#   GitHub → repositório → Settings → Secrets and variables → Actions → New
+#     FTP_SERVER    82.25.113.224
+#     FTP_USERNAME  o usuário da conta de deploy criada no hPanel
+#     FTP_PASSWORD  a senha dessa conta
+#
+# ⚠️ Use uma conta FTP DEDICADA, criada em hPanel → Arquivos → Contas FTP →
+# "Criar uma nova conta FTP", com o Diretório apontando para
+#     /home/u205011338/domains/alugueldegames.com.br/public_html
+# NÃO use a conta mestra (u205011338): ela enxerga a conta inteira, com os 2
+# sites. Uma conta escopada só nessa pasta limita o estrago se o secret vazar,
+# e faz o server-dir abaixo poder ser simplesmente "./".
+#
+# ⚠️ NUNCA escreva senha aqui neste arquivo. Este repositório é PÚBLICO.
+# =============================================================================
+
+name: Deploy para Hostinger
+
+on:
+  push:
+    branches: [main]      # só main. Branch de trabalho não derruba o site do pai.
+    paths-ignore:
+      - '**.md'           # mexer em documentação não precisa refazer deploy
+      - '.gitignore'
+      - 'docs/**'
+
+  workflow_dispatch:      # botão "Run workflow" na aba Actions
+    inputs:
+      dry_run:
+        description: 'Ensaio: conecta, autentica e LISTA o que faria, sem escrever nada no servidor'
+        type: boolean
+        default: true     # padrão SEGURO. Publicar de verdade exige desmarcar.
+
+# Um deploy por vez. Se você der dois pushes seguidos, o antigo é cancelado e
+# só o mais novo sobe — senão dois uploads simultâneos se atropelam e o site
+# fica metade novo e metade velho.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
+jobs:
+  build-e-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      # fetch-depth: 1 é importante. O histórico deste repo tem ~555 MB por
+      # causa de binário antigo; baixar tudo faria o CI arrastar sem motivo.
+      # Com depth 1 ele pega só a última versão dos arquivos.
+      - name: Baixar o código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build do site
+        run: npm run build
+
+      # ---------------------------------------------------------------------
+      # TRAVAS DE SEGURANÇA — as mesmas do deploy.sh
+      # Existem porque produção já ficou meses com /sobre/ e /contato/ em 404,
+      # e com um sitemap listando 55 URLs que não existiam. Se algo aqui
+      # falhar, o job morre ANTES do upload e o site no ar continua intacto.
+      # ---------------------------------------------------------------------
+      - name: Conferir o build antes de subir
+        run: |
+          set -euo pipefail
+          echo "::group::Arquivos obrigatórios"
+          for f in out/index.html out/.htaccess out/sitemap.xml out/robots.txt out/404.html out/llms.txt; do
+            [ -f "$f" ] || { echo "::error::$f não existe — build incompleto"; exit 1; }
+            echo "  ok  $f"
+          done
+          echo "::endgroup::"
+
+          PAGINAS=$(find out -name index.html | wc -l | tr -d ' ')
+          echo "páginas HTML geradas: $PAGINAS"
+          [ "$PAGINAS" -ge 65 ] || { echo "::error::só $PAGINAS páginas (esperado 65+)"; exit 1; }
+
+          echo "::group::Sitemap sem URL fantasma"
+          python3 - <<'PY'
+          import re, os, sys
+          locs = re.findall(r'<loc>([^<]+)</loc>', open('out/sitemap.xml', encoding='utf-8').read())
+          ruins = []
+          for l in locs:
+              p = l.split('.com.br')[1].rstrip('/')
+              if p and not os.path.isfile('out' + p + '/index.html'):
+                  ruins.append(p)
+          print(f"{len(locs)} URLs no sitemap, {len(ruins)} fantasma(s)")
+          for r in ruins[:10]:
+              print("  FANTASMA:", r)
+          sys.exit(1 if ruins else 0)
+          PY
+          echo "::endgroup::"
+
+          echo "::group::Nenhuma imagem quebrada"
+          python3 - <<'PY'
+          import re, os, glob, urllib.parse, html, sys
+          falt = set()
+          tot = 0
+          for f in glob.glob('out/**/index.html', recursive=True):
+              h = open(f, encoding='utf-8', errors='ignore').read()
+              for u in set(re.findall(r'(?:src|href)="(/[^"]+\.(?:webp|jpg|jpeg|png|mp4))"', h)):
+                  tot += 1
+                  if not os.path.isfile('out' + urllib.parse.unquote(html.unescape(u))):
+                      falt.add(u)
+          print(f"{tot} referências, {len(falt)} quebrada(s)")
+          for x in list(falt)[:10]:
+              print("  QUEBRADA:", x)
+          sys.exit(1 if falt else 0)
+          PY
+          echo "::endgroup::"
+
+          echo "::group::Telefone certo e nada inventado"
+          python3 - <<'PY'
+          import re, html, glob, sys
+          erros = []
+          for f in glob.glob('out/**/index.html', recursive=True):
+              h = open(f, encoding='utf-8', errors='ignore').read()
+              # o número antigo não pode voltar (o do logo tem 42377766 no NOME do arquivo, por isso o filtro)
+              if re.search(r'(?<!logo-)4237[-‑]?7766', h.replace('WhatsApp-logo-42377766', '')):
+                  erros.append((f, 'telefone ANTIGO (11) 4237-7766'))
+              limpo = re.sub(r'<(script|style)[^>]*>.*?</\1>', '', h, flags=re.S)
+              txt = ' '.join(html.unescape(x) for x in re.findall(r'>([^<>]+)<', limpo))
+              for pat, nome in [(r'\b500\s*\+', '"500+"'), (r'\b98\s*%', '"98%"'),
+                                (r'\b100\s*%\s*$', '"100%"'), (r'128 avalia', '"128 avaliações"'),
+                                (r'\bSatisfação', '"Satisfação"')]:
+                  if re.search(pat, txt):
+                      erros.append((f, f'número/claim inventado: {nome}'))
+              for k in ('aggregateRating', 'ratingValue', 'reviewCount'):
+                  if k in h:
+                      erros.append((f, f'{k} no JSON-LD (review auto-declarado é inelegível no Google)'))
+          for f, e in erros[:12]:
+              print(f"  {f}: {e}")
+          print(f"{len(erros)} problema(s)")
+          sys.exit(1 if erros else 0)
+          PY
+          echo "::endgroup::"
+
+          echo "TODAS AS TRAVAS PASSARAM · $(du -sh out | cut -f1)"
+
+      # ---------------------------------------------------------------------
+      # UPLOAD
+      # A action guarda um arquivo de estado no servidor e sobe só o que mudou.
+      # Na primeira rodada ela sobe tudo (~118 MB) e leva alguns minutos.
+      #
+      # ⚠️ dangerous-clean-slate fica FALSE de propósito. Ligar isso apagaria
+      # do servidor os 42 vídeos de manual que não estão no repositório e que
+      # o dono ainda pode estar mandando por link pros clientes.
+      # ---------------------------------------------------------------------
+      - name: Subir pra Hostinger (FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps          # FTP com TLS explícito na porta 21 (testado: o servidor responde "234 AUTH SSL successful")
+          port: 21
+          timeout: 60000          # 60s: o primeiro envio manda ~100 MB e o padrão de 30s é curto
+
+          # ⚠️ NÃO troque para "strict" sem ler isto.
+          # O certificado que a Hostinger apresenta nessa porta é CN=*.hstgr.io,
+          # mas a gente conecta em ftp.alugueldegames.com.br. Testado com curl:
+          #     subjectAltName does not match host name ftp.alugueldegames.com.br
+          # Com "strict" o deploy falha no handshake, todas as vezes.
+          # "loose" mantém a conexão CRIPTOGRAFADA (o TLS acontece normalmente),
+          # só não exige que o nome do certificado bata com o host.
+          # Upgrade possível: se o hPanel mostrar o hostname do servidor no
+          # formato srvNNNN.hstgr.io (Plano de hospedagem → detalhes), use ELE
+          # em FTP_SERVER — aí o certificado bate e dá pra usar "strict".
+          security: loose
+
+          # Push na main = deploy de verdade. No botão manual, respeita a
+          # caixinha "dry_run", que vem MARCADA por padrão.
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+
+          local-dir: ./out/
+          # "./" porque a conta de deploy JÁ está presa em .../public_html.
+          # Se um dia usar a conta mestra, aqui teria que virar
+          # ./domains/alugueldegames.com.br/public_html/
+          server-dir: ./
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
+
+      # ---------------------------------------------------------------------
+      # VERIFICAÇÃO PÓS-DEPLOY
+      # Confere o site DE VERDADE, pela internet. Se alguma URL não voltar 200,
+      # o job fica vermelho e você recebe e-mail do GitHub.
+      # ---------------------------------------------------------------------
+      # Em ensaio não faz sentido conferir produção: nada mudou lá.
+      - name: Conferir o site no ar
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        run: |
+          set -uo pipefail
+          sleep 20   # o LiteSpeed leva um tempinho pra soltar o cache
+          BASE="https://www.alugueldegames.com.br"
+          URLS=(
+            "/"
+            "/catalogo/"
+            "/catalogo/jogos-eletronicos/"
+            "/catalogo/jogos-eletronicos/consoles/playstation/playstation-5/"
+            "/catalogo/jogos-eletronicos/fliperamas/fliperama-11000/"
+            "/catalogo/jogos-eletronicos/maquinas/maquina-de-ursinho-toy-mix/"
+            "/catalogo/videokes/karaokes/"
+            "/catalogo/jogos-de-mesa/pebolim/"
+            "/sitemap.xml"
+            "/robots.txt"
+            "/llms.txt"
+            "/og-aluguel-de-games.jpg"
+          )
+          FALHOU=0
+          for u in "${URLS[@]}"; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 30 "$BASE$u" || echo "000")
+            if [ "$CODE" = "200" ]; then
+              echo "  $CODE  $u"
+            else
+              echo "::error::$CODE em $u"
+              FALHOU=$((FALHOU + 1))
+            fi
+          done
+
+          # o domínio sem www tem que redirecionar (301) pro com www.
+          # Se isto falhar, o .htaccess não subiu.
+          APEX=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "https://alugueldegames.com.br/" || echo "000")
+          if [ "$APEX" = "301" ]; then
+            echo "  apex → www: 301 ok"
+          else
+            echo "::warning::apex respondeu $APEX (esperado 301). O .htaccess subiu?"
+          fi
+
+          [ "$FALHOU" -eq 0 ] || { echo "::error::$FALHOU URL(s) quebrada(s) em produção"; exit 1; }
+          echo "Site no ar e respondendo."
+
+      - name: Resumo
+        if: always()
+        run: |
+          {
+            echo "### Deploy Aluguel de Games"
+            echo ""
+            echo "- Commit: \`${GITHUB_SHA:0:7}\`"
+            echo "- Resultado: ${{ job.status }}"
+            echo "- Site: https://www.alugueldegames.com.br"
+            if [ "${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}" = "true" ]; then
+              echo ""
+              echo "> **ENSAIO (dry-run).** Nada foi escrito no servidor."
+              echo "> Para publicar de verdade, rode de novo DESMARCANDO a caixinha dry_run."
+            fi
+            echo ""
+            echo "Se falhou ANTES do upload, o site no ar não foi tocado."
+          } >> "$GITHUB_STEP_SUMMARY"

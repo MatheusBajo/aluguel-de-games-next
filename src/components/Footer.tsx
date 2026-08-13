@@ -17,7 +17,7 @@ export default function Footer() {
                     <div className="flex items-center gap-2">
                         <img
                             className="h-6 dark:invert select-none"
-                            src="/carro-logo-aluguel-de-games.png"
+                            src="/carro-logo-aluguel-de-games.webp"
                             alt="Logo Aluguel de Games"
                         />
                         <span className="font-bold text-lg uppercase">
@@ -69,7 +69,7 @@ export default function Footer() {
                             <GpsFix weight="bold"/> Atendemos toda a a Grande São Paulo
                         </li>
                         <li className="flex items-center gap-1">
-                            <Phone weight="fill"/>(11) 4237‑7766
+                            <Phone weight="fill"/>(11) 96526-1000
                         </li>
                         <li className="flex items-center gap-1">
                             <Envelope weight="bold" />contato@alugueldegames.com.br
@@ -77,7 +77,7 @@ export default function Footer() {
                     </ul>
                     <div className="flex items-center gap-3">
                         <a
-                            href="https://wa.me/551142377766"
+                            href="https://wa.me/5511965261000"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-2 bg-primary-foreground hover:bg-primary/20 rounded-full"

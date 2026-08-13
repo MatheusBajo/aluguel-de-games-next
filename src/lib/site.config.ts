@@ -33,7 +33,7 @@ export const siteConfig = {
     url: getSiteUrl(),
     ogImage: '/Logo-Aluguel-de-games.png',
     links: {
-        whatsapp: 'https://wa.me/+551142377766',
+        whatsapp: 'https://wa.me/+5511965261000',
         instagram: 'https://instagram.com/alugueldegames',
         facebook: 'https://facebook.com/alugueldegames',
     },

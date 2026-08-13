@@ -1,6 +1,35 @@
-*.mp4 filter=lfs diff=lfs merge=lfs -text
-*.mov filter=lfs diff=lfs merge=lfs -text
-*.png filter=lfs diff=lfs merge=lfs -text
-*.webp filter=lfs diff=lfs merge=lfs -text
-*.jpg filter=lfs diff=lfs merge=lfs -text
-*.jpeg filter=lfs diff=lfs merge=lfs -text
+# ============================================================================
+# Git LFS DESATIVADO. Não recolocar os filtros sem ler isto.
+# ============================================================================
+# Este arquivo tinha:
+#     *.mp4  filter=lfs diff=lfs merge=lfs -text
+#     *.mov  filter=lfs ...
+#     *.png  filter=lfs ...
+#     *.webp filter=lfs ...
+#     *.jpg  filter=lfs ...
+#     *.jpeg filter=lfs ...
+#
+# O git-lfs NÃO está instalado nesta máquina, e os objetos LFS do histórico
+# antigo se perderam na migração Windows→Mac. Com o filtro ligado e o lfs
+# ausente, o git guardava um PONTEIRO DE TEXTO de 131 bytes no lugar de cada
+# imagem. Consequências reais que isso já causou:
+#
+#   1. Um `git clone` limpo gerava o site com TODAS as imagens quebradas.
+#   2. Em 10/ago/2026 um `git switch` sobrescreveu 526 das 529 fotos boas do
+#      disco com ponteiro. Só deu pra recuperar porque o out/ do build
+#      anterior é gitignored e sobreviveu.
+#
+# Agora a mídia do site é commitada como ARQUIVO DE VERDADE. Ela cabe: depois
+# da compressão de 12/ago/2026, public/ inteiro tem ~94 MB (era 590 MB), e o
+# maior arquivo tem ~6,7 MB, bem abaixo do limite de 100 MiB por arquivo do
+# GitHub. Isso é o que permite o GitHub Actions buildar o site sozinho.
+#
+# Se um dia a mídia voltar a crescer, a saída NÃO é reativar o LFS: é tirar a
+# mídia do repositório e servir de um storage (Sanity assets, R2, etc).
+#
+# Mídia que não é do site (manuais, tutoriais, .cdr, .docx) vive fora do repo,
+# em ~/Projetos/WebstormProjects/aluguel-midia-original/
+# ============================================================================
+
+# Normaliza fim de linha de texto, sem tocar em binário.
+* text=auto

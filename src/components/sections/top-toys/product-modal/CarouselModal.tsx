@@ -8,7 +8,6 @@ import {HiSparkles} from "react-icons/hi";
 import FlyingEmojis from "@/components/hooks/FlyingEmojis";
 import {Badge} from "@/components/ui/badge";
 import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
-import {StarRating} from "@/components/util/StarRating";
 import {Button} from "@/components/ui/button";
 import {useState} from "react";
 import {ArrowLeft, ArrowRight} from "lucide-react";
@@ -22,7 +21,6 @@ export interface CarouselModalProps {
         title: string;
         desc?: string;
         imgSrc: string;
-        rate?: number;
         confeti?: boolean;
     }>;
     initialIndex: number;
@@ -143,11 +141,6 @@ export function CarouselModal({
                                                     <Badge className="bg-blue-500/20 backdrop-blur-sm text-blue-100 border-blue-500/30">
                                                         ⚡ Disponível
                                                     </Badge>
-                                                    {item.rate && item.rate >= 4.5 && (
-                                                        <Badge className="bg-yellow-500/20 backdrop-blur-sm text-yellow-100 border-yellow-500/30">
-                                                            ⭐ Top Rated
-                                                        </Badge>
-                                                    )}
                                                 </div>
 
                                                 {/* Título e descrição */}
@@ -162,20 +155,13 @@ export function CarouselModal({
                                                         </p>
                                                     )}
 
-                                                    {/* Rating */}
-                                                    {item.rate !== undefined && (
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="flex items-center gap-1">
-                                                                <StarRating value={item.rate} />
-                                                            </div>
-                                                            <span className="text-white/90 font-medium">
-                                                                {item.rate} de 5.0
-                                                            </span>
-                                                            <span className="text-white/60 text-sm">
-                                                                (128 avaliações)
-                                                            </span>
-                                                        </div>
-                                                    )}
+                                                    {/* REMOVIDO: estrelas + "X de 5.0" + "(128 avaliações)".
+                                                        A nota vinha da escada inventada do JSON e o "128
+                                                        avaliações" estava CRAVADO igual em todo produto.
+                                                        Review auto-declarado é inelegível pelo Google e pode
+                                                        virar ação manual; número não comprovável é
+                                                        Deturpação no Ads. Avaliação real vive no Google
+                                                        Business Profile, não no HTML. */}
                                                 </div>
 
                                                 {/* CTAs */}
@@ -183,7 +169,7 @@ export function CarouselModal({
                                                     <Button
                                                         size="lg"
                                                         className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white border-0 shadow-lg shadow-green-500/30 flex items-center gap-2"
-                                                        onClick={() => window.open("https://wa.me/+551142377766", "_blank")}
+                                                        onClick={() => window.open("https://wa.me/+5511965261000", "_blank")}
                                                     >
                                                         <FaWhatsapp className="text-xl" />
                                                         <span>Fazer Orçamento</span>
