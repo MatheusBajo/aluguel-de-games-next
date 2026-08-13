@@ -26,20 +26,28 @@
 
 name: Deploy para Hostinger
 
+# ⚠️ NÃO ADICIONE GATILHO DE `push` AQUI. Leia por quê:
+#
+# Em 13/ago/2026 este workflow tinha `on: push: branches: [main]`. Ao subir 10
+# commits um a um (o push inteiro dava HTTP 408 do Japão), CADA push virou um
+# evento separado e disparou um deploy. O `[skip ci]` estava só no commit de
+# merge, o último — os do meio passaram batido e um deploy REAL foi pra
+# produção antes de o dono autorizar.
+#
+# Regra que ficou: subir código nunca publica. Publicar é ato explícito.
+#   - dia a dia  -> botão "Run workflow" na aba Actions
+#   - release    -> criar uma tag v* (ex: git tag v1.2 && git push origin v1.2)
 on:
-  push:
-    branches: [main]      # só main. Branch de trabalho não derruba o site do pai.
-    paths-ignore:
-      - '**.md'           # mexer em documentação não precisa refazer deploy
-      - '.gitignore'
-      - 'docs/**'
-
   workflow_dispatch:      # botão "Run workflow" na aba Actions
     inputs:
       dry_run:
         description: 'Ensaio: conecta, autentica e LISTA o que faria, sem escrever nada no servidor'
         type: boolean
         default: true     # padrão SEGURO. Publicar de verdade exige desmarcar.
+
+  push:
+    tags:
+      - 'v*'              # só tag de versão publica. Push em branch NÃO dispara nada.
 
 # Um deploy por vez. Se você der dois pushes seguidos, o antigo é cancelado e
 # só o mais novo sobe — senão dois uploads simultâneos se atropelam e o site
