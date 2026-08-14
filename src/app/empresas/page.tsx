@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ogImagens } from '@/lib/og';
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { FaWhatsapp } from "react-icons/fa";

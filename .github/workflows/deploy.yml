@@ -198,6 +198,41 @@ jobs:
           PY
           echo "::endgroup::"
 
+          echo "::group::Cabeçalho de cada página (title, description, canonical, og:image)"
+          python3 - <<'PY'
+          import re, glob, sys
+          # Cada uma destas já falhou de verdade neste projeto:
+          #  - 15 categorias foram pro ar com <title>Produto não encontrado</title>,
+          #    porque o generateMetadata caía no mesmo buraco que o corpo da página;
+          #  - 20 páginas ficaram SEM og:image porque, no Next, declarar openGraph
+          #    na página SUBSTITUI o do layout inteiro em vez de mesclar.
+          erros = []
+          for f in glob.glob('out/**/index.html', recursive=True):
+              if f == 'out/404/index.html':
+                  continue   # o 404 não deve ter canonical mesmo
+              h = open(f, encoding='utf-8', errors='ignore').read()
+              pag = f[3:].replace('index.html', '') or '/'
+              t = re.search(r'<title>([^<]*)</title>', h)
+              if not t:
+                  erros.append((pag, 'sem <title>'))
+              elif re.search(r'não encontrado|not found|undefined', t.group(1), re.I):
+                  erros.append((pag, f'<title> de erro: "{t.group(1)[:50]}"'))
+              if 'name="description"' not in h:
+                  erros.append((pag, 'sem meta description'))
+              if 'rel="canonical"' not in h:
+                  erros.append((pag, 'sem canonical'))
+              # ⚠️ tem que procurar a TAG exata. A string "og:image" solta também
+              # aparece dentro do payload do Next embutido em <script>, então
+              # `'og:image' in h` dá falso negativo e a trava passa batido.
+              if '<meta property="og:image"' not in h:
+                  erros.append((pag, 'sem og:image (preview de link no WhatsApp)'))
+          for p, e in erros[:15]:
+              print(f"  {p}: {e}")
+          print(f"{len(erros)} problema(s) de cabeçalho")
+          sys.exit(1 if erros else 0)
+          PY
+          echo "::endgroup::"
+
           echo "TODAS AS TRAVAS PASSARAM · $(du -sh out | cut -f1)"
 
       # ---------------------------------------------------------------------

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ogImagens } from '@/lib/og';
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { FaWhatsapp } from "react-icons/fa";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
         "Veja como funciona o aluguel de equipamentos para festas: escolha, orçamento via WhatsApp, entrega, montagem e suporte disponível durante o evento. Tudo simples e sem complicação.",
     alternates: { canonical: "https://www.alugueldegames.com.br/como-funciona" },
     openGraph: {
+            images: ogImagens(),
         title: "Como Funciona o Aluguel - Aluguel de Games",
         description: "Processo simples e transparente. Veja como é fácil ter entretenimento de qualidade no seu evento.",
         url: "https://www.alugueldegames.com.br/como-funciona",

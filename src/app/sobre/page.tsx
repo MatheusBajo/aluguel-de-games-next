@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ogImagens } from '@/lib/og';
 import type { Metadata } from "next";
 import { getCatalog } from "@/lib/catalog.server";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
         "Conheça a história da Aluguel de Games. Desde 1993 transformando festas e eventos em São Paulo com fliperamas, videokês, realidade virtual e muito mais. Tradição, qualidade e diversão.",
     alternates: { canonical: "https://www.alugueldegames.com.br/sobre" },
     openGraph: {
+            images: ogImagens(),
         title: "Sobre a Aluguel de Games - Desde 1993",
         description:
             "33+ anos transformando festas e eventos em São Paulo. Conheça nossa história, valores e missão.",

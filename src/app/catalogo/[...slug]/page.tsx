@@ -1,5 +1,6 @@
 // src/app/catalogo/[...slug]/page.tsx
 import { notFound } from "next/navigation";
+import { ogImagens } from '@/lib/og';
 import { CategoryListing } from "@/components/catalogo/CategoryListing";
 import { getCategoryMetadata } from "@/lib/catalog-categories";
 import Script from "next/script";
@@ -52,7 +53,35 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
 
     // Não decodificar aqui - Next.js já fornece decodificado
     const item = await getItem(slugArr);
-    if (!item) return { title: "Produto não encontrado" };
+
+    // Se não for produto, é CATEGORIA — e ela precisa do seu próprio <head>.
+    //
+    // ⚠️ Antes isto devolvia direto "Produto não encontrado", e as 15 páginas de
+    // categoria foram pro ar com esse <title>, sem description e sem canonical.
+    // É o mesmo bug do corpo da página (que caía no notFound), só que no
+    // cabeçalho: consertar um não conserta o outro. Se mexer num, mexa nos dois.
+    if (!item) {
+        const itensDaCategoria = await getCategoryItems(slugArr);
+        if (itensDaCategoria.length > 0) {
+            const meta = getCategoryMetadata(slugArr);
+            const url = `${getSiteUrl()}/catalogo/${slugArr.map(encodeURIComponent).join("/")}/`;
+            return {
+                title: `${meta.title} - Aluguel de Games`,
+                description: meta.description.slice(0, 160),
+                alternates: { canonical: url },
+                openGraph: {
+            images: ogImagens(),
+                    title: meta.title,
+                    description: meta.description.slice(0, 160),
+                    url,
+                    siteName: "Aluguel de Games",
+                    locale: "pt_BR",
+                    type: "website",
+                },
+            };
+        }
+        return { title: "Produto não encontrado" };
+    }
 
     // Usa a função centralizada para pegar a URL base
     const baseUrl = getSiteUrl();

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ogImagens } from '@/lib/og';
 import type { Metadata } from "next";
 import { getCatalog } from "@/lib/catalog.server";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
         "Confira fotos de festas, eventos corporativos, casamentos e formaturas que animamos. Fliperamas, videokês, pinballs e muito mais em ação.",
     alternates: { canonical: "https://www.alugueldegames.com.br/galeria" },
     openGraph: {
+            images: ogImagens(),
         title: "Galeria de Eventos - Aluguel de Games",
         description: "Fotos reais de festas e eventos animados pela Aluguel de Games em São Paulo.",
         url: "https://www.alugueldegames.com.br/galeria",

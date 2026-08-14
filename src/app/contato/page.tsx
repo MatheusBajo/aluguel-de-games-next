@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ogImagens } from '@/lib/og';
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
         "Entre em contato pelo WhatsApp (11) 96526-1000, formulário ou ligação. Atendemos toda a Grande São Paulo. Orçamento sem compromisso.",
     alternates: { canonical: "https://www.alugueldegames.com.br/contato" },
     openGraph: {
+            images: ogImagens(),
         title: "Contato - Aluguel de Games SP",
         description: "Fale com a gente pelo WhatsApp, formulário ou telefone. Orçamento personalizado sem compromisso.",
         url: "https://www.alugueldegames.com.br/contato",
