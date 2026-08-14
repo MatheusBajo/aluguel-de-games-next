@@ -44,6 +44,16 @@ next-env.d.ts
 *.avi
 Thumbs.db
 
+# ⚠️ EXCEÇÃO: os 7 vídeos da home PRECISAM estar no git.
+# A regra `*.mp4` acima deixava todos de fora, e o site referencia esses sete
+# na seção de demonstração. Resultado: o build local funcionava (os arquivos
+# estão no disco) e o do GitHub Actions gerava HTML apontando pra vídeo que
+# não existia. Foi o que reprovou o ensaio de 14/ago/2026.
+# São 26 MB no total, já recomprimidos pra 720p. Cabem tranquilo.
+# Os 42 vídeos de manual/tutorial continuam FORA: o site não usa nenhum deles,
+# e eles vivem em ~/Projetos/WebstormProjects/aluguel-midia-original/
+!public/demonstra/*.mp4
+
 # credenciais de deploy (nunca commitar)
 .env.deploy
 
