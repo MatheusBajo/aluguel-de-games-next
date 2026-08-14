@@ -162,6 +162,42 @@ jobs:
           PY
           echo "::endgroup::"
 
+          echo "::group::Nenhuma página vazia (200 mas sem conteúdo)"
+          python3 - <<'PY'
+          import re, html, glob, sys, os
+          # Em export estático, notFound() vira um ARQUIVO HTML servido com 200.
+          # Foi assim que TODAS as páginas de categoria ficaram no ar respondendo
+          # 200 com a tela em branco (descoberto em 14/ago/2026, pelo dono, não
+          # por teste). Conferir status HTTP não pega isso: só olhar o conteúdo pega.
+          vazias = []
+          for f in glob.glob('out/**/index.html', recursive=True):
+              if f == 'out/404/index.html':
+                  continue
+              h = open(f, encoding='utf-8', errors='ignore').read()
+              limpo = re.sub(r'<(script|style|noscript)[^>]*>.*?</\1>', '', h, flags=re.S)
+              textos = [' '.join(html.unescape(x).split()) for x in re.findall(r'>([^<>]+)<', limpo)]
+              textos = [t for t in textos if len(t) > 2]
+              # 1) página inteira quase sem texto: era o caso das categorias, que
+              #    renderizavam só o nome do logo (1 trecho de texto).
+              if len(textos) < 8:
+                  vazias.append((f, f'{len(textos)} trechos de texto na página'))
+                  continue
+              # 2) casca cheia mas MIOLO vazio: header e footer renderizam, e o
+              #    <main> vem sem nada. Não seria pego pela regra 1. A menor
+              #    página legítima hoje tem 351 caracteres dentro do <main>.
+              m = re.search(r'<main[^>]*>(.*?)</main>', h, re.S)
+              if m:
+                  miolo = re.sub(r'<(script|style|noscript)[^>]*>.*?</\1>', '', m.group(1), flags=re.S)
+                  txt = ' '.join(' '.join(html.unescape(x) for x in re.findall(r'>([^<>]+)<', miolo)).split())
+                  if len(txt) < 150:
+                      vazias.append((f, f'apenas {len(txt)} caracteres dentro de <main>'))
+          print(f"{len(glob.glob('out/**/index.html', recursive=True))} páginas analisadas, {len(vazias)} suspeita(s) de vazia")
+          for f, motivo in vazias[:12]:
+              print(f"  VAZIA: {f}  ->  {motivo}")
+          sys.exit(1 if vazias else 0)
+          PY
+          echo "::endgroup::"
+
           echo "TODAS AS TRAVAS PASSARAM · $(du -sh out | cut -f1)"
 
       # ---------------------------------------------------------------------

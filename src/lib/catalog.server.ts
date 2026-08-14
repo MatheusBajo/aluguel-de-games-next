@@ -2,6 +2,7 @@
 import 'server-only'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { segmentsToSlug } from './slug-utils'
 
 export interface CatalogItem {
     key: string
@@ -114,4 +115,31 @@ export async function getAllSlugs() {
     const items: CatalogItem[] = []
     await walk(rootDir, [], items)
     return items.map((item) => item.key.split('/'))
+}
+
+/**
+ * Todos os produtos DENTRO de uma categoria (em qualquer profundidade).
+ *
+ * Existe porque a rota /catalogo/[...slug] gera URL pra TODA categoria
+ * (generateStaticParams monta cada prefixo do caminho), mas até 14/ago/2026 a
+ * página só sabia renderizar PRODUTO: em categoria ela caía no notFound().
+ * Como o site é export estático, esse "não encontrado" virava um arquivo HTML
+ * servido com HTTP 200 — ou seja, /catalogo/jogos-eletronicos/maquinas/ e
+ * todas as outras respondiam 200 mostrando página em branco. Passava em
+ * qualquer teste que olhasse só o código HTTP.
+ *
+ * A comparação é feita em SLUG dos dois lados, então acento e maiúscula não
+ * atrapalham. O `+ '/'` no prefixo é proposital: garante que a categoria não
+ * liste a si mesma, só o que está abaixo dela.
+ */
+export async function getCategoryItems(categorySlug: string[]): Promise<CatalogItem[]> {
+    if (!categorySlug || categorySlug.length === 0) return []
+
+    const all = await getCatalog()
+    const alvo = segmentsToSlug(categorySlug).join('/')
+
+    return all.filter((item) => {
+        const itemSlug = segmentsToSlug(item.key.split('/')).join('/')
+        return itemSlug.startsWith(alvo + '/')
+    })
 }

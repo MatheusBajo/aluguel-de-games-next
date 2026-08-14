@@ -1,7 +1,9 @@
 // src/app/catalogo/[...slug]/page.tsx
 import { notFound } from "next/navigation";
+import { CategoryListing } from "@/components/catalogo/CategoryListing";
+import { getCategoryMetadata } from "@/lib/catalog-categories";
 import Script from "next/script";
-import { getCatalog, getItem } from "@/lib/catalog.server";
+import { getCatalog, getItem, getCategoryItems } from "@/lib/catalog.server";
 import { ProductGallery } from "@/components/catalogo/ProductGallery";
 import { ProductInfo } from "@/components/catalogo/ProductInfo";
 import { RelatedProducts } from "@/components/catalogo/RelatedProducts";
@@ -131,8 +133,29 @@ export default async function ProdutoPage({ params }: CatalogPageProps) {
 
     // Não decodificar aqui - Next.js já fornece decodificado
     const item = await getItem(slugArr);
+
+    // Se não for produto, pode ser CATEGORIA.
+    //
+    // ⚠️ Sem este bloco o site tinha um buraco silencioso: generateStaticParams
+    // gera URL pra todo prefixo do caminho (ou seja, pra toda categoria), mas a
+    // página só sabia renderizar produto e caía direto no notFound(). Como o
+    // site é export estático, o "não encontrado" virava arquivo HTML servido
+    // com HTTP 200 — /catalogo/jogos-eletronicos/maquinas/ e TODAS as outras
+    // categorias respondiam 200 mostrando página em branco, inclusive as que
+    // o menu do topo linka. Passava em qualquer verificação que olhasse só o
+    // código HTTP. Descoberto em 14/ago/2026 pelo dono, não pelos meus testes.
     if (!item) {
-        console.error(`Produto não encontrado: ${slugArr.join('/')}`);
+        const itensDaCategoria = await getCategoryItems(slugArr);
+        if (itensDaCategoria.length > 0) {
+            return (
+                <CategoryListing
+                    slug={slugArr}
+                    meta={getCategoryMetadata(slugArr)}
+                    items={itensDaCategoria}
+                />
+            );
+        }
+        console.error(`Não é produto nem categoria: ${slugArr.join('/')}`);
         notFound();
     }
 
