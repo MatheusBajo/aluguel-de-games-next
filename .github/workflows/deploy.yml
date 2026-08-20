@@ -162,6 +162,15 @@ jobs:
           PY
           echo "::endgroup::"
 
+          echo "::group::Rastreamento vivo (GTM/GA4/Ads)"
+          # Lógica em scripts/checar-rastreamento.py, pra poder ser testada
+          # fora do CI. A primeira versão desta trava vivia inline aqui e o
+          # regex se perdia nas camadas de heredoc: ela acusava TODAS as
+          # páginas por causa do `gtm.js?id='+i+dl`, que nunca tem o ID
+          # literal. Script separado = testável = confiável.
+          python3 scripts/checar-rastreamento.py out
+          echo "::endgroup::"
+
           echo "::group::Nenhuma página vazia (200 mas sem conteúdo)"
           python3 - <<'PY'
           import re, html, glob, sys, os

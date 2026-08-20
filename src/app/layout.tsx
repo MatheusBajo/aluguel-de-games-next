@@ -6,6 +6,7 @@ import SchemaMarkup from "@/components/seo/SchemaMarkup";
 import Script from "next/script";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import type { Metadata } from "next";
+import { GTM_ID, assertGtmId } from "@/config/analytics.config";
 
 export const metadata: Metadata = {
     metadataBase: new URL("https://www.alugueldegames.com.br"),
@@ -43,6 +44,10 @@ export default function RootLayout({
                                    }: {
     children: React.ReactNode;
 }) {
+    // Quebra o build se o GTM_ID estiver ausente/"undefined".
+    // Ver o comentário longo em src/config/analytics.config.ts.
+    assertGtmId();
+
     return (
         <html className={"dark"} lang="pt-br" suppressHydrationWarning>
         <head>
@@ -56,7 +61,7 @@ export default function RootLayout({
                     var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
                     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
                     f.parentNode.insertBefore(j,f);
-                    })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+                    })(window,document,'script','dataLayer','${GTM_ID}');
                 `}
             </Script>
             <link rel="icon" href="/Logo-Aluguel-de-games.ico"/>
@@ -64,7 +69,7 @@ export default function RootLayout({
         <body>
         <noscript>
             <iframe
-                src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+                src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
                 height="0"
                 width="0"
                 style={{display: 'none', visibility: 'hidden'}}
